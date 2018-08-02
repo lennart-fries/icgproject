@@ -7,7 +7,7 @@ import { Matrix } from '../primitives/matrix'
 class RasterVisitor {
   /**
    * Creates a new RasterVisitor
-   * @param {Object} context                 - The 3D context to render to
+   * @param {WebGLRenderingContext} context                 - The 3D context to render to
    * @param {string} vertexShaderId          - The id of the vertex shader script node
    * @param {string} fragmentShaderId        - The id of the fragment shader script node
    * @param {string} textureVertexShaderId   - The id of the texture vertex shader script node
