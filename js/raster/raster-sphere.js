@@ -7,7 +7,7 @@ import { Vector } from '../primitives/vector'
 class RasterSphere {
   /**
    * Creates all WebGL buffers for the sphere
-   * @param {WebGLContext} gl - The canvas' context
+   * @param {WebGLRenderingContext} gl - The canvas' context
    * @param {Vector} center   - The center of the sphere
    * @param {number} radius   - The radius of the sphere
    * @param {Vector} color    - The color of the sphere

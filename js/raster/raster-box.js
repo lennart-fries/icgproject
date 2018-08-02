@@ -12,7 +12,7 @@ class RasterBox {
    *   | /       | /
    *   0 ------- 1
    *  looking in negative z axis direction
-   * @param {WebGLContext} gl - The canvas' context
+   * @param {WebGLRenderingContext} gl - The canvas' context
    * @param {Vector} minPoint - The minimal x,y,z of the box
    * @param {Vector} maxPoint - The maximal x,y,z of the box
    */

@@ -5,7 +5,7 @@
 class Shader {
   /**
    * Creates a shader
-   * @param {Object} gl   - The 3D context
+   * @param {WebGLRenderingContext} gl   - The 3D context
    * @param {string} vsId - The id of the vertex shader script node
    * @param {string} fsId - The id of the fragment shader script node
    */
