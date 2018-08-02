@@ -1,3 +1,4 @@
+
 /**
  * A class creating buffers for a textured box to render it with WebGL
  */
@@ -79,7 +80,7 @@ class RasterTextureBox {
       1, 1, 0, 1, 0, 0,
       //  bottom
       0, 0, 1, 0, 1, 1,
-      1, 1, 0, 1, 0, 0,
+      1, 1, 0, 1, 0, 0
     ]
 
     let uvBuffer = this.gl.createBuffer()

@@ -1,7 +1,7 @@
 /**
  * Class representing a vector in 4D space
  */
-class Vector {
+export class Vector {
   /**
    * Create a vector
    * @param  {number} x - The x component

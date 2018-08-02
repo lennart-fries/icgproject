@@ -1,6 +1,9 @@
 /**
  * Class representing a Visitor that uses Rasterisation to render a Scenegraph
  */
+
+import Matrix from '../primitives'
+
 class RasterVisitor {
   /**
    * Creates a new RasterVisitor

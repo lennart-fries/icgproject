@@ -56,7 +56,7 @@ class RasterBox {
       // obenlinks
       1.0, 0.0, 1.0, 1.0, // rosa
       // obenrechts
-      0.0, 0.0, 1.0, 1.0, // blau
+      0.0, 0.0, 1.0, 1.0 // blau
     ]
     let normals = [
       // front
@@ -70,7 +70,7 @@ class RasterBox {
       // left
       -1.0, 0.0, 0.0,
       // bottom
-      0.0, -1.0, 0.0,
+      0.0, -1.0, 0.0
     ]
 
     const vertexBuffer = gl.createBuffer()
@@ -93,7 +93,6 @@ class RasterBox {
     gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer)
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW)
     this.normalBuffer = normalBuffer
-
   }
 
   /**

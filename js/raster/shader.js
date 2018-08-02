@@ -30,7 +30,7 @@ class Shader {
 
       // If creating the shader program failed, alert
       if (!gl.getProgramParameter(this.shaderProgram, gl.LINK_STATUS)) {
-        alert("Unable to initialize the shader program: " + gl.getProgramInfoLog(shader))
+        alert('Unable to initialize the shader program: ' + gl.getProgramInfoLog(shader))
       }
     })
   }
@@ -50,7 +50,7 @@ class Shader {
    */
   getAttributeLocation (name) {
     const attr = this.gl.getAttribLocation(this.shaderProgram, name)
-    if (attr != -1) {
+    if (attr !== -1) {
       this.gl.enableVertexAttribArray(attr)
     }
     return attr
@@ -74,7 +74,7 @@ class Shader {
 
       // See if it compiled successfully
       if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-        alert("An error occurred compiling the shaders: " + gl.getShaderInfoLog(shader))
+        alert('An error occurred compiling the shaders: ' + gl.getShaderInfoLog(shader))
         return null
       }
       return shader

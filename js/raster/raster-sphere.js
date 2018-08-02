@@ -1,6 +1,9 @@
 /**
  * A class creating buffers for a sphere to render it with WebGL
  */
+
+import Vector from '../primitives'
+
 class RasterSphere {
   /**
    * Creates all WebGL buffers for the sphere
@@ -97,7 +100,7 @@ class RasterSphere {
     this.gl.disableVertexAttribArray(colorLocation)
     // this.gl.enableVertexAttribArray(colorLocation)
     // this.gl.vertexAttribPointer(colorLocation, 4, this.gl.FLOAT, false, 0, 0)
-    gl.vertexAttrib4fv(colorLocation, new Float32Array(this.color.valueOf()))
+    this.gl.vertexAttrib4fv(colorLocation, new Float32Array(this.color.valueOf()))
 
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.normalBuffer)
     const normalLocation = shader.getAttributeLocation('a_normal')

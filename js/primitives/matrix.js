@@ -1,7 +1,7 @@
 /**
  * Class representing a 4x4 Matrix
  */
-class Matrix {
+export class Matrix {
   /**
    * Constructor of the matrix. Expects an array in row-major layout. Saves the data as column major internally.
    * @param  {Array.<number>} mat - Matrix values row major
