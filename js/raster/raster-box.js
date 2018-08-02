@@ -1,7 +1,7 @@
 /**
  * A class creating buffers for an axis aligned box to render it with WebGL
  */
-class RasterBox {
+export class RasterBox {
   /**
    * Creates all WebGL buffers for the box
    *     6 ------- 7

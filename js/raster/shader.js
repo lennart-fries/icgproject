@@ -2,7 +2,7 @@
 /**
  * Class to assemble a Shader to use with WebGL
  */
-class Shader {
+export class Shader {
   /**
    * Creates a shader
    * @param {WebGLRenderingContext} gl   - The 3D context

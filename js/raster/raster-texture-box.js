@@ -2,7 +2,7 @@
 /**
  * A class creating buffers for a textured box to render it with WebGL
  */
-class RasterTextureBox {
+export class RasterTextureBox {
   /**
    * Creates all WebGL buffers for the textured box
    *     6 ------- 7

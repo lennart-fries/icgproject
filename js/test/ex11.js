@@ -1,4 +1,13 @@
-import GroupNode from 'scenegraph/nodes'
+/* eslint-disable import/no-duplicates */
+import { Matrix } from '../primitives/matrix'
+import { Vector } from '../primitives/vector'
+import { RasterVisitor } from '../raster/rastervisitor'
+import { RasterSetupVisitor } from '../raster/rastervisitor'
+import { Shader } from '../raster/shader'
+import { RotationNode } from '../scenegraph/animation-nodes'
+import { GroupNode } from '../scenegraph/nodes'
+import { SphereNode } from '../scenegraph/nodes'
+import { TextureBoxNode } from '../scenegraph/nodes'
 
 const canvas = document.getElementById('rasteriser')
 const gl = canvas.getContext('webgl')

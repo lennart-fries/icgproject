@@ -16,7 +16,7 @@ class Node {
  * to have child nodes attached to it.
  * @extends Node
  */
-class GroupNode extends Node {
+export class GroupNode extends Node {
   /**
    * Constructor
    * @param  {Matrix} mat - A matrix describing the node's transformation
@@ -48,7 +48,7 @@ class GroupNode extends Node {
  * Class representing a Sphere in the Scenegraph
  * @extends Node
  */
-class SphereNode extends Node {
+export class SphereNode extends Node {
   /**
    * Creates a new Sphere with center and radius
    * @param  {Vector} center - The center of the Sphere
@@ -75,7 +75,7 @@ class SphereNode extends Node {
  * Class representing an Axis Aligned Box in the Scenegraph
  * @extends Node
  */
-class AABoxNode extends Node {
+export class AABoxNode extends Node {
   /**
    * Creates an axis aligned box
    * @param  {Vector} minPoint - The minimum Point
@@ -102,7 +102,7 @@ class AABoxNode extends Node {
  * Class representing a Textured Axis Aligned Box in the Scenegraph
  * @extends Node
  */
-class TextureBoxNode extends Node {
+export class TextureBoxNode extends Node {
   /**
    * Creates an axis aligned box textured box
    * @param  {Vector} minPoint - The minimum Point

@@ -4,7 +4,7 @@
 
 import { Vector } from '../primitives/vector'
 
-class RasterSphere {
+export class RasterSphere {
   /**
    * Creates all WebGL buffers for the sphere
    * @param {WebGLRenderingContext} gl - The canvas' context

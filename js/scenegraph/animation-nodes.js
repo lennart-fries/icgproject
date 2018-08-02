@@ -4,7 +4,7 @@
 
 import { Matrix } from '../primitives/matrix'
 
-class AnimationNode {
+export class AnimationNode {
   /**
    * Creates a new AnimationNode
    * @param {GroupNode} groupNode - The GroupNode to attach to
@@ -27,7 +27,7 @@ class AnimationNode {
  * Class representing a Rotation Animation
  * @extends AnimationNode
  */
-class RotationNode extends AnimationNode {
+export class RotationNode extends AnimationNode {
   /**
    * Creates a new RotationNode
    * @param {GroupNode} groupNode - The group node to attach to

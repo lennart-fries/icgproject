@@ -4,7 +4,7 @@
 
 import { Matrix } from '../primitives/matrix'
 
-class RasterVisitor {
+export class RasterVisitor {
   /**
    * Creates a new RasterVisitor
    * @param {WebGLRenderingContext} context                 - The 3D context to render to
@@ -146,7 +146,7 @@ class RasterVisitor {
 }
 
 /** Class representing a Visitor that sets up buffers for use by the RasterVisitor */
-class RasterSetupVisitor {
+export class RasterSetupVisitor {
   /**
    * Creates a new RasterSetupVisitor
    * @param {Object} context - The 3D context in which to create buffers
