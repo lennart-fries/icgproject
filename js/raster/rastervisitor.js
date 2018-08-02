@@ -2,7 +2,7 @@
  * Class representing a Visitor that uses Rasterisation to render a Scenegraph
  */
 
-import { Matrix } from '../primitives/matrix'
+import { Matrix } from '../primitives/matrix.js'
 
 export class RasterVisitor {
   /**

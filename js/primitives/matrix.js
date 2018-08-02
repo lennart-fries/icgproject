@@ -2,7 +2,7 @@
  * Class representing a 4x4 Matrix
  */
 
-import { Vector } from './vector'
+import { Vector } from './vector.js'
 
 export class Matrix {
   /**

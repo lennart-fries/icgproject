@@ -2,7 +2,7 @@
  * Class representing an Animation
  */
 
-import { Matrix } from '../primitives/matrix'
+import { Matrix } from '../primitives/matrix.js'
 
 export class AnimationNode {
   /**
