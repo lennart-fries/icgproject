@@ -3,6 +3,9 @@
  */
 
 import { Matrix } from '../primitives/matrix.js'
+import {RasterSphere} from './raster-sphere'
+import {RasterBox} from './raster-box.js'
+import {RasterTextureBox} from './raster-texture-box'
 
 export class RasterVisitor {
   /**
@@ -165,8 +168,8 @@ export class RasterSetupVisitor {
     // Clear everything
     this.gl.clearDepth(1.0)
     // Enable depth testing
-    this.gl.enable(gl.DEPTH_TEST)
-    this.gl.depthFunc(gl.LEQUAL)
+    this.gl.enable(this.gl.DEPTH_TEST)
+    this.gl.depthFunc(this.gl.LEQUAL)
 
     rootNode.accept(this)
   }
