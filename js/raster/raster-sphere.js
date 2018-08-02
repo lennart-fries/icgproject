@@ -1,6 +1,6 @@
 /**
-* A class creating buffers for a sphere to render it with WebGL
-*/
+ * A class creating buffers for a sphere to render it with WebGL
+ */
 class RasterSphere {
     /**
      * Creates all WebGL buffers for the sphere

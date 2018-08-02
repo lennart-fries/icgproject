@@ -45,18 +45,18 @@ class RasterBox {
             5, 4, 1, 1, 0, 5
         ];
         let colors = [
-            0.0,  0.0,  0.0,  1.0,    // schwarz
-            0.0,  0.0,  0.0,  1.0,    // schwarz
-            0.0,  0.0,  0.0,  1.0,    // schwarz
-            0.0,  0.0,  0.0,  1.0,    // schwarz
+            0.0, 0.0, 0.0, 1.0,    // schwarz
+            0.0, 0.0, 0.0, 1.0,    // schwarz
+            0.0, 0.0, 0.0, 1.0,    // schwarz
+            0.0, 0.0, 0.0, 1.0,    // schwarz
             //untenrechts
-            0.0,  1.0,  0.0,  1.0,    // grün
+            0.0, 1.0, 0.0, 1.0,    // grün
             //untenlinks
-            1.0,  0.0,  0.0,  1.0,    // rot
+            1.0, 0.0, 0.0, 1.0,    // rot
             //obenlinks
-            1.0,  0.0,  1.0,  1.0,    // rosa
+            1.0, 0.0, 1.0, 1.0,    // rosa
             //obenrechts
-            0.0,  0.0,  1.0,  1.0,    // blau
+            0.0, 0.0, 1.0, 1.0,    // blau
         ];
         let normals = [
             // front

@@ -81,7 +81,7 @@ class RasterTextureBox {
             0, 0, 1, 0, 1, 1,
             1, 1, 0, 1, 0, 0,
         ];
-        
+
         let uvBuffer = this.gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, uvBuffer);
         gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(uv),
@@ -111,7 +111,7 @@ class RasterTextureBox {
         const textureLocation = shader.getAttributeLocation("a_texCoord");
         this.gl.enableVertexAttribArray(textureLocation);
         this.gl.vertexAttribPointer(textureLocation, 2, this.gl.FLOAT, false, 0, 0);
-        
+
         this.gl.activeTexture(gl.TEXTURE0);
         this.gl.bindTexture(gl.TEXTURE_2D, this.texBuffer);
         shader.getUniformInt("sampler").set(0);

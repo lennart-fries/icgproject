@@ -42,7 +42,7 @@ class RasterVisitor {
                 camera.eye,
                 camera.center,
                 camera.up);
-            
+
 
             this.perspective = Matrix.perspective(
                 camera.fovy,
@@ -82,9 +82,13 @@ class RasterVisitor {
         shader.getUniformMatrix("M").set(mat);
 
         let V = shader.getUniformMatrix("V");
-        if (V && this.lookat) { V.set(this.lookat); }
+        if (V && this.lookat) {
+            V.set(this.lookat);
+        }
         let P = shader.getUniformMatrix("P");
-        if (P && this.perspective) { P.set(this.perspective); }
+        if (P && this.perspective) {
+            P.set(this.perspective);
+        }
         let normal = this.lookat.mul(mat).invert().transpose();
         shader.getUniformMatrix("N").set(normal);
 
@@ -103,9 +107,13 @@ class RasterVisitor {
         shader.getUniformMatrix("M").set(mat);
 
         let V = shader.getUniformMatrix("V");
-        if (V && this.lookat) { V.set(this.lookat); }
+        if (V && this.lookat) {
+            V.set(this.lookat);
+        }
         let P = shader.getUniformMatrix("P");
-        if (P && this.perspective) { P.set(this.perspective); }
+        if (P && this.perspective) {
+            P.set(this.perspective);
+        }
         let normal = this.lookat.mul(mat).invert().transpose();
         shader.getUniformMatrix("N").set(normal);
 
@@ -124,9 +132,13 @@ class RasterVisitor {
         shader.getUniformMatrix("M").set(mat);
 
         let V = shader.getUniformMatrix("V");
-        if (V && this.lookat) { V.set(this.lookat); }
+        if (V && this.lookat) {
+            V.set(this.lookat);
+        }
         let P = shader.getUniformMatrix("P");
-        if (P && this.perspective) { P.set(this.perspective); }
+        if (P && this.perspective) {
+            P.set(this.perspective);
+        }
 
         node.rastertexturebox.render(shader);
     }

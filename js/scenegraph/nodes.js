@@ -6,7 +6,8 @@ class Node {
      * Accepts a visitor according to the visitor pattern
      * @param  {Visitor} visitor - The visitor
      */
-    accept(visitor) {}
+    accept(visitor) {
+    }
 }
 
 /**
