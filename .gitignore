@@ -1,0 +1,9 @@
+**/.idea/**
+.project
+**/.project
+.classpath
+**/.classpath
+.settings
+**/.settings
+
+
