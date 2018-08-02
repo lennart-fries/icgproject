@@ -1,13 +1,11 @@
-/* eslint-disable import/no-duplicates */
+/* global performance */
+
 import { Matrix } from '../primitives/matrix.js'
 import { Vector } from '../primitives/vector.js'
-import { RasterVisitor } from '../raster/rastervisitor.js'
-import { RasterSetupVisitor } from '../raster/rastervisitor.js'
+import { RasterVisitor, RasterSetupVisitor } from '../raster/rastervisitor.js'
 import { Shader } from '../raster/shader.js'
 import { RotationNode } from '../scenegraph/animation-nodes.js'
-import { GroupNode } from '../scenegraph/nodes.js'
-import { SphereNode } from '../scenegraph/nodes.js'
-import { TextureBoxNode } from '../scenegraph/nodes.js'
+import { GroupNode, SphereNode, TextureBoxNode } from '../scenegraph/nodes.js'
 
 const canvas = document.getElementById('rasteriser')
 const gl = canvas.getContext('webgl')

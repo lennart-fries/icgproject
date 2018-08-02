@@ -1,4 +1,7 @@
+/* global alert, fetch */
+
 // Refer to https://developer.mozilla.org/de/docs/Web/API/WebGL_API/Tutorial/Hinzuf%C3%BCgen_von_2D_Inhalten_in_einen_WebGL-Kontext
+
 /**
  * Class to assemble a Shader to use with WebGL
  */

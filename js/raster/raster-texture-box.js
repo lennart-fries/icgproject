@@ -1,3 +1,4 @@
+/* global Image */
 
 /**
  * A class creating buffers for a textured box to render it with WebGL
