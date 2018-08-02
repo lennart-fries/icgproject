@@ -25,7 +25,7 @@ sg.add(gn2)
 const cube = new TextureBoxNode(
   new Vector(-1, -1, -1, 1),
   new Vector(1, 1, 1, 1),
-  'hci-logo.png'
+  'assets/diamond_ore.png'
 )
 gn2.add(cube)
 
@@ -46,13 +46,13 @@ let camera = {
 }
 
 const phongShader = new Shader(gl,
-  'phong-vertex-shader.glsl',
-  'phong-fragment-shader.glsl'
+  'glsl/phong-vertex-shader.glsl',
+  'glsl/phong-fragment-shader.glsl'
 )
 visitor.shader = phongShader
 const textureShader = new Shader(gl,
-  'texture-vertex-shader.glsl',
-  'texture-fragment-shader.glsl'
+  'glsl/texture-vertex-shader.glsl',
+  'glsl/texture-fragment-shader.glsl'
 )
 visitor.textureshader = textureShader
 
@@ -61,7 +61,7 @@ let animationNodes = [
 ]
 
 function simulate (deltaT) {
-  for (animationNode of animationNodes) {
+  for (let animationNode of animationNodes) {
     animationNode.simulate(deltaT)
   }
 }

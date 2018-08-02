@@ -45,9 +45,9 @@ export class Matrix {
     let cos = Math.cos(angle)
     let offset = axis.x + 2 * axis.y
 
-    m.setVal((0 + offset) % 3, (0 + offset) % 3, cos)
-    m.setVal((0 + offset) % 3, (1 + offset) % 3, -sin)
-    m.setVal((1 + offset) % 3, (0 + offset) % 3, sin)
+    m.setVal((offset) % 3, (offset) % 3, cos)
+    m.setVal((offset) % 3, (1 + offset) % 3, -sin)
+    m.setVal((1 + offset) % 3, (offset) % 3, sin)
     m.setVal((1 + offset) % 3, (1 + offset) % 3, cos)
 
     return m
