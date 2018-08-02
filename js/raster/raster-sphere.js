@@ -2,7 +2,7 @@
  * A class creating buffers for a sphere to render it with WebGL
  */
 
-import Vector from '../primitives'
+import { Vector } from '../primitives/vector'
 
 class RasterSphere {
   /**

@@ -2,7 +2,7 @@
  * Class representing a Visitor that uses Rasterisation to render a Scenegraph
  */
 
-import Matrix from '../primitives'
+import { Matrix } from '../primitives/matrix'
 
 class RasterVisitor {
   /**
@@ -55,7 +55,6 @@ class RasterVisitor {
       if (typeof this.perspective === 'undefined') {
         this.perspective = Matrix.identity()
       }
-
     }
   }
 

@@ -1,6 +1,9 @@
 /**
  * Class representing an Animation
  */
+
+import { Matrix } from '../primitives/matrix'
+
 class AnimationNode {
   /**
    * Creates a new AnimationNode

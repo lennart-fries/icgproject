@@ -1,6 +1,9 @@
 /**
  * Class representing a 4x4 Matrix
  */
+
+import { Vector } from './vector'
+
 export class Matrix {
   /**
    * Constructor of the matrix. Expects an array in row-major layout. Saves the data as column major internally.
