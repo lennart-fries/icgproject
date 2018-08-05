@@ -2,9 +2,9 @@ attribute vec3 a_position;
 attribute vec3 a_normal;
 attribute vec4 a_color;
 
-uniform mat4 M; //model
-uniform mat4 V; //view
-uniform mat4 P; //perspective
+uniform mat4 M; // model
+uniform mat4 V; // view
+uniform mat4 P; // perspective
 uniform mat4 N; // normal matrix
 
 varying vec3 v_normal;

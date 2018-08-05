@@ -3,9 +3,9 @@
  */
 
 import { Matrix } from '../primitives/matrix.js'
-import {RasterSphere} from './raster-sphere.js'
-import {RasterBox} from './raster-box.js'
-import {RasterTextureBox} from './raster-texture-box.js'
+import { RasterSphere } from './raster-sphere.js'
+import { RasterBox } from './raster-box.js'
+import { RasterTextureBox } from './raster-texture-box.js'
 
 export class RasterVisitor {
   /**
