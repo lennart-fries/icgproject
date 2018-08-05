@@ -1,7 +1,5 @@
-/* eslint-disable import/no-duplicates */
-import {GroupNode} from '../ray/nodes.js'
+import {GroupNode, SphereNode} from '../scenegraph/nodes.js'
 import {Matrix} from '../primitives/matrix.js'
-import {SphereNode} from '../ray/nodes.js'
 import {Vector} from '../primitives/vector.js'
 import {RayVisitor} from '../ray/rayvisitor.js'
 
