@@ -4,7 +4,7 @@ $(document).ready(function () {
   $('#sidebarCollapse').on('click', function () {
     $('#sidebar').toggleClass('active')
   })
-  var oldContainer
+  let oldContainer
   $('ol.sortable').sortable({
     group: 'nested',
     afterMove: function (placeholder, container) {

@@ -4,7 +4,6 @@
  */
 
 import { Matrix } from '../primitives/matrix.js'
-import { Vector } from '../primitives/vector.js'
 import { Ray } from './ray.js'
 import { Sphere } from './sphere.js'
 import { Intersection } from './intersection.js'
@@ -15,12 +14,9 @@ export class RayVisitor {
   /**
      * Creates a new RayVisitor
      * @param {Object} context - The 2D context to render to
-     * @param {number} width   - The width of the canvas
-     * @param {number} height  - The height of the canvas
      */
-  constructor (context, width, height) {
+  constructor (context) {
     this.context = context
-    this.imageData = context.getImageData(0, 0, width, height)
     this.currentMatrix = Matrix.identity()
   }
 
@@ -29,8 +25,11 @@ export class RayVisitor {
      * @param  {Node} rootNode                 - The root node of the Scenegraph
      * @param  {Object} camera                 - The camera used
      * @param  {Array.<Vector>} lightPositions - The light light positions
+     * @param {number} width   - The width of the canvas
+     * @param {number} height  - The height of the canvas
      */
-  render (rootNode, camera, lightPositions) {
+  render (rootNode, camera, lightPositions, width, height) {
+    this.imageData = this.context.getImageData(0, 0, width, height)
     // clear
     let data = this.imageData.data
     data.fill(0)
@@ -40,8 +39,6 @@ export class RayVisitor {
     rootNode.accept(this)
 
     // raytrace
-    const width = this.imageData.width
-    const height = this.imageData.height
     for (let x = 0; x < width; x++) {
       for (let y = 0; y < height; y++) {
         const ray = Ray.makeRay(width, height, x, y, camera)
@@ -57,10 +54,13 @@ export class RayVisitor {
         }
         if (minObj) {
           if (!minObj.color) {
-            setPixel(x, y, new Vector(0, 0, 0, 1))
+            data[4 * (width * y + x)] = 0
+            data[4 * (width * y + x) + 1] = 0
+            data[4 * (width * y + x) + 2] = 0
+            data[4 * (width * y + x) + 3] = 1
           } else {
             let color = phong(minObj.color, minIntersection, lightPositions, 10, camera.eye)
-            data[4 * (width * y + x) + 0] = color.r * 255
+            data[4 * (width * y + x)] = color.r * 255
             data[4 * (width * y + x) + 1] = color.g * 255
             data[4 * (width * y + x) + 2] = color.b * 255
             data[4 * (width * y + x) + 3] = color.a * 255

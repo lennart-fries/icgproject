@@ -52,6 +52,12 @@ html, body {
     overflow: hidden;
 }
 
+#raytracer {
+    display: block;
+    width: 100%;
+    height: 100vh;
+}
+
 #rasteriser {
     display: block;
     width: 100%;
