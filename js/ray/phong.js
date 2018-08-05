@@ -6,61 +6,59 @@
  * @param {number} shininess              - The shininess parameter of the Phong model
  * @return {Vector}                         The resulting colour
  */
-function phong(objColor, intersection, lightPositions, shininess, cameraPosition) {
-    let color = objColor;
 
-    let ka = .6;
-    let kd = .8;
-    let ks = .8;
-    let ke = shininess;
-    let energy = .3;
+import { Vector } from '../primitives/vector.js'
 
-// ambient
-    let ambient = ka * energy;
-    let ambientVector = new Vector (ambient, ambient, ambient, 0);
-    color = color.add(ambientVector);
+export function phong (objColor, intersection, lightPositions, shininess, cameraPosition) {
+  let color = objColor
 
-// diffuse
-    let dsum = 0;
-    lightPositions.forEach(function(light){
-        let sj = light.sub(intersection.point);
-        let n = intersection.normal;
+  let ka = 0.6
+  let kd = 0.8
+  let ks = 0.8
+  let ke = shininess
+  let energy = 0.3
 
-        if (n.dot(sj) > 0){
-            dsum = dsum +(energy * n.dot(sj));
-        }
-    })
-    let diffuse = kd * dsum;
-    let diffuseVector = new Vector (diffuse, diffuse, diffuse, 0);
-    color = color.add(diffuseVector);
+  // ambient
+  let ambient = ka * energy
+  let ambientVector = new Vector(ambient, ambient, ambient, 0)
+  color = color.add(ambientVector)
 
-//specular
-    let ssum = 0;
-    lightPositions.forEach(function(light){
-            let n = intersection.normal;
-            let l = light.sub(intersection.point).normalised();
-            let firstPart = 2 * n.dot(l);
-            let middlePart = n.mul(firstPart);
-            let r = middlePart.sub(l).normalised();
+  // diffuse
+  let dsum = 0
+  lightPositions.forEach(function (light) {
+    let sj = light.sub(intersection.point)
+    let n = intersection.normal
 
+    if (n.dot(sj) > 0) {
+      dsum = dsum + (energy * n.dot(sj))
+    }
+  })
+  let diffuse = kd * dsum
+  let diffuseVector = new Vector(diffuse, diffuse, diffuse, 0)
+  color = color.add(diffuseVector)
 
-            let v = cameraPosition.normalised();
+  // specular
+  let ssum = 0
+  lightPositions.forEach(function (light) {
+    let n = intersection.normal
+    let l = light.sub(intersection.point).normalised()
+    let firstPart = 2 * n.dot(l)
+    let middlePart = n.mul(firstPart)
+    let r = middlePart.sub(l).normalised()
 
-            if (r.dot(v) > 0){
-                ssum = ssum +  energy * Math.pow((r.dot(v)), ke);
-            }
-            else {
-                ssum = ssum + Math.pow(0, ke);
-            }
+    let v = cameraPosition.normalised()
 
-        }
-    )
+    if (r.dot(v) > 0) {
+      ssum = ssum + energy * Math.pow((r.dot(v)), ke)
+    } else {
+      ssum = ssum + Math.pow(0, ke)
+    }
+  }
+  )
 
-    let specular = ks * ssum;
-    let specularVector = new Vector(specular, specular, specular, 0);
-    color = color.add(specularVector);
+  let specular = ks * ssum
+  let specularVector = new Vector(specular, specular, specular, 0)
+  color = color.add(specularVector)
 
-
-
-    return color;
+  return color
 }
