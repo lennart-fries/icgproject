@@ -3,10 +3,9 @@ import { Vector } from './primitives/vector.js'
 import { GroupNode, SphereNode, TextureBoxNode } from './scenegraph/nodes.js'
 import { rasterizer } from './raster.js'
 import { raytracer } from './ray.js'
+import { RotationNode } from './scenegraph/animation-nodes.js'
 
 const canvas = document.getElementById('rasteriser')
-const gl = canvas.getContext('webgl')
-const ctx = canvas.getContext('2d')
 
 // construct scene graph
 const sg = new GroupNode(Matrix.scaling(new Vector(0.2, 0.2, 0.2)))
@@ -34,15 +33,19 @@ let camera = {
   center: new Vector(0, 0, 0, 1),
   up: new Vector(0, 1, 0, 0),
   fovy: 90,
-  aspect: gl.canvas.clientWidth / gl.canvas.clientHeight,
+  aspect: canvas.clientWidth / canvas.clientHeight,
   near: 0.1,
   far: 100
 }
 
-const raster = true
+let animationNodes = [
+  new RotationNode(gn2, new Vector(0, 0, 1))
+]
+
+const raster = false
 
 if (raster === true) {
-  rasterizer(sg, gl, camera, gn2)
+  rasterizer(canvas, sg, camera, gn2, animationNodes)
 } else {
-  raytracer(canvas, ctx, camera, sg, lightPositions)
+  raytracer(canvas, camera, sg, lightPositions)
 }

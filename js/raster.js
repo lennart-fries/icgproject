@@ -5,7 +5,8 @@ import { Shader } from './raster/shader.js'
 import { RotationNode } from './scenegraph/animation-nodes.js'
 import { Vector } from './primitives/vector.js'
 
-export function rasterizer (sg, gl, camera, gn2) {
+export function rasterizer (canvas, sg, camera, gn2, animationNodes) {
+  const gl = canvas.getContext('webgl')
   const setupVisitor = new RasterSetupVisitor(gl)
   setupVisitor.setup(sg)
 
@@ -21,10 +22,6 @@ export function rasterizer (sg, gl, camera, gn2) {
     'glsl/texture-fragment-shader.glsl'
   )
   visitor.textureshader = textureShader
-
-  let animationNodes = [
-    new RotationNode(gn2, new Vector(0, 0, 1))
-  ]
 
   function simulate (deltaT) {
     for (let animationNode of animationNodes) {
