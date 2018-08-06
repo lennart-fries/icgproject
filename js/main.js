@@ -1,14 +1,12 @@
-/* global performance */
-
 import { Matrix } from './primitives/matrix.js'
 import { Vector } from './primitives/vector.js'
-import { RasterVisitor, RasterSetupVisitor } from './raster/rastervisitor.js'
-import { Shader } from './raster/shader.js'
-import { RotationNode } from './scenegraph/animation-nodes.js'
 import { GroupNode, SphereNode, TextureBoxNode } from './scenegraph/nodes.js'
+import { rasterizer } from './raster.js'
+import { raytracer } from './ray.js'
 
 const canvas = document.getElementById('rasteriser')
 const gl = canvas.getContext('webgl')
+const ctx = canvas.getContext('2d')
 
 // construct scene graph
 const sg = new GroupNode(Matrix.scaling(new Vector(0.2, 0.2, 0.2)))
@@ -27,11 +25,9 @@ const cube = new TextureBoxNode(
 )
 gn2.add(cube)
 
-// setup for rendering
-const setupVisitor = new RasterSetupVisitor(gl)
-setupVisitor.setup(sg)
-
-const visitor = new RasterVisitor(gl)
+const lightPositions = [
+  new Vector(1, 1, -1, 1)
+]
 
 let camera = {
   eye: new Vector(-0.5, 0.5, -1, 1),
@@ -43,53 +39,10 @@ let camera = {
   far: 100
 }
 
-const phongShader = new Shader(gl,
-  'glsl/phong-vertex-shader.glsl',
-  'glsl/phong-fragment-shader.glsl'
-)
-visitor.shader = phongShader
-const textureShader = new Shader(gl,
-  'glsl/texture-vertex-shader.glsl',
-  'glsl/texture-fragment-shader.glsl'
-)
-visitor.textureshader = textureShader
+const raster = true
 
-let animationNodes = [
-  new RotationNode(gn2, new Vector(0, 0, 1))
-]
-
-function simulate (deltaT) {
-  for (let animationNode of animationNodes) {
-    animationNode.simulate(deltaT)
-  }
+if (raster === true) {
+  rasterizer(sg, gl, camera, gn2)
+} else {
+  raytracer(canvas, ctx, camera, sg, lightPositions)
 }
-
-let lastTimestamp = performance.now()
-
-function animate (timestamp) {
-  var width = gl.canvas.clientWidth
-  var height = gl.canvas.clientHeight
-  if (gl.canvas.width !== width || gl.canvas.height !== height) {
-    gl.canvas.width = width
-    gl.canvas.height = height
-    gl.viewport(0, 0, width, height)
-    camera.aspect = width / height
-  }
-  simulate(timestamp - lastTimestamp)
-  visitor.render(sg, camera)
-  lastTimestamp = timestamp
-  window.requestAnimationFrame(animate)
-}
-Promise.all(
-  [phongShader.load(), textureShader.load()]
-).then(x =>
-  window.requestAnimationFrame(animate)
-)
-
-window.addEventListener('keydown', function (event) {
-  switch (event.key) {
-    case 'ArrowUp':
-      animationNodes[0].toggleActive()
-      break
-  }
-})
