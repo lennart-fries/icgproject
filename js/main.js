@@ -5,7 +5,7 @@ import { GroupNode, SphereNode, TextureBoxNode, AABoxNode } from './scenegraph/n
 import { Raster } from './rendering/raster.js'
 import { Ray } from './rendering/ray.js'
 import { RotationNode } from './scenegraph/animation-nodes.js'
-
+let r;
 const canvas = document.getElementById('render-surface')
 
 // construct scene graph
@@ -51,15 +51,15 @@ let animationNodes = [
   new RotationNode(gn2, new Vector(0, 0, 1))
 ]
 
-const raster = true
+const raster = false
 
 if (raster === true) {
-  this.r = new Raster(canvas, sg)
+  r = new Raster(canvas, sg)
 } else {
-  this.r = new Ray(canvas)
+  r = new Ray(canvas, sg)
 }
 
-this.r.setup().then(x =>
+r.setup().then(x =>
   window.requestAnimationFrame(animate)
 )
 
@@ -77,11 +77,11 @@ function animate (timestamp) {
   if (canvas.width !== width || canvas.height !== height) {
     canvas.width = width
     canvas.height = height
-    this.r.updateResolution(width, height)
+    r.updateResolution(width, height)
     camera.aspect = width / height
   }
   simulate(timestamp - lastTimestamp)
-  this.r.loop(sg, camera, lightPositions)
+  r.loop(sg, camera, lightPositions)
   lastTimestamp = timestamp
   window.requestAnimationFrame(animate)
 }
