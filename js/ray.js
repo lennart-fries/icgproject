@@ -15,9 +15,6 @@ export function raytracer (canvas, camera, sg, lightPositions) {
       camera.aspect = width / height
     }
 
-    sg.matrix.setVal(1, 3, Math.sin(Math.PI * timestamp / 2000) * 0.3)
-    sg.matrix.setVal(2, 3, Math.cos(Math.PI * timestamp / 2000) * 0.3)
-
     visitor.render(sg, camera, lightPositions, canvas.width, canvas.height)
     animationHandle = window.requestAnimationFrame(animate)
   }

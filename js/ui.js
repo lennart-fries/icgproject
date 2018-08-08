@@ -1,12 +1,14 @@
 /* global $ */
 
 $(document).ready(function () {
-  $('#sidebarCollapse').on('click', function () {
-    $('#sidebar').toggleClass('active')
+  $('#collapse-left').on('click', function () {
+    $('#sidebar-left').toggleClass('active')
+  })
+  $('#collapse-right').on('click', function () {
+    $('#sidebar-right').toggleClass('active')
   })
   let oldContainer
-  $('ol.sortable').sortable({
-    group: 'nested',
+  let sceneGraphList = $('ul.scene-graph-root').sortable({
     afterMove: function (placeholder, container) {
       if (oldContainer !== container) {
         if (oldContainer) { oldContainer.el.removeClass('active') }
@@ -16,6 +18,7 @@ $(document).ready(function () {
     },
     onDrop: function ($item, container, _super) {
       container.el.removeClass('active')
+      console.log(sceneGraphList.sortable('serialize').get())
       _super($item, container)
     }
   })

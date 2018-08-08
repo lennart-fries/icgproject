@@ -1,11 +1,11 @@
 import { Matrix } from './primitives/matrix.js'
 import { Vector } from './primitives/vector.js'
-import { GroupNode, SphereNode, TextureBoxNode, AABoxNode } from './scenegraph/nodes.js'
+import { GroupNode, SphereNode, AABoxNode } from './scenegraph/nodes.js'
 import { rasterizer } from './raster.js'
 import { raytracer } from './ray.js'
 import { RotationNode } from './scenegraph/animation-nodes.js'
 
-const canvas = document.getElementById('rasteriser')
+const canvas = document.getElementById('render-surface')
 
 // construct scene graph
 const sg = new GroupNode(Matrix.scaling(new Vector(0.2, 0.2, 0.2)))
@@ -17,11 +17,11 @@ const sphere = new SphereNode(new Vector(0.5, -0.8, 0, 1), 0.4, new Vector(0.8, 
 gn3.add(sphere)
 let gn2 = new GroupNode(Matrix.translation(new Vector(-0.7, -0.4, 0.1)))
 sg.add(gn2)
-/*const cube = new TextureBoxNode(
+/* const cube = new TextureBoxNode(
   new Vector(-1, -1, -1, 1),
   new Vector(1, 1, 1, 1),
   'assets/diamond_ore.png'
-)*/
+) */
 
 const cube = new AABoxNode(
   new Vector(-1, -1, -1, 1),
@@ -49,7 +49,7 @@ let animationNodes = [
   new RotationNode(gn2, new Vector(0, 0, 1))
 ]
 
-const raster = false
+const raster = true
 
 if (raster === true) {
   rasterizer(canvas, sg, camera, gn2, animationNodes)

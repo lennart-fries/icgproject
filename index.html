@@ -33,21 +33,81 @@
 </head>
 <body>
 <div class="wrapper">
-    <nav id="sidebar" class="bg-secondary border-right">
-
-        <p class="text-light">Scene Graph</p>
-        <ol class="sortable list-group scene-graph">
-            <li class="list-group-item list-group-item-action">First</li>
-            <li class="list-group-item list-group-item-action">Second</li>
-            <li class="list-group-item list-group-item-action">Third</li>
-        </ol>
+    <nav id="sidebar-left" class="sidebar border-right">
+        <ul class="settings-list list-group rounded-0">
+            <li class="list-group-item list-group-item-primary rounded-0">
+                <i class="fas fa-project-diagram pr-2"></i>Scene Graph
+                <ul class="sortable list-group scene-graph scene-graph-root">
+                    <li class="list-group-item list-group-item-action"><i class="fas fa-shapes pr-2"></i>gn1
+                        <ul class="sortable list-group scene-graph">
+                            <li class="list-group-item list-group-item-action"><i class="fas fa-shapes pr-2"></i>gn3
+                                <ul class="sortable list-group scene-graph">
+                                    <li class="list-group-item list-group-item-action"><i class="fas fa-circle pr-2"></i>sphere</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="list-group-item list-group-item-action"><i class="fas fa-shapes pr-2"></i>gn2
+                        <ul class="sortable list-group scene-graph">
+                            <li class="list-group-item list-group-item-action"><i class="fas fa-square pr-2"></i>cube</li>
+                        </ul>
+                    </li>
+                    <li class="list-group-item list-group-item-action"><i class="fas fa-star pr-2"></i>model</li>
+                </ul>
+            </li>
+            <li class="list-group-item list-group-item-primary rounded-0">
+                <i class="fas fa-tachometer-alt pr-2"></i>Animation Nodes
+                <ul class="sortable list-group scene-graph animation-nodes-list">
+                    <li class="list-group-item list-group-item-action"><i class="fas fa-sync pr-2"></i>rotate_gn2
+                    </li>
+                </ul>
+            </li>
+        </ul>
     </nav>
     <div id="content">
-        <button type="button" id="sidebarCollapse" class="btn">
+        <button type="button" id="collapse-left" class="btn btn-sidebar float-left">
             <i class="fas fa-bars"></i>
         </button>
-        <canvas id="rasteriser"></canvas>
+        <button type="button" id="collapse-right" class="btn btn-sidebar float-right">
+            <i class="fas fa-sliders-h"></i>
+        </button>
+        <canvas id="render-surface"></canvas>
     </div>
+    <nav id="sidebar-right" class="sidebar border-left">
+        <ul class="list-group settings-list">
+            <li class="list-group-item list-group-item-primary rounded-0">
+                <i class="fas fa-cog pr-2"></i>General Settings<br>
+                <ul class="sortable list-group scene-graph scene-graph-root">
+                    <li class="list-group-item">Renderer
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-primary active">
+                                <input type="radio" name="renderer" id="rasterizer" autocomplete="off" checked>Rasterizer
+                            </label>
+                            <label class="btn btn-primary">
+                                <input type="radio" name="renderer" id="raytracer" autocomplete="off">Raytracer
+                            </label>
+                        </div>
+                    </li>
+                    <li class="list-group-item">Render resolution factor
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-primary active">
+                                <input type="radio" name="resolution" id="res1" autocomplete="off" checked>1
+                            </label>
+                            <label class="btn btn-primary">
+                                <input type="radio" name="resolution" id="res2" autocomplete="off">&frac12;
+                            </label>
+                            <label class="btn btn-primary">
+                                <input type="radio" name="resolution" id="res3" autocomplete="off">&frac13;
+                            </label>
+                            <label class="btn btn-primary">
+                                <input type="radio" name="resolution" id="res4" autocomplete="off">&frac14;
+                            </label>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
 </div>
 </body>
 </html>
