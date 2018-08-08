@@ -1,8 +1,9 @@
+/* global performance */
 import { Matrix } from './primitives/matrix.js'
 import { Vector } from './primitives/vector.js'
-import { GroupNode, SphereNode, AABoxNode } from './scenegraph/nodes.js'
-import { /*rasterizer,*/ setupRaster , teardownRaster } from './rendering/raster.js'
-import { raytracer, setupRay, teardownRay } from './rendering/ray.js'
+import { GroupNode, SphereNode, TextureBoxNode, AABoxNode } from './scenegraph/nodes.js'
+import { Raster } from './rendering/raster.js'
+import { Ray } from './rendering/ray.js'
 import { RotationNode } from './scenegraph/animation-nodes.js'
 
 const canvas = document.getElementById('render-surface')
@@ -53,7 +54,42 @@ let animationNodes = [
 const raster = true
 
 if (raster === true) {
-  setupRaster(canvas, sg, camera, gn2, animationNodes)
+  this.r = new Raster(canvas, sg)
 } else {
-  setupRay(canvas, camera, sg, lightPositions)
+  this.r = new Ray(canvas)
 }
+
+this.r.setup().then(x =>
+  window.requestAnimationFrame(animate)
+)
+
+export function simulate (deltaT) {
+  for (let animationNode of animationNodes) {
+    animationNode.simulate(deltaT)
+  }
+}
+
+let lastTimestamp = performance.now()
+
+function animate (timestamp) {
+  var width = canvas.clientWidth
+  var height = canvas.clientHeight
+  if (canvas.width !== width || canvas.height !== height) {
+    canvas.width = width
+    canvas.height = height
+    this.r.updateResolution(width, height)
+    camera.aspect = width / height
+  }
+  simulate(timestamp - lastTimestamp)
+  this.r.loop(sg, camera, lightPositions)
+  lastTimestamp = timestamp
+  window.requestAnimationFrame(animate)
+}
+
+window.addEventListener('keydown', function (event) {
+  switch (event.key) {
+    case 'ArrowUp':
+      animationNodes[0].toggleActive()
+      break
+  }
+})
