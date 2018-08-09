@@ -30,6 +30,8 @@
 
     <!-- Local files -->
     <link rel="stylesheet" href="css/style.css">
+    <script src="js/ui.js"></script>
+    <script src="js/scenegraph/loadSave.js"></script>
     <script type="module" src="js/main.js"></script>
 
     <title>ICG Final Project</title>
@@ -65,6 +67,10 @@
                     </li>
                 </ul>
             </li>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#openLoadScenegraphDialog">
+                Load Scenegraph from File
+            </button>
+            <button type="button" class="btn btn-primary" onclick="saveScenegraphToXml()">Save Scenegraph</button>
         </ul>
     </nav>
     <div id="content">
@@ -122,6 +128,27 @@
             </li>
         </ul>
     </nav>
+</div>
+
+<!-- loaddingens dialog -->
+<div class="modal fade" id="openLoadScenegraphDialog" tabindex="-1" role="dialog" aria-labelledby="loadScenegraph"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="openLoadScenegraphDialogTitle">Load Scenegraph</h5>
+            </div>
+            <div class="modal-body">
+                <form id="loadScenegraph" enctype="multipart/form-data"><input class="file" type="file" name="file"/>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="loadScenegraph()">Load
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
