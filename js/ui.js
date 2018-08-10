@@ -36,7 +36,7 @@ $(document).ready(function () {
     if (renderers.includes(rendererName)) {
       renderer = renderersToClasses[rendererName]
     }
-    console.log('Switching to ' + rendererName)
+    // console.log('Switching to ' + rendererName)
   })
   $('input[name=render-resolution]').change(function () {
     renderResolution = parseInt($('input[name=render-resolution]:checked').val())
