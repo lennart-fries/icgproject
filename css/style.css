@@ -62,7 +62,7 @@ ul.sortable li.placeholder:before {
     border-right: none;
 }
 
-.scene-graph > .list-group-item {
+.list-group-compact > .list-group-item {
     padding: 3px 10px;
 }
 

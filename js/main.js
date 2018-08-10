@@ -1,13 +1,16 @@
 /* global performance */
+/* eslint new-cap: ['error', { 'newIsCapExceptions': ['renderer'] }] */
+
 import { Matrix } from './primitives/matrix.js'
 import { Vector } from './primitives/vector.js'
-import { GroupNode, SphereNode, TextureBoxNode, AABoxNode } from './scenegraph/nodes.js'
-import { Raster } from './rendering/raster.js'
-import { Ray } from './rendering/ray.js'
+import { GroupNode, SphereNode, /* TextureBoxNode, */AABoxNode } from './scenegraph/nodes.js'
 import { RotationNode } from './scenegraph/animation-nodes.js'
+import { renderer, renderResolution } from './ui.js'
 
 let r
-const canvas = document.getElementById('render-surface')
+
+const canvasID = 'render-surface'
+let canvas = document.getElementById(canvasID)
 
 // construct scene graph
 const sg = new GroupNode(Matrix.scaling(new Vector(0.2, 0.2, 0.2)))
@@ -52,18 +55,6 @@ let animationNodes = [
   new RotationNode(gn2, new Vector(0, 0, 1))
 ]
 
-const raster = false
-
-if (raster === true) {
-  r = new Raster(canvas, sg)
-} else {
-  r = new Ray(canvas, sg)
-}
-
-r.setup().then(x =>
-  window.requestAnimationFrame(animate)
-)
-
 export function simulate (deltaT) {
   for (let animationNode of animationNodes) {
     animationNode.simulate(deltaT)
@@ -72,20 +63,49 @@ export function simulate (deltaT) {
 
 let lastTimestamp = performance.now()
 
-function animate (timestamp) {
-  var width = canvas.clientWidth
-  var height = canvas.clientHeight
+function updateRenderer () {
+  if (r == null || !(r instanceof renderer)) {
+    if (r != null) {
+      r.teardown()
+
+      // recreate canvas to lose context
+      let newCanvas = document.createElement('canvas')
+      newCanvas.setAttribute('id', canvasID)
+      canvas.parentNode.replaceChild(newCanvas, canvas)
+      canvas = newCanvas
+    }
+    r = new renderer(canvas, sg)
+    r.setup().then(() =>
+      window.requestAnimationFrame(animate)
+    )
+    return true
+  }
+  return false
+}
+
+function updateResolution () {
+  var width = canvas.clientWidth / renderResolution
+  var height = canvas.clientHeight / renderResolution
   if (canvas.width !== width || canvas.height !== height) {
     canvas.width = width
     canvas.height = height
     r.updateResolution(width, height)
     camera.aspect = width / height
   }
+}
+
+function animate (timestamp) {
+  if (updateRenderer()) {
+    return
+  }
+  updateResolution()
   simulate(timestamp - lastTimestamp)
   r.loop(sg, camera, lightPositions)
   lastTimestamp = timestamp
   window.requestAnimationFrame(animate)
 }
+
+updateRenderer()
 
 window.addEventListener('keydown', function (event) {
   switch (event.key) {
