@@ -5,7 +5,8 @@ import { GroupNode, SphereNode, TextureBoxNode, AABoxNode } from './scenegraph/n
 import { Raster } from './rendering/raster.js'
 import { Ray } from './rendering/ray.js'
 import { RotationNode } from './scenegraph/animation-nodes.js'
-let r;
+
+let r
 const canvas = document.getElementById('render-surface')
 
 // construct scene graph
