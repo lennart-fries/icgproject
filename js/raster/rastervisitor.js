@@ -209,3 +209,31 @@ export class RasterSetupVisitor {
     node.rastertexturebox = new RasterTextureBox(this.gl, node.minPoint, node.maxPoint, node.texture)
   }
 }
+
+export class RasterTeardownVisitor {
+  constructor (context) {
+    this.gl = context
+  }
+
+  run (rootNode) {
+    rootNode.accept(this)
+  }
+
+  visitGroupNode (node) {
+    for (let child of node.children) {
+      child.accept(this)
+    }
+  }
+
+  visitSphereNode (node) {
+    node.rastersphere.teardown()
+  }
+
+  visitAABoxNode (node) {
+    node.rasterbox.teardown()
+  }
+
+  visitTextureBoxNode (node) {
+    node.rastertexturebox.teardown()
+  }
+}

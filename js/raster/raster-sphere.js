@@ -113,4 +113,11 @@ export class RasterSphere {
     this.gl.disableVertexAttribArray(positionLocation)
     this.gl.disableVertexAttribArray(normalLocation)
   }
+
+  teardown () {
+    this.gl.deleteBuffer(this.vertexBuffer)
+    // this.gl.deleteBuffer(this.colorBuffer)
+    this.gl.deleteBuffer(this.normalBuffer)
+    this.gl.deleteBuffer(this.indexBuffer)
+  }
 }

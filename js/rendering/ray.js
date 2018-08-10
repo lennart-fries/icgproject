@@ -20,6 +20,6 @@ export class Ray {
   }
 
   teardown () {
-    // todo something something teardown
+    // does nothing
   }
 }

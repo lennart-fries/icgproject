@@ -1,4 +1,4 @@
-import { RasterSetupVisitor, RasterVisitor } from '../raster/rastervisitor.js'
+import { RasterSetupVisitor, RasterVisitor, RasterTeardownVisitor } from '../raster/rastervisitor.js'
 import { Shader } from '../raster/shader.js'
 
 export class Raster {
@@ -7,6 +7,7 @@ export class Raster {
     this.setupVisitor = new RasterSetupVisitor(this.gl)
     this.setupVisitor.setup(sg)
     this.visitor = new RasterVisitor(this.gl)
+    this.sg = sg
   }
 
   setup () {
@@ -36,6 +37,7 @@ export class Raster {
   }
 
   teardown () {
-    // todo something something teardown
+    const teardownVisitor = new RasterTeardownVisitor(this.gl)
+    teardownVisitor.run(this.sg)
   }
 }

@@ -121,4 +121,11 @@ export class RasterBox {
     this.gl.disableVertexAttribArray(positionLocation)
     this.gl.disableVertexAttribArray(colorLocation)
   }
+
+  teardown () {
+    this.gl.deleteBuffer(this.vertexBuffer)
+    this.gl.deleteBuffer(this.colorBuffer)
+    this.gl.deleteBuffer(this.normalBuffer)
+    this.gl.deleteBuffer(this.indexBuffer)
+  }
 }

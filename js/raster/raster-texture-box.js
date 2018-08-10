@@ -124,4 +124,10 @@ export class RasterTextureBox {
     // this.gl.disableVertexAttribArray(colorLocation)
     this.gl.disableVertexAttribArray(textureLocation)
   }
+
+  teardown () {
+    this.gl.deleteBuffer(this.vertexBuffer)
+    this.gl.deleteBuffer(this.texCoords)
+    this.gl.deleteTexture(this.texBuffer)
+  }
 }
