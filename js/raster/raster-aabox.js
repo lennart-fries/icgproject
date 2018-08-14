@@ -15,9 +15,10 @@ export class RasterAabox {
    * @param {WebGLRenderingContext} gl - The canvas' context
    * @param {Vector} minPoint - The minimal x,y,z of the box
    * @param {Vector} maxPoint - The maximal x,y,z of the box
-   * @param  {string} texture  - The image filename for the texture, optional
+   * @param {Vector} color - the color of the box
+   * @param {string} texture  - The image filename for the texture, optional
    */
-  constructor (gl, minPoint, maxPoint, texture = '') {
+  constructor (gl, minPoint, maxPoint, color, texture = '') {
     this.gl = gl
     this.texture = texture
     const mi = minPoint
