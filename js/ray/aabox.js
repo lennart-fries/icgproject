@@ -7,13 +7,15 @@ import { Intersection } from './intersection.js'
 
 export class AABox {
   /**
-     * Creates an axis aligned box
-     * @param  {Vector} minPoint - The minimum Point
-     * @param  {Vector} maxPoint - The maximum Point
-     * @param  {Vector} color    - The colour of the cube
-     */
-  constructor (minPoint, maxPoint, color) {
+   * Creates an axis aligned box
+   * @param  {Vector} minPoint - The minimum Point
+   * @param  {Vector} maxPoint - The maximum Point
+   * @param  {Vector} color    - The colour of the cube
+   * @param  {string} texture  - The image filename for the texture, optional
+   */
+  constructor (minPoint, maxPoint, color, texture = '') {
     this.color = color
+    this.texture = texture
     /*
               Λ y
               |
@@ -53,11 +55,12 @@ export class AABox {
       [this.vertices[1], this.vertices[5], this.vertices[6], this.vertices[2]] // rechts
     ]
   }
+
   /**
-     * Calculates the intersection of the AAbox with the given ray
-     * @param  {Ray} ray      - The ray to intersect with
-     * @return {Intersection}   The intersection if there is one, null if there is none
-     */
+   * Calculates the intersection of the AAbox with the given ray
+   * @param  {Ray} ray      - The ray to intersect with
+   * @return {Intersection}   The intersection if there is one, null if there is none
+   */
 
   intersect (ray) {
     let inters = []
@@ -69,8 +72,8 @@ export class AABox {
       let t = (d - n.dot(ray.origin)) / n.dot(ray.direction)
       let x = ray.origin.add(ray.direction.mul(t))
       if ((c === 2 || (x.x > this.minPoint.x && x.x < this.maxPoint.x)) &&
-                (c === 1 || (x.y > this.minPoint.y && x.y < this.maxPoint.y)) &&
-                (c === 0 || (x.z > this.minPoint.z && x.z < this.maxPoint.z))) {
+        (c === 1 || (x.y > this.minPoint.y && x.y < this.maxPoint.y)) &&
+        (c === 0 || (x.z > this.minPoint.z && x.z < this.maxPoint.z))) {
         inters.push(new Intersection(t, x, n))
       }
     }, this)
