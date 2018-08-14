@@ -124,3 +124,53 @@ export class TextureBoxNode extends Node {
     visitor.visitTextureBoxNode(this)
   }
 }
+
+export class CameraNode extends Node {
+  /**
+   * Constructor
+   * @param eye
+   * @param center
+   * @param up
+   * @param fovy
+   * @param aspect
+   * @param near
+   * @param far
+   */
+  constructor (eye, center, up, fovy, aspect, near, far) {
+    super()
+    this.eye = eye
+    this.center = center
+    this.up = up
+    this.fovy = fovy
+    this.aspect = aspect
+    this.near = near
+    this.far = far
+  }
+
+  /**
+   * Accepts a visitor according to the visitor pattern
+   * @param  {Visitor} visitor - The visitor
+   */
+  accept (visitor) {
+    visitor.visitGroupNode(this)
+  }
+}
+
+export class LightNode extends Node {
+  /**
+   * Constructor
+   * @param mat
+   */
+  constructor (mat) {
+    super()
+    this.mat = mat
+  }
+
+  /**
+   * Accepts a visitor according to the visitor pattern
+   * @param  {Visitor} visitor - The visitor
+   */
+  accept (visitor) {
+    visitor.visitGroupNode(this)
+  }
+}
