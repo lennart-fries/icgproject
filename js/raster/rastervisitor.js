@@ -4,8 +4,7 @@
 
 import { Matrix } from '../primitives/matrix.js'
 import { RasterSphere } from './raster-sphere.js'
-import { RasterBox } from './raster-box.js'
-import { RasterTextureBox } from './raster-texture-box.js'
+import { RasterAabox } from './raster-aabox.js'
 
 export class RasterVisitor {
   /**
@@ -197,7 +196,7 @@ export class RasterSetupVisitor {
    * @param  {Node} node - The node to visit
    */
   visitAABoxNode (node) {
-    node.rasterbox = new RasterBox(this.gl, node.minPoint, node.maxPoint)
+    node.rasterbox = new RasterAabox(this.gl, node.minPoint, node.maxPoint)
   }
 
   /**
@@ -206,7 +205,7 @@ export class RasterSetupVisitor {
    * @param  {Node} node - The node to visit
    */
   visitTextureBoxNode (node) {
-    node.rastertexturebox = new RasterTextureBox(this.gl, node.minPoint, node.maxPoint, node.texture)
+    node.rastertexturebox = new RasterAabox(this.gl, node.minPoint, node.maxPoint, node.texture)
   }
 }
 
