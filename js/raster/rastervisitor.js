@@ -145,6 +145,22 @@ export class RasterVisitor {
 
     node.rastertexturebox.render(shader)
   }
+
+  /**
+   * Visits a camera box node
+   * @param  {Node} node - The node to visit
+   */
+  visitCameraNode (node) {
+
+  }
+
+  /**
+   * Visits a light box node
+   * @param  {Node} node - The node to visit
+   */
+  visitLightNode (node) {
+
+  }
 }
 
 /** Class representing a Visitor that sets up buffers for use by the RasterVisitor */
@@ -206,6 +222,22 @@ export class RasterSetupVisitor {
    */
   visitTextureBoxNode (node) {
     node.rastertexturebox = new RasterAabox(this.gl, node.minPoint, node.maxPoint, node.texture)
+  }
+
+  /**
+   * Visits a camera box node
+   * @param  {Node} node - The node to visit
+   */
+  visitCameraNode (node) {
+
+  }
+
+  /**
+   * Visits a light box node
+   * @param  {Node} node - The node to visit
+   */
+  visitLightNode (node) {
+
   }
 }
 

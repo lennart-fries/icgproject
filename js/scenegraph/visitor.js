@@ -1,5 +1,6 @@
 import { Matrix } from '../primitives/matrix.js'
 
+// NO FUNCTION YET, extending the ray and rastervisior breaks everything
 export class Visitor {
   /**
    * Creates a new Visitor

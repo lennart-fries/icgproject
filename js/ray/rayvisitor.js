@@ -12,22 +12,22 @@ import { phong } from './phong.js'
 
 export class RayVisitor {
   /**
-     * Creates a new RayVisitor
-     * @param {Object} context - The 2D context to render to
-     */
+   * Creates a new RayVisitor
+   * @param {Object} context - The 2D context to render to
+   */
   constructor (context) {
     this.context = context
     this.currentMatrix = Matrix.identity()
   }
 
   /**
-     * Renders the Scenegraph
-     * @param  {Node} rootNode                 - The root node of the Scenegraph
-     * @param  {Object} camera                 - The camera used
-     * @param  {Array.<Vector>} lightPositions - The light light positions
-     * @param {number} width   - The width of the canvas
-     * @param {number} height  - The height of the canvas
-     */
+   * Renders the Scenegraph
+   * @param  {Node} rootNode                 - The root node of the Scenegraph
+   * @param  {Object} camera                 - The camera used
+   * @param  {Array.<Vector>} lightPositions - The light light positions
+   * @param {number} width   - The width of the canvas
+   * @param {number} height  - The height of the canvas
+   */
   render (rootNode, camera, lightPositions, width, height) {
     this.imageData = this.context.getImageData(0, 0, width, height)
     // clear
@@ -72,9 +72,9 @@ export class RayVisitor {
   }
 
   /**
-     * Visits a group node
-     * @param  {Node} node - The node to visit
-     */
+   * Visits a group node
+   * @param  {Node} node - The node to visit
+   */
   visitGroupNode (node) {
     let oldMatrix = this.currentMatrix
     this.currentMatrix = oldMatrix.mul(node.matrix)
@@ -85,26 +85,42 @@ export class RayVisitor {
   }
 
   /**
-     * Visits a sphere node
-     * @param  {Node} node - The node to visit
-     */
+   * Visits a sphere node
+   * @param  {Node} node - The node to visit
+   */
   visitSphereNode (node) {
     let mat = this.currentMatrix
     this.objects.push(new Sphere(mat.mul(node.center), node.radius, node.color))
   }
 
   /**
-     * Visits an axis aligned box node
-     * @param  {Node} node - The node to visit
-     */
+   * Visits an axis aligned box node
+   * @param  {Node} node - The node to visit
+   */
   visitAABoxNode (node) {
     let mat = this.currentMatrix
     this.objects.push(new AABox(mat.mul(node.minPoint), mat.mul(node.maxPoint), node.color))
   }
 
   /**
-     * Visits a textured box node
-     * @param  {Node} node - The node to visit
-     */
+   * Visits a textured box node
+   * @param  {Node} node - The node to visit
+   */
   visitTextureBoxNode (node) { }
+
+  /**
+   * Visits a camera box node
+   * @param  {Node} node - The node to visit
+   */
+  visitCameraNode (node) {
+
+  }
+
+  /**
+   * Visits a light box node
+   * @param  {Node} node - The node to visit
+   */
+  visitLightNode (node) {
+
+  }
 }
