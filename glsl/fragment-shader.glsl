@@ -16,13 +16,17 @@ const float coefficientSpecular = 1.5;
 const float shininess = 4.0;
 
 void main(void) {
-    if(sampler != null) {
-        vec3 base_color = texture2D(sampler, v_texCoord).xyz;
+    vec4 raw_color;
+
+    bool a = false;
+    
+    if (a) {
+        raw_color = texture2D(sampler, v_texCoord);
     } else {
-        vec3 base_color = v_color.xyz;
+        raw_color = v_color;
     }
 
-    vec4 raw_color = v_color;
+    vec3 base_color = raw_color.xyz;
 	vec3 normal = normalize(v_normal);
 
 	//ambient
