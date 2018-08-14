@@ -81,38 +81,13 @@ export class AABoxNode extends Node {
    * @param  {Vector} minPoint - The minimum Point
    * @param  {Vector} maxPoint - The maximum Point
    * @param  {Vector} color    - The colour of the cube
+   * @param  {String} texture  - The texture of the cube, optional
    */
-  constructor (minPoint, maxPoint, color) {
+  constructor (minPoint, maxPoint, color, texture = '') {
     super()
     this.minPoint = minPoint
     this.maxPoint = maxPoint
     this.color = color
-  }
-
-  /**
-   * Accepts a visitor according to the visitor pattern
-   * @param  {Visitor} visitor - The visitor
-   */
-  accept (visitor) {
-    visitor.visitAABoxNode(this)
-  }
-}
-
-/**
- * Class representing a Textured Axis Aligned Box in the Scenegraph
- * @extends Node
- */
-export class TextureBoxNode extends Node {
-  /**
-   * Creates an axis aligned box textured box
-   * @param  {Vector} minPoint - The minimum Point
-   * @param  {Vector} maxPoint - The maximum Point
-   * @param  {string} texture  - The image filename for the texture
-   */
-  constructor (minPoint, maxPoint, texture) {
-    super()
-    this.minPoint = minPoint
-    this.maxPoint = maxPoint
     this.texture = texture
   }
 
@@ -121,7 +96,7 @@ export class TextureBoxNode extends Node {
    * @param  {Visitor} visitor - The visitor
    */
   accept (visitor) {
-    visitor.visitTextureBoxNode(this)
+    visitor.visitAABoxNode(this)
   }
 }
 
