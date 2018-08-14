@@ -11,7 +11,7 @@ export class Ray {
   }
 
   loop (sg, camera, lightPositions) {
-    this.visitor.render(sg, camera, lightPositions, this.width, this.height)
+    this.visitor.run(sg, camera, lightPositions, this.width, this.height)
   }
 
   updateResolution (width, height) {

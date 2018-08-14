@@ -1,18 +1,17 @@
 import { Matrix } from '../primitives/matrix.js'
 
-// NO FUNCTION YET, extending the ray and rastervisior breaks everything
 export class Visitor {
   /**
    * Creates a new Visitor
-   * @param {Object} context - The context to render to
+   * @param {WebGLRenderingContext} context                 - The 3D context to render to
    */
   constructor (context) {
-    this.context = context
+    this.gl = context
     this.currentMatrix = Matrix.identity()
   }
 
-  render (rootNode, camera, lightPositions, width = 0, height = 0) {
-
+  run (rootNode) {
+    rootNode.accept(this)
   }
 
   /**
@@ -20,38 +19,51 @@ export class Visitor {
    * @param  {Node} node - The node to visit
    */
   visitGroupNode (node) {
+    let oldMatrix = this.currentMatrix
+    this.currentMatrix = oldMatrix.mul(node.matrix)
+    for (let child of node.children) {
+      child.accept(this)
+    }
+    this.currentMatrix = oldMatrix
+  }
 
+  /**
+   * Visits a group node for Setup or Teardown
+   * @param  {Node} node - The node to visit
+   */
+  visitGroupNode2 (node) {
+    for (let child of node.children) {
+      child.accept(this)
+    }
   }
 
   /**
    * Visits a sphere box node
    * @param  {Node} node - The node to visit
    */
-  visitSphereNode (node) {
-
-  }
+  visitSphereNode (node) { }
 
   /**
    * Visits a axis aligned box node
    * @param  {Node} node - The node to visit
    */
-  visitAABoxNode (node) {
+  visitAABoxNode (node) { }
 
-  }
+  /**
+   * Visits a textured box node
+   * @param  {Node} node - The node to visit
+   */
+  visitTextureBoxNode (node) { }
 
   /**
    * Visits a camera box node
    * @param  {Node} node - The node to visit
    */
-  visitCameraNode (node) {
-
-  }
+  visitCameraNode (node) { }
 
   /**
    * Visits a light box node
    * @param  {Node} node - The node to visit
    */
-  visitLightNode (node) {
-
-  }
+  visitLightNode (node) { }
 }

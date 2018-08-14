@@ -5,7 +5,7 @@ export class Raster {
   constructor (canvas, sg) {
     this.gl = canvas.getContext('webgl')
     this.setupVisitor = new RasterSetupVisitor(this.gl)
-    this.setupVisitor.setup(sg)
+    this.setupVisitor.run(sg)
     this.visitor = new RasterVisitor(this.gl)
     this.sg = sg
   }
@@ -29,7 +29,7 @@ export class Raster {
 
   loop (sg, camera, lightPositions) {
     this.lightPositions = lightPositions
-    this.visitor.render(sg, camera)
+    this.visitor.run(sg, camera)
   }
 
   updateResolution (width, height) {

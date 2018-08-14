@@ -5,36 +5,23 @@
 import { Matrix } from '../primitives/matrix.js'
 import { RasterSphere } from './raster-sphere.js'
 import { RasterAabox } from './raster-aabox.js'
+import { Visitor } from '../scenegraph/visitor.js'
+import { CameraNode, LightNode } from '../scenegraph/nodes.js'
 
-export class RasterVisitor {
-  /**
-   * Creates a new RasterVisitor
-   * @param {WebGLRenderingContext} context                 - The 3D context to render to
-   * @param {string} vertexShaderId          - The id of the vertex shader script node
-   * @param {string} fragmentShaderId        - The id of the fragment shader script node
-   * @param {string} textureVertexShaderId   - The id of the texture vertex shader script node
-   * @param {string} textureFragmentShaderId - The id of the texture fragment shader script node
-   */
-  constructor (context) {
-    this.gl = context
-
-    this.currentMatrix = Matrix.identity()
-  }
-
+export class RasterVisitor extends Visitor {
   /**
    * Renders the Scenegraph
    * @param  {Node} rootNode                 - The root node of the Scenegraph
    * @param  {Object} camera                 - The camera used
-   * @param  {Array.<Vector>} lightPositions - The light light positions
    */
-  render (rootNode, camera, lightPositions) {
+  run (rootNode, camera) {
     // clear
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT)
 
     this.setupCamera(camera)
 
     // traverse and render
-    rootNode.accept(this)
+    super.run(rootNode)
   }
 
   /**
@@ -61,40 +48,11 @@ export class RasterVisitor {
   }
 
   /**
-   * Visits a group node
-   * @param  {Node} node - The node to visit
-   */
-  visitGroupNode (node) {
-    let oldMatrix = this.currentMatrix
-    this.currentMatrix = oldMatrix.mul(node.matrix)
-    for (let child of node.children) {
-      child.accept(this)
-    }
-    this.currentMatrix = oldMatrix
-  }
-
-  /**
    * Visits a sphere node
    * @param  {Node} node - The node to visit
    */
   visitSphereNode (node) {
-    let shader = this.shader
-    shader.use()
-
-    let mat = this.currentMatrix
-    shader.getUniformMatrix('M').set(mat)
-
-    let V = shader.getUniformMatrix('V')
-    if (V && this.lookat) {
-      V.set(this.lookat)
-    }
-    let P = shader.getUniformMatrix('P')
-    if (P && this.perspective) {
-      P.set(this.perspective)
-    }
-    let normal = this.lookat.mul(mat).invert().transpose()
-    shader.getUniformMatrix('N').set(normal)
-
+    let shader = this.calculateCurrentShader()
     node.rastersphere.render(shader)
   }
 
@@ -103,6 +61,11 @@ export class RasterVisitor {
    * @param  {Node} node - The node to visit
    */
   visitAABoxNode (node) {
+    let shader = this.calculateCurrentShader()
+    node.rasterbox.render(shader)
+  }
+
+  calculateCurrentShader () {
     let shader = this.shader
     shader.use()
 
@@ -119,8 +82,7 @@ export class RasterVisitor {
     }
     let normal = this.lookat.mul(mat).invert().transpose()
     shader.getUniformMatrix('N').set(normal)
-
-    node.rasterbox.render(shader)
+    return shader
   }
 
   /**
@@ -145,39 +107,15 @@ export class RasterVisitor {
 
     node.rastertexturebox.render(shader)
   }
-
-  /**
-   * Visits a camera box node
-   * @param  {Node} node - The node to visit
-   */
-  visitCameraNode (node) {
-
-  }
-
-  /**
-   * Visits a light box node
-   * @param  {Node} node - The node to visit
-   */
-  visitLightNode (node) {
-
-  }
 }
 
 /** Class representing a Visitor that sets up buffers for use by the RasterVisitor */
-export class RasterSetupVisitor {
-  /**
-   * Creates a new RasterSetupVisitor
-   * @param {Object} context - The 3D context in which to create buffers
-   */
-  constructor (context) {
-    this.gl = context
-  }
-
+export class RasterSetupVisitor extends Visitor {
   /**
    * Sets up all needed buffers
    * @param  {Node} rootNode - The root node of the Scenegraph
    */
-  setup (rootNode) {
+  run (rootNode) {
     // Clear to white, fully opaque
     this.gl.clearColor(1.0, 1.0, 1.0, 1.0)
     // Clear everything
@@ -186,7 +124,7 @@ export class RasterSetupVisitor {
     this.gl.enable(this.gl.DEPTH_TEST)
     this.gl.depthFunc(this.gl.LEQUAL)
 
-    rootNode.accept(this)
+    super.run(rootNode)
   }
 
   /**
@@ -194,9 +132,7 @@ export class RasterSetupVisitor {
    * @param  {Node} node - The node to visit
    */
   visitGroupNode (node) {
-    for (let child of node.children) {
-      child.accept(this)
-    }
+    super.visitGroupNode2(node)
   }
 
   /**
@@ -225,46 +161,60 @@ export class RasterSetupVisitor {
   }
 
   /**
-   * Visits a camera box node
+   * Visits a camera node
    * @param  {Node} node - The node to visit
    */
   visitCameraNode (node) {
-
+    node.camera = new CameraNode(node.eye, node.center, node.up, node.fovy, node.aspect, node.near, node.far)
   }
 
   /**
-   * Visits a light box node
+   * Visits a light node
    * @param  {Node} node - The node to visit
    */
   visitLightNode (node) {
-
+    node.light = new LightNode(this.mat)
   }
 }
 
-export class RasterTeardownVisitor {
-  constructor (context) {
-    this.gl = context
-  }
-
-  run (rootNode) {
-    rootNode.accept(this)
-  }
-
+export class RasterTeardownVisitor extends Visitor {
   visitGroupNode (node) {
-    for (let child of node.children) {
-      child.accept(this)
-    }
+    super.visitGroupNode2(node)
   }
 
+  /**
+   * Visits a light node
+   * @param  {Node} node - The node to visit
+   */
   visitSphereNode (node) {
     node.rastersphere.teardown()
   }
 
+  /**
+   * Visits a light node
+   * @param  {Node} node - The node to visit
+   */
   visitAABoxNode (node) {
     node.rasterbox.teardown()
   }
 
   visitTextureBoxNode (node) {
     node.rastertexturebox.teardown()
+  }
+
+  /**
+   * Visits a light node
+   * @param  {Node} node - The node to visit
+   */
+  visitLightNode (node) {
+    node.light.teardown()
+  }
+
+  /**
+   * Visits a light node
+   * @param  {Node} node - The node to visit
+   */
+  visitCameraNode (node) {
+    node.camera.teardown()
   }
 }
