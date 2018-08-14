@@ -148,16 +148,7 @@ export class RasterSetupVisitor extends Visitor {
    * @param  {Node} node - The node to visit
    */
   visitAABoxNode (node) {
-    node.rasterbox = new RasterAabox(this.gl, node.minPoint, node.maxPoint)
-  }
-
-  /**
-   * Visits a textured box node. Loads the texture
-   * and creates a uv coordinate buffer
-   * @param  {Node} node - The node to visit
-   */
-  visitTextureBoxNode (node) {
-    node.rastertexturebox = new RasterAabox(this.gl, node.minPoint, node.maxPoint, node.texture)
+    node.rasterbox = new RasterAabox(this.gl, node.minPoint, node.maxPoint, node.color, node.texture)
   }
 
   /**
