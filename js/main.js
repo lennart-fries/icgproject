@@ -3,7 +3,7 @@
 
 import { Matrix } from './primitives/matrix.js'
 import { Vector } from './primitives/vector.js'
-import { GroupNode, SphereNode, /* TextureBoxNode, */AABoxNode } from './scenegraph/nodes.js'
+import { GroupNode, SphereNode, AABoxNode } from './scenegraph/nodes.js'
 import { RotationNode } from './scenegraph/animation-nodes.js'
 import { renderer, renderResolution } from './ui.js'
 
