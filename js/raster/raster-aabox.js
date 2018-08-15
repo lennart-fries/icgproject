@@ -208,6 +208,7 @@ export class RasterAabox {
       this.gl.activeTexture(this.gl.TEXTURE0)
       this.gl.bindTexture(this.gl.TEXTURE_2D, this.texBuffer)
       shader.getUniformInt('sampler').set(0)
+      shader.getUniformInt('textured').set(1)
       this.gl.drawArrays(this.gl.TRIANGLES, 0, this.elements)
 
       this.gl.disableVertexAttribArray(positionLocation)

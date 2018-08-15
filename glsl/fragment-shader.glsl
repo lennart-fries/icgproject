@@ -2,6 +2,7 @@ precision mediump float;
 
 uniform sampler2D sampler;
 varying vec2 v_texCoord;
+uniform int textured;
 
 varying vec4 v_color;
 varying vec3 v_normal;
@@ -20,7 +21,7 @@ void main(void) {
 
     bool a = false;
     
-    if (a) {
+    if (textured == 1) {
         raw_color = texture2D(sampler, v_texCoord);
     } else {
         raw_color = v_color;
