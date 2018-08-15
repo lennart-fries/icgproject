@@ -189,6 +189,8 @@ export class RasterAabox {
       this.gl.enableVertexAttribArray(normalLocation)
       this.gl.vertexAttribPointer(normalLocation, 3, this.gl.FLOAT, false, 0, 0)
 
+      shader.getUniformInt('textured').set(0)
+
       this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer)
       this.gl.drawElements(this.gl.TRIANGLES, this.elements, this.gl.UNSIGNED_SHORT, 0)
 
