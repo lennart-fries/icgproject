@@ -38,20 +38,14 @@ const colors = [
   0.0, 0.0, 1.0, 1.0 // blau
 ]
 
-const cubeTexture = new AABoxNode(
-  new Vector(-1, -1, -1, 1),
-  new Vector(1, 1, 1, 1),
-  colors,
-  'assets/diamond_ore.png'
-)
-
-const cubeColor = new AABoxNode(
+const cube = new AABoxNode(
   new Vector(-1, -1, -1, 1),
   new Vector(1, 1, 1, 1),
   colors
+  // 'assets/diamond_ore.png'
 )
 
-gn2.add(cubeColor)
+gn2.add(cube)
 
 const lightPositions = [
   new Vector(1, 1, -1, 1)
