@@ -23,95 +23,67 @@ export class RasterAabox {
     this.texture = texture
     const mi = minPoint
     const ma = maxPoint
-    if (this.texture === '') { // normal box
-      let vertices = [
-        mi.x, mi.y, ma.z,
-        ma.x, mi.y, ma.z,
-        ma.x, ma.y, ma.z,
-        mi.x, ma.y, ma.z,
-        ma.x, mi.y, mi.z,
-        mi.x, mi.y, mi.z,
-        mi.x, ma.y, mi.z,
-        ma.x, ma.y, mi.z
-      ]
-      let indices = [ // triangles
-        // front
-        0, 1, 2, 2, 3, 0,
-        // back
-        4, 5, 6, 6, 7, 4,
-        // right
-        1, 4, 7, 7, 2, 1,
-        // top
-        3, 2, 7, 7, 6, 3,
-        // left
-        5, 0, 3, 3, 6, 5,
-        // bottom
-        5, 4, 1, 1, 0, 5
-      ]
-      let normals = [
-        // front
-        0.0, 0.0, 1.0,
-        // back
-        0.0, 0.0, -1.0,
-        // right
-        1.0, 0.0, 0.0,
-        // top
-        0.0, 1.0, 0.0,
-        // left
-        -1.0, 0.0, 0.0,
-        // bottom
-        0.0, -1.0, 0.0
-      ]
+    let vertices = [ //8x cube corners
+      mi.x, mi.y, ma.z,
+      ma.x, mi.y, ma.z,
+      ma.x, ma.y, ma.z,
+      mi.x, ma.y, ma.z,
+      ma.x, mi.y, mi.z,
+      mi.x, mi.y, mi.z,
+      mi.x, ma.y, mi.z,
+      ma.x, ma.y, mi.z
+    ]
+    let indices = [ // triangles, two per cube side
+      // front
+      0, 1, 2, 2, 3, 0,
+      // back
+      4, 5, 6, 6, 7, 4,
+      // right
+      1, 4, 7, 7, 2, 1,
+      // top
+      3, 2, 7, 7, 6, 3,
+      // left
+      5, 0, 3, 3, 6, 5,
+      // bottom
+      5, 4, 1, 1, 0, 5
+    ]
+    let normals = [ // Normals for each cube side
+      // front
+      0.0, 0.0, 1.0,
+      // back
+      0.0, 0.0, -1.0,
+      // right
+      1.0, 0.0, 0.0,
+      // top
+      0.0, 1.0, 0.0,
+      // left
+      -1.0, 0.0, 0.0,
+      // bottom
+      0.0, -1.0, 0.0
+    ]
 
-      const vertexBuffer = gl.createBuffer()
-      gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer)
-      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW)
-      this.vertexBuffer = vertexBuffer
+    const vertexBuffer = gl.createBuffer()
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer)
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW)
+    this.vertexBuffer = vertexBuffer
 
-      const indexBuffer = gl.createBuffer()
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer)
-      gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW)
-      this.indexBuffer = indexBuffer
-      this.elements = indices.length
+    const indexBuffer = gl.createBuffer()
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer)
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW)
+    this.indexBuffer = indexBuffer
+    this.elements = indices.length
 
-      const colorBuffer = gl.createBuffer()
-      gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer)
-      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(color), gl.STATIC_DRAW)
-      this.colorBuffer = colorBuffer
+    const colorBuffer = gl.createBuffer()
+    gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer)
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(color), gl.STATIC_DRAW)
+    this.colorBuffer = colorBuffer
 
-      const normalBuffer = gl.createBuffer()
-      gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer)
-      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW)
-      this.normalBuffer = normalBuffer
-    } else {
-      // texture box
-      let vertices = [
-        //  front
-        mi.x, mi.y, ma.z, ma.x, mi.y, ma.z, ma.x, ma.y, ma.z,
-        ma.x, ma.y, ma.z, mi.x, ma.y, ma.z, mi.x, mi.y, ma.z,
-        //  back
-        ma.x, mi.y, mi.z, mi.x, mi.y, mi.z, mi.x, ma.y, mi.z,
-        mi.x, ma.y, mi.z, ma.x, ma.y, mi.z, ma.x, mi.y, mi.z,
-        //  right
-        ma.x, mi.y, ma.z, ma.x, mi.y, mi.z, ma.x, ma.y, mi.z,
-        ma.x, ma.y, mi.z, ma.x, ma.y, ma.z, ma.x, mi.y, ma.z,
-        //  top
-        mi.x, ma.y, ma.z, ma.x, ma.y, ma.z, ma.x, ma.y, mi.z,
-        ma.x, ma.y, mi.z, mi.x, ma.y, mi.z, mi.x, ma.y, ma.z,
-        //  left
-        mi.x, mi.y, mi.z, mi.x, mi.y, ma.z, mi.x, ma.y, ma.z,
-        mi.x, ma.y, ma.z, mi.x, ma.y, mi.z, mi.x, mi.y, mi.z,
-        //  bottom
-        mi.x, mi.y, mi.z, ma.x, mi.y, mi.z, ma.x, mi.y, ma.z,
-        ma.x, mi.y, ma.z, mi.x, mi.y, ma.z, mi.x, mi.y, mi.z
-      ]
+    const normalBuffer = gl.createBuffer()
+    gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer)
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW)
+    this.normalBuffer = normalBuffer
 
-      const vertexBuffer = gl.createBuffer()
-      gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer)
-      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW)
-      this.vertexBuffer = vertexBuffer
-      this.elements = vertices.length / 3
-
+    if (texture !== '') {
       let cubeTexture = gl.createTexture()
       let cubeImage = new Image()
       cubeImage.onload = function () {
@@ -126,7 +98,7 @@ export class RasterAabox {
       cubeImage.src = texture
       this.texBuffer = cubeTexture
 
-      let uv = [
+      let uv = [ // was ist uv
         //  front
         0, 0, 1, 0, 1, 1,
         1, 1, 0, 1, 0, 0,
@@ -180,23 +152,22 @@ export class RasterAabox {
     this.gl.enableVertexAttribArray(surfaceLocation)
     this.gl.vertexAttribPointer(surfaceLocation, counter, this.gl.FLOAT, false, 0, 0)
 
-    if (this.texture === '') { // color
-      this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.normalBuffer)
-      const normalLocation = shader.getAttributeLocation('a_normal')
-      this.gl.enableVertexAttribArray(normalLocation)
-      this.gl.vertexAttribPointer(normalLocation, 3, this.gl.FLOAT, false, 0, 0)
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.normalBuffer)
+    const normalLocation = shader.getAttributeLocation('a_normal')
+    this.gl.enableVertexAttribArray(normalLocation)
+    this.gl.vertexAttribPointer(normalLocation, 3, this.gl.FLOAT, false, 0, 0)
 
+    if (this.texture === '') {
       shader.getUniformInt('textured').set(0)
-
-      this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer)
-      this.gl.drawElements(this.gl.TRIANGLES, this.elements, this.gl.UNSIGNED_SHORT, 0)
-    } else { // texture
+    } else {
       this.gl.activeTexture(this.gl.TEXTURE0)
       this.gl.bindTexture(this.gl.TEXTURE_2D, this.texBuffer)
       shader.getUniformInt('sampler').set(0)
       shader.getUniformInt('textured').set(1)
-      this.gl.drawArrays(this.gl.TRIANGLES, 0, this.elements)
     }
+
+    this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer)
+    this.gl.drawElements(this.gl.TRIANGLES, this.elements, this.gl.UNSIGNED_SHORT, 0)
 
     this.gl.disableVertexAttribArray(positionLocation)
     this.gl.disableVertexAttribArray(attributeLocation)
@@ -209,7 +180,6 @@ export class RasterAabox {
       this.gl.deleteBuffer(this.normalBuffer)
       this.gl.deleteBuffer(this.indexBuffer)
     } else {
-      this.gl.deleteBuffer(this.vertexBuffer)
       this.gl.deleteBuffer(this.texCoords)
       this.gl.deleteTexture(this.texBuffer)
     }
