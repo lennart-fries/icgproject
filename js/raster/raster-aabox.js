@@ -137,18 +137,18 @@ export class RasterAabox {
     this.gl.enableVertexAttribArray(positionLocation)
     this.gl.vertexAttribPointer(positionLocation, 3, this.gl.FLOAT, false, 0, 0)
 
-    let attributeLocation, genLocation, counter
+    let attributeName, genLocation, counter
     if (this.texture === '') { // color
       genLocation = this.colorBuffer
-      attributeLocation = 'a_color'
+      attributeName = 'a_color'
       counter = 4
     } else { // texture
       genLocation = this.texCoords
-      attributeLocation = 'a_texCoord'
+      attributeName = 'a_texCoord'
       counter = 3
     }
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, genLocation)
-    const surfaceLocation = shader.getAttributeLocation(attributeLocation) // color or texture
+    const surfaceLocation = shader.getAttributeLocation(attributeName) // color or texture
     this.gl.enableVertexAttribArray(surfaceLocation)
     this.gl.vertexAttribPointer(surfaceLocation, counter, this.gl.FLOAT, false, 0, 0)
 
@@ -170,15 +170,16 @@ export class RasterAabox {
     this.gl.drawElements(this.gl.TRIANGLES, this.elements, this.gl.UNSIGNED_SHORT, 0)
 
     this.gl.disableVertexAttribArray(positionLocation)
-    this.gl.disableVertexAttribArray(attributeLocation)
+    this.gl.disableVertexAttribArray(surfaceLocation)
+    this.gl.disableVertexAttribArray(normalLocation)
   }
 
   teardown () {
     this.gl.deleteBuffer(this.vertexBuffer)
+    this.gl.deleteBuffer(this.normalBuffer)
+    this.gl.deleteBuffer(this.indexBuffer)
     if (this.texture === '') {
       this.gl.deleteBuffer(this.colorBuffer)
-      this.gl.deleteBuffer(this.normalBuffer)
-      this.gl.deleteBuffer(this.indexBuffer)
     } else {
       this.gl.deleteBuffer(this.texCoords)
       this.gl.deleteTexture(this.texBuffer)

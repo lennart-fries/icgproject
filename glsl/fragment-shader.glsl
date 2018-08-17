@@ -28,9 +28,9 @@ void main(void) {
     }
 
     vec3 base_color = raw_color.xyz;
-	vec3 normal = normalize(v_normal);
+    vec3 normal = normalize(v_normal);
 
-	//ambient
+    //ambient
     vec3 color = coefficientAmbient* base_color;
 
     // diffuse
@@ -39,13 +39,13 @@ void main(void) {
     vec3 diffuseColor = lambertian * base_color;
     color +=  diffuseColor;
 
-	//specular
-	vec3 viewDir = normalize(-v_position2.xyz);
-	vec3 reflectDir = reflect(-lightDir,normal);
-	float specAngle = max(dot(reflectDir, viewDir),0.0);
+    //specular
+    vec3 viewDir = normalize(-v_position2.xyz);
+    vec3 reflectDir = reflect(-lightDir,normal);
+    float specAngle = max(dot(reflectDir, viewDir),0.0);
     float specular = coefficientSpecular * pow(specAngle, shininess);
     vec3 specularVector =  specular * base_color;
-	color += specularVector;
+    color += specularVector;
 
-  gl_FragColor = vec4(color, raw_color.w);
+    gl_FragColor = vec4(color, raw_color.w);
 }
