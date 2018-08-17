@@ -1,3 +1,4 @@
+/* global Image */
 /**
  * A class creating buffers for an axis aligned box to render it with WebGL
  */
@@ -23,7 +24,7 @@ export class RasterAabox {
     this.texture = texture
     const mi = minPoint
     const ma = maxPoint
-    let vertices = [ //8x cube corners
+    let vertices = [ // 8x cube corners
       mi.x, mi.y, ma.z,
       ma.x, mi.y, ma.z,
       ma.x, ma.y, ma.z,
@@ -73,17 +74,17 @@ export class RasterAabox {
     this.indexBuffer = indexBuffer
     this.elements = indices.length
 
-    const colorBuffer = gl.createBuffer()
-    gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer)
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(color), gl.STATIC_DRAW)
-    this.colorBuffer = colorBuffer
-
     const normalBuffer = gl.createBuffer()
     gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer)
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW)
     this.normalBuffer = normalBuffer
 
-    if (texture !== '') {
+    /* if (texture === '') {
+      const colorBuffer = gl.createBuffer()
+      gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer)
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(color), gl.STATIC_DRAW)
+      this.colorBuffer = colorBuffer
+    } else {
       let cubeTexture = gl.createTexture()
       let cubeImage = new Image()
       cubeImage.onload = function () {
@@ -124,7 +125,7 @@ export class RasterAabox {
       gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(uv),
         gl.STATIC_DRAW)
       this.texCoords = uvBuffer
-    }
+    } */
   }
 
   /**
@@ -137,7 +138,7 @@ export class RasterAabox {
     this.gl.enableVertexAttribArray(positionLocation)
     this.gl.vertexAttribPointer(positionLocation, 3, this.gl.FLOAT, false, 0, 0)
 
-    let attributeName, genLocation, counter
+    /* let attributeName, genLocation, counter
     if (this.texture === '') { // color
       genLocation = this.colorBuffer
       attributeName = 'a_color'
@@ -151,12 +152,12 @@ export class RasterAabox {
     const surfaceLocation = shader.getAttributeLocation(attributeName) // color or texture
     this.gl.enableVertexAttribArray(surfaceLocation)
     this.gl.vertexAttribPointer(surfaceLocation, counter, this.gl.FLOAT, false, 0, 0)
-
+    */
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.normalBuffer)
     const normalLocation = shader.getAttributeLocation('a_normal')
     this.gl.enableVertexAttribArray(normalLocation)
     this.gl.vertexAttribPointer(normalLocation, 3, this.gl.FLOAT, false, 0, 0)
-
+    /*
     if (this.texture === '') {
       shader.getUniformInt('textured').set(0)
     } else {
@@ -165,12 +166,12 @@ export class RasterAabox {
       shader.getUniformInt('sampler').set(0)
       shader.getUniformInt('textured').set(1)
     }
-
+    */
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer)
     this.gl.drawElements(this.gl.TRIANGLES, this.elements, this.gl.UNSIGNED_SHORT, 0)
 
     this.gl.disableVertexAttribArray(positionLocation)
-    this.gl.disableVertexAttribArray(surfaceLocation)
+    // this.gl.disableVertexAttribArray(surfaceLocation)
     this.gl.disableVertexAttribArray(normalLocation)
   }
 
@@ -178,11 +179,11 @@ export class RasterAabox {
     this.gl.deleteBuffer(this.vertexBuffer)
     this.gl.deleteBuffer(this.normalBuffer)
     this.gl.deleteBuffer(this.indexBuffer)
-    if (this.texture === '') {
+    /* if (this.texture === '') {
       this.gl.deleteBuffer(this.colorBuffer)
     } else {
       this.gl.deleteBuffer(this.texCoords)
       this.gl.deleteTexture(this.texBuffer)
-    }
+    } */
   }
 }

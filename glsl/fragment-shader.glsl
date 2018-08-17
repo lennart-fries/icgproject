@@ -17,9 +17,8 @@ const float coefficientSpecular = 1.5;
 const float shininess = 4.0;
 
 void main(void) {
+    /*
     vec4 raw_color;
-
-    bool a = false;
     
     if (textured == 1) {
         raw_color = texture2D(sampler, v_texCoord);
@@ -48,4 +47,6 @@ void main(void) {
     color += specularVector;
 
     gl_FragColor = vec4(color, raw_color.w);
+    */
+    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
 }
