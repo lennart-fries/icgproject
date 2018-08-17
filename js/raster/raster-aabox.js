@@ -141,6 +141,7 @@ export class RasterAabox {
       attributeName = 'a_texCoord'
       counter = 2
     }
+
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.surfaceBuffer)
     const surfaceLocation = shader.getAttributeLocation(attributeName) // color or texture
     this.gl.enableVertexAttribArray(surfaceLocation)
