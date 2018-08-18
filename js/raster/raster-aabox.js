@@ -48,19 +48,19 @@ export class RasterAabox {
       // bottom
       5, 4, 1, 1, 0, 5
     ]
-    const normals = [ // Normals for each cube side
+    const normals = [ // Normals for each vertex
       // front
-      0.0, 0.0, 1.0,
+      0.0, 0.0, 1.0, 0.0, 0.0, 1.0,
       // back
-      0.0, 0.0, -1.0,
+      0.0, 0.0, -1.0, 0.0, 0.0, -1.0,
       // right
-      1.0, 0.0, 0.0,
+      1.0, 0.0, 0.0, 1.0, 0.0, 0.0,
       // top
-      0.0, 1.0, 0.0,
+      0.0, 1.0, 0.0, 0.0, 1.0, 0.0,
       // left
-      -1.0, 0.0, 0.0,
+      -1.0, 0.0, 0.0, -1.0, 0.0, 0.0,
       // bottom
-      0.0, -1.0, 0.0
+      0.0, -1.0, 0.0, 0.0, -1.0, 0.0
     ]
 
     const uv = [ // Texture coordinates per index
@@ -130,8 +130,8 @@ export class RasterAabox {
   render (shader) {
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertexBuffer)
     const positionLocation = shader.getAttributeLocation('a_position')
-    this.gl.enableVertexAttribArray(positionLocation)
     this.gl.vertexAttribPointer(positionLocation, 3, this.gl.FLOAT, false, 0, 0)
+    this.gl.enableVertexAttribArray(positionLocation)
 
     let attributeName, counter
     if (this.texture === '') { // color
@@ -142,15 +142,15 @@ export class RasterAabox {
       counter = 2
     }
 
-    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.surfaceBuffer)
-    const surfaceLocation = shader.getAttributeLocation(attributeName) // color or texture
-    this.gl.enableVertexAttribArray(surfaceLocation)
-    this.gl.vertexAttribPointer(surfaceLocation, counter, this.gl.FLOAT, false, 0, 0)
-
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.normalBuffer)
     const normalLocation = shader.getAttributeLocation('a_normal')
-    this.gl.enableVertexAttribArray(normalLocation)
     this.gl.vertexAttribPointer(normalLocation, 3, this.gl.FLOAT, false, 0, 0)
+    this.gl.enableVertexAttribArray(normalLocation)
+
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.surfaceBuffer)
+    const surfaceLocation = shader.getAttributeLocation(attributeName) // color or texture
+    this.gl.vertexAttribPointer(surfaceLocation, counter, this.gl.FLOAT, false, 0, 0)
+    this.gl.enableVertexAttribArray(surfaceLocation)
 
     if (this.texture === '') {
       shader.getUniformInt('textured').set(0)

@@ -41,8 +41,8 @@ const colors = [
 const cube = new AABoxNode(
   new Vector(-1, -1, -1, 1),
   new Vector(1, 1, 1, 1),
-  colors
-  // 'assets/diamond_ore.png'
+  colors/* ,
+  'assets/diamond_ore.png' */
 )
 
 gn2.add(cube)

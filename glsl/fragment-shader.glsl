@@ -1,8 +1,8 @@
 precision mediump float;
 
-varying vec2 v_texCoord;
-varying vec4 v_color;
 varying vec3 v_normal;
+varying vec4 v_color;
+varying vec2 v_texCoord;
 varying vec4 v_position2;
 
 uniform sampler2D sampler;
@@ -25,16 +25,16 @@ void main(void) {
         raw_color = v_color;
     }
 
-    /*
     vec3 base_color = raw_color.xyz;
-    vec3 normal = normalize(v_normal);
 
     //ambient
-    vec3 color = coefficientAmbient* base_color;
+    vec3 color = coefficientAmbient * base_color;
+
+    vec3 normal = normalize(v_normal);
+    vec3 lightDir = normalize(lightPos - v_position2.xyz);
 
     // diffuse
-    vec3 lightDir = normalize(lightPos - v_position2.xyz);
-    float lambertian = coefficientDiffuse * max(dot(lightDir, normal),0.0);
+    float lambertian = coefficientDiffuse * max(dot(lightDir, normal), 0.0);
     vec3 diffuseColor = lambertian * base_color;
     color += diffuseColor;
 
@@ -47,6 +47,4 @@ void main(void) {
     color += specularVector;
 
     gl_FragColor = vec4(color, raw_color.w);
-    */
-    gl_FragColor = raw_color;
 }
