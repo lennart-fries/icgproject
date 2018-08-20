@@ -116,13 +116,12 @@ export class Matrix {
    * @return {Matrix}          The resulting matrix
    */
   static perspective (fovy, aspect, near, far) {
-    //calculates frustum from fov and near pane
-    let top = near * Math.tan(fovy / 2.0 * (Math.PI / 180));
-    let bottom = -top;
-    let right = top * aspect;
-    let left = -right;
-
-    return this.frustum(left, right, bottom, top, near, far);
+    // calculates frustum from fov and near pane
+    let top = near * Math.tan(fovy / 2.0 * (Math.PI / 180))
+    let bottom = -top
+    let right = top * aspect
+    let left = -right
+    return this.frustum(left, right, bottom, top, near, far)
   }
 
   /**
