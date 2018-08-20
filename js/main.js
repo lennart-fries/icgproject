@@ -48,7 +48,7 @@ const cube = new AABoxNode(
 gn2.add(cube)
 
 const lightPositions = [
-  new Vector(1, 1, -1, 1)
+  new Vector(0.2, -1, -1, 1)
 ]
 
 let camera = {

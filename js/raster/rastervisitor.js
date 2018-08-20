@@ -13,11 +13,13 @@ export class RasterVisitor extends Visitor {
    * @param  {Node} rootNode                 - The root node of the Scenegraph
    * @param  {Object} camera                 - The camera used
    */
-  run (rootNode, camera) {
+  run (rootNode, camera, lightPositions) {
     // clear
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT)
 
     this.setupCamera(camera)
+
+    this.lightPositions = lightPositions
 
     // traverse and render
     super.run(rootNode)
@@ -63,6 +65,9 @@ export class RasterVisitor extends Visitor {
     }
     let normal = this.lookat.mul(mat).invert().transpose()
     shader.getUniformMatrix('N').set(normal)
+
+    shader.getUniformArray('lightPositions').set(this.lightPositions)
+
     return shader
   }
   /**

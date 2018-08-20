@@ -127,6 +127,11 @@ export class Shader {
       this.gl.getUniformLocation(this.shaderProgram, name)
     )
   }
+
+  getUniformArray (name) {
+    return new UniformArray(this.gl,
+      this.gl.getUniformLocation(this.shaderProgram, name))
+  }
 }
 
 /**
@@ -207,5 +212,23 @@ class UniformInt {
    */
   set (value) {
     this.gl.uniform1i(this.position, value)
+  }
+}
+
+class UniformArray {
+  constructor (gl, position) {
+    this.gl = gl
+    this.position = position
+  }
+
+  set (value) {
+    let array = []
+    for (let i = 0; i < value.length; i++) {
+      array[i * 4] = value[i].x
+      array[i * 4 + 1] = value[i].y
+      array[i * 4 + 2] = value[i].z
+      array[i * 4 + 3] = value[i].w
+    }
+    this.gl.uniform4fv(this.position, array)
   }
 }
