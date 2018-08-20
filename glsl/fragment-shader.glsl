@@ -7,6 +7,9 @@ varying vec4 v_position2;
 
 uniform sampler2D sampler;
 uniform int textured;
+uniform vec3 lightPositions[10];
+uniform float lightPosCount;
+
 
 const vec3 lightPos = vec3(0.2,-1.0,-1.0);
 const vec3 cameraPos = vec3(0.0,0.0,0.0);
@@ -18,7 +21,8 @@ const float shininess = 4.0;
 
 void main(void) {
     vec4 raw_color;
-    
+
+
     if (textured == 1) {
         raw_color = texture2D(sampler, v_texCoord);
     } else {
@@ -32,17 +36,31 @@ void main(void) {
 
     vec3 normal = normalize(v_normal);
     vec3 lightDir = normalize(lightPos - v_position2.xyz);
+    vec3 multipleLightDir;
+
+    for(int i = 0; i < int(lightPosCount); ++i) {
+        multipleLightDir += normalize(lightPositions[i] - v_position2.xyz);
+    }
 
     // diffuse
-    float lambertian = coefficientDiffuse * max(dot(lightDir, normal), 0.0);
+    float LightPosDiffuse;
+    for(int i = 0; i < int(lightPosCount); ++i) {
+        LightPosDiffuse += lightPositions[i] * max(dot(lightDir, normal), 0.0);
+    }
+    float lambertian = coefficientDiffuse * LightPosDiffuse;
     vec3 diffuseColor = lambertian * base_color;
     color += diffuseColor;
 
     //specular
+    float LightPosSpecular;
     vec3 viewDir = normalize(-v_position2.xyz);
     vec3 reflectDir = reflect(-lightDir,normal);
     float specAngle = max(dot(reflectDir, viewDir),0.0);
-    float specular = coefficientSpecular * pow(specAngle, shininess);
+    float specPow = pow(specAngle, shininess);
+    for(int i = 0; i < int(lightPosCount); ++i) {
+        LightPosSpecular += lightPositions[i] * specPow;
+    }
+    float specular = coefficientSpecular * LightPosSpecular;
     vec3 specularVector =  specular * base_color;
     color += specularVector;
 
