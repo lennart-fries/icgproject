@@ -12,10 +12,6 @@ uniform int textured;
 uniform vec4 lightPositions[maxPos];
 uniform int lightPosCount;
 
-
-const vec3 lightPos = vec3(0.2,-1.0,-1.0);
-const vec3 cameraPos = vec3(0.0,0.0,0.0);
-
 const float coefficientAmbient = .6;
 const float coefficientDiffuse = 1.2;
 const float coefficientSpecular = 1.5;
