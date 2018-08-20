@@ -19,6 +19,8 @@ export class RasterVisitor extends Visitor {
 
     this.setupCamera(camera)
 
+    this.lightPositions = lightPositions
+
     // traverse and render
     super.run(rootNode)
   }
@@ -64,8 +66,7 @@ export class RasterVisitor extends Visitor {
     let normal = this.lookat.mul(mat).invert().transpose()
     shader.getUniformMatrix('N').set(normal)
 
-
-    shader.getUniformArray('lightPos').set(this.lightPositions)
+    shader.getUniformArray('value').set(this.lightPositions)
 
     return shader
   }
