@@ -16,7 +16,9 @@ function setFromURL () {
   }
   settings.settings = newSettings
   for (let radiobutton of radiobuttons) {
-    $('input[name=' + radiobutton + '][value=' + settings.settingsStr[radiobutton] + ']').prop('checked', true)
+    let radioelement = $('input[name=' + radiobutton + '][value=' + settings.settingsStr[radiobutton] + ']')
+    radioelement.prop('checked', true)
+    radioelement.parent().addClass('active')
   }
 }
 
