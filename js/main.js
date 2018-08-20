@@ -5,7 +5,7 @@ import { Matrix } from './primitives/matrix.js'
 import { Vector } from './primitives/vector.js'
 import { GroupNode, SphereNode, AABoxNode } from './scenegraph/nodes.js'
 import { RotationNode } from './scenegraph/animation-nodes.js'
-import { renderer, renderResolution } from './ui.js'
+import { settings } from './ui/ui.js'
 
 let r
 
@@ -74,7 +74,7 @@ export function simulate (deltaT) {
 let lastTimestamp = performance.now()
 
 function updateRenderer () {
-  if (r == null || !(r instanceof renderer)) {
+  if (r == null || !(r instanceof settings.settings.renderer)) {
     if (r != null) {
       r.teardown()
 
@@ -84,7 +84,7 @@ function updateRenderer () {
       canvas.parentNode.replaceChild(newCanvas, canvas)
       canvas = newCanvas
     }
-    r = new renderer(canvas, sg)
+    r = new settings.settings.renderer(canvas, sg)
     r.setup().then(() =>
       window.requestAnimationFrame(animate)
     )
@@ -94,8 +94,8 @@ function updateRenderer () {
 }
 
 function updateResolution () {
-  var width = canvas.clientWidth / renderResolution
-  var height = canvas.clientHeight / renderResolution
+  var width = Math.ceil(canvas.clientWidth / settings.settings.renderResolution)
+  var height = Math.ceil(canvas.clientHeight / settings.settings.renderResolution)
   if (canvas.width !== width || canvas.height !== height) {
     canvas.width = width
     canvas.height = height

@@ -46,25 +46,7 @@ export class RasterVisitor extends Visitor {
     }
   }
 
-  /**
-   * Visits a sphere node
-   * @param  {Node} node - The node to visit
-   */
-  visitSphereNode (node) {
-    let shader = this.calculateCurrentShader()
-    node.rastersphere.render(shader)
-  }
-
-  /**
-   * Visits an axis aligned box node
-   * @param  {Node} node - The node to visit
-   */
-  visitAABoxNode (node) {
-    let shader = this.calculateCurrentShader()
-    node.rasterbox.render(shader)
-  }
-
-  calculateCurrentShader () {
+  setUniformMatrices () {
     let shader = this.shader
     shader.use()
 
@@ -83,28 +65,22 @@ export class RasterVisitor extends Visitor {
     shader.getUniformMatrix('N').set(normal)
     return shader
   }
-
   /**
-   * Visits a textured box node
+   * Visits a sphere node
    * @param  {Node} node - The node to visit
    */
-  visitTextureBoxNode (node) {
-    let shader = this.textureshader
-    shader.use()
+  visitSphereNode (node) {
+    let shader = this.setUniformMatrices()
+    node.rastersphere.render(shader)
+  }
 
-    let mat = this.currentMatrix
-    shader.getUniformMatrix('M').set(mat)
-
-    let V = shader.getUniformMatrix('V')
-    if (V && this.lookat) {
-      V.set(this.lookat)
-    }
-    let P = shader.getUniformMatrix('P')
-    if (P && this.perspective) {
-      P.set(this.perspective)
-    }
-
-    node.rastertexturebox.render(shader)
+  /**
+   * Visits an axis aligned box node
+   * @param  {Node} node - The node to visit
+   */
+  visitAABoxNode (node) {
+    let shader = this.setUniformMatrices()
+    node.rasterbox.render(shader)
   }
 }
 
@@ -149,15 +125,6 @@ export class RasterSetupVisitor extends Visitor {
   visitAABoxNode (node) {
     node.rasterbox = new RasterAabox(this.gl, node.minPoint, node.maxPoint, node.color, node.texture)
   }
-
-  /**
-   * Visits a textured box node. Loads the texture
-   * and creates a uv coordinate buffer
-   * @param  {Node} node - The node to visit
-   */
-  visitTextureBoxNode (node) {
-    node.rastertexturebox = new RasterAabox(this.gl, node.minPoint, node.maxPoint, node.texture)
-  }
 }
 
 export class RasterTeardownVisitor extends Visitor {
@@ -179,13 +146,5 @@ export class RasterTeardownVisitor extends Visitor {
    */
   visitAABoxNode (node) {
     node.rasterbox.teardown()
-  }
-
-  /**
-   * visits a texturebox for teardowning
-   * @param  {Node} node - The node to visit
-   */
-  visitTextureBoxNode (node) {
-    node.rastertexturebox.teardown()
   }
 }

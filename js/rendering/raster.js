@@ -16,11 +16,6 @@ export class Raster {
       'glsl/fragment-shader.glsl'
     )
     this.visitor.shader = this.shader
-    /* this.textureShader = new Shader(this.gl,
-      'glsl/texture-vertex-shader.glsl',
-      'glsl/texture-fragment-shader.glsl'
-    )
-    this.visitor.textureshader = this.textureShader */
 
     return this.shader.load()
   }

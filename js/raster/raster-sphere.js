@@ -78,10 +78,6 @@ export class RasterSphere {
 
     this.elements = indices.length
 
-    // const colorBuffer = gl.createBuffer()
-    // gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer)
-    // gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(color.valueOf()), gl.STATIC_DRAW)
-    // this.colorBuffer = colorBuffer
     this.color = color
   }
 
@@ -97,11 +93,8 @@ export class RasterSphere {
     this.gl.enableVertexAttribArray(positionLocation)
     this.gl.vertexAttribPointer(positionLocation, 3, this.gl.FLOAT, false, 0, 0)
 
-    // this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorBuffer)
     const colorLocation = shader.getAttributeLocation('a_color')
     this.gl.disableVertexAttribArray(colorLocation)
-    // this.gl.enableVertexAttribArray(colorLocation)
-    // this.gl.vertexAttribPointer(colorLocation, 4, this.gl.FLOAT, false, 0, 0)
     this.gl.vertexAttrib4fv(colorLocation, new Float32Array(this.color.valueOf()))
 
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.normalBuffer)
@@ -118,7 +111,6 @@ export class RasterSphere {
 
   teardown () {
     this.gl.deleteBuffer(this.vertexBuffer)
-    // this.gl.deleteBuffer(this.colorBuffer)
     this.gl.deleteBuffer(this.normalBuffer)
     this.gl.deleteBuffer(this.indexBuffer)
   }
