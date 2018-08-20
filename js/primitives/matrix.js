@@ -76,22 +76,16 @@ export class Matrix {
    */
   static lookat (eye, center, up) {
     // https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/gluLookAt.xml
-    let f = new Vector(center.x - eye.x, center.y - eye.y, center.z - eye.z, 0)
-
-    f = f.normalised()
-    up = up.normalised()
-
-    let s = f.cross(up)
-    let u = s.normalised().cross(f)
-
-    let M = new Matrix([
+    let f = new Vector(center.x - eye.x, center.y - eye.y, center.z - eye.z, 0).normalised()
+    let s = f.cross(up).normalised()
+    let u = s.cross(f)
+    let M2 = new Matrix([
       s.x, s.y, s.z, 0,
       u.x, u.y, u.z, 0,
       -f.x, -f.y, -f.z, 0,
       0, 0, 0, 1
     ])
-
-    return M.mul(Matrix.translation(eye.mul(-1)))
+    return M2.mul(Matrix.translation(eye.mul(-1)))
   }
 
   /**
@@ -122,13 +116,13 @@ export class Matrix {
    * @return {Matrix}          The resulting matrix
    */
   static perspective (fovy, aspect, near, far) {
-    let f = 1.0 / Math.cos(fovy / 2.0)
-    return new Matrix([
-      f / aspect, 0, 0, 0,
-      0, f, 0, 0,
-      0, 0, (far + near) / (near - far), (2 * far * near) / (near - far),
-      0, 0, -1, 0
-    ])
+    //calculates frustum from fov and near pane
+    let top = near * Math.tan(fovy / 2.0 * (Math.PI / 180));
+    let bottom = -top;
+    let right = top * aspect;
+    let left = -right;
+
+    return this.frustum(left, right, bottom, top, near, far);
   }
 
   /**
@@ -200,20 +194,7 @@ export class Matrix {
    * @return {Matrix} A new matrix that is the transposed of this
    */
   transpose () {
-    let mat = this.data
-    let src = new Float32Array(16)
-
-    /* determinant */
-    /*
-     * transpose matrix
-     */
-    for (let i = 0; i < 4; i++) {
-      src[i] = mat[i * 4]
-      src[i + 4] = mat[i * 4 + 1]
-      src[i + 8] = mat[i * 4 + 2]
-      src[i + 12] = mat[i * 4 + 3]
-    }
-    return new Matrix(src)
+    return new Matrix(this.data)
   }
 
   /**
