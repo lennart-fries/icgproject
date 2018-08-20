@@ -41,16 +41,13 @@ void main(void) {
     vec3 normal = normalize(v_normal);
     vec3 viewDir = normalize(-v_position2.xyz);
 
-    vec3 lightDir;
-    float lj;
-
-    for(int i = 0; i < lightPosCount; i++) {
-        lightDir = normalize(lightPositions[i] - v_position2.xyz);
-        lj = length(lightPositions[i] - v_position2.xyz);
-        vec3 reflectDir = reflect(-lightDir[i],normal);
+    for(int i = 0; i < maxPos; i++) {
+        vec3 lightDir = normalize(lightPositions[i] - v_position2.xyz);
+        float lj = length(lightPositions[i] - v_position2.xyz);
+        vec3 reflectDir = reflect(-lightDir,normal);
         float specAngle = max(dot(reflectDir, viewDir),0.0);
         float specPow = pow(specAngle, shininess);
-        LightPosDiffuse += lj * max(dot(lightDir[i], normal), 0.0);
+        LightPosDiffuse += lj * max(dot(lightDir, normal), 0.0);
         LightPosSpecular += lj * specPow;
     }
 
