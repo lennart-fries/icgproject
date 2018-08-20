@@ -22,7 +22,7 @@ export class Raster {
 
   loop (sg, camera, lightPositions) {
     this.lightPositions = lightPositions
-    this.visitor.run(sg, camera)
+    this.visitor.run(sg, camera, lightPositions)
   }
 
   updateResolution (width, height) {

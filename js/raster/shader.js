@@ -228,6 +228,6 @@ class UniformArray {
       array[i + 1] = value.y
       array[i + 2] = value.z
     }
-    this.gl.uniform3fv(this.position, new Array(array))
+    this.gl.uniform3fv(this.position, array)
   }
 }
