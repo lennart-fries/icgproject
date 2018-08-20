@@ -11,20 +11,13 @@ export class Raster {
   }
 
   setup () {
-    this.phongShader = new Shader(this.gl,
-      'glsl/phong-vertex-shader.glsl',
-      'glsl/phong-fragment-shader.glsl'
+    this.shader = new Shader(this.gl,
+      'glsl/vertex-shader.glsl',
+      'glsl/fragment-shader.glsl'
     )
-    this.visitor.shader = this.phongShader
-    this.textureShader = new Shader(this.gl,
-      'glsl/texture-vertex-shader.glsl',
-      'glsl/texture-fragment-shader.glsl'
-    )
-    this.visitor.textureshader = this.textureShader
+    this.visitor.shader = this.shader
 
-    return Promise.all(
-      [this.phongShader.load(), this.textureShader.load()]
-    )
+    return this.shader.load()
   }
 
   loop (sg, camera, lightPositions) {

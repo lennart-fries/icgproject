@@ -5,7 +5,7 @@ import { Matrix } from './primitives/matrix.js'
 import { Vector } from './primitives/vector.js'
 import { GroupNode, SphereNode, AABoxNode } from './scenegraph/nodes.js'
 import { RotationNode } from './scenegraph/animation-nodes.js'
-import { renderer, renderResolution } from './ui.js'
+import { settings } from './ui/ui.js'
 
 let r
 
@@ -23,16 +23,26 @@ gn3.add(sphere)
 let gn2 = new GroupNode(Matrix.translation(new Vector(-0.7, -0.4, 0.1)))
 sg.add(gn2)
 
-/* const cube = new TextureBoxNode(
-  new Vector(-1, -1, -1, 1),
-  new Vector(1, 1, 1, 1),
-  'assets/diamond_ore.png'
-) */
+const colors = [
+  0.0, 1.0, 0.0, 1.0,
+  0.0, 0.0, 1.0, 1.0,
+  1.0, 0.0, 0.0, 1.0,
+  0.0, 0.0, 0.0, 1.0,
+  // untenrechts
+  0.0, 1.0, 0.0, 1.0, // grün
+  // untenlinks
+  1.0, 0.0, 0.0, 1.0, // rot
+  // obenlinks
+  1.0, 0.0, 1.0, 1.0, // rosa
+  // obenrechts
+  0.0, 0.0, 1.0, 1.0 // blau
+]
 
 const cube = new AABoxNode(
   new Vector(-1, -1, -1, 1),
   new Vector(1, 1, 1, 1),
-  new Vector(1, 0, 1, 1)
+  colors/* ,
+  'assets/diamond_ore.png' */
 )
 
 gn2.add(cube)
@@ -64,7 +74,7 @@ export function simulate (deltaT) {
 let lastTimestamp = performance.now()
 
 function updateRenderer () {
-  if (r == null || !(r instanceof renderer)) {
+  if (r == null || !(r instanceof settings.settings.renderer)) {
     if (r != null) {
       r.teardown()
 
@@ -74,7 +84,7 @@ function updateRenderer () {
       canvas.parentNode.replaceChild(newCanvas, canvas)
       canvas = newCanvas
     }
-    r = new renderer(canvas, sg)
+    r = new settings.settings.renderer(canvas, sg)
     r.setup().then(() =>
       window.requestAnimationFrame(animate)
     )
@@ -84,8 +94,8 @@ function updateRenderer () {
 }
 
 function updateResolution () {
-  var width = canvas.clientWidth / renderResolution
-  var height = canvas.clientHeight / renderResolution
+  var width = Math.ceil(canvas.clientWidth / settings.settings.renderResolution)
+  var height = Math.ceil(canvas.clientHeight / settings.settings.renderResolution)
   if (canvas.width !== width || canvas.height !== height) {
     canvas.width = width
     canvas.height = height

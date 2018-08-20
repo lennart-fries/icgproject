@@ -15,7 +15,7 @@ export class Visitor {
   }
 
   /**
-   * Visits a group box node
+   * Visits a group node
    * @param  {Node} node - The node to visit
    */
   visitGroupNode (node) {
@@ -38,7 +38,7 @@ export class Visitor {
   }
 
   /**
-   * Visits a sphere box node
+   * Visits a sphere node
    * @param  {Node} node - The node to visit
    */
   visitSphereNode (node) { }
@@ -56,13 +56,13 @@ export class Visitor {
   visitTextureBoxNode (node) { }
 
   /**
-   * Visits a camera box node
+   * Visits a camera node
    * @param  {Node} node - The node to visit
    */
   visitCameraNode (node) { }
 
   /**
-   * Visits a light box node
+   * Visits a light node
    * @param  {Node} node - The node to visit
    */
   visitLightNode (node) { }

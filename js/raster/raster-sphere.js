@@ -62,26 +62,22 @@ export class RasterSphere {
     }
 
     const vertexBuffer = this.gl.createBuffer()
-    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, vertexBuffer)
-    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(vertices), this.gl.STATIC_DRAW)
+    gl.bindBuffer(this.gl.ARRAY_BUFFER, vertexBuffer)
+    gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(vertices), this.gl.STATIC_DRAW)
     this.vertexBuffer = vertexBuffer
 
     const indexBuffer = gl.createBuffer()
-    this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, indexBuffer)
-    this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), this.gl.STATIC_DRAW)
+    gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, indexBuffer)
+    gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), this.gl.STATIC_DRAW)
     this.indexBuffer = indexBuffer
 
     const normalBuffer = this.gl.createBuffer()
-    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, normalBuffer)
-    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(normals), this.gl.STATIC_DRAW)
+    gl.bindBuffer(this.gl.ARRAY_BUFFER, normalBuffer)
+    gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(normals), this.gl.STATIC_DRAW)
     this.normalBuffer = normalBuffer
 
     this.elements = indices.length
 
-    // const colorBuffer = gl.createBuffer()
-    // gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer)
-    // gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(color.valueOf()), gl.STATIC_DRAW)
-    // this.colorBuffer = colorBuffer
     this.color = color
   }
 
@@ -90,16 +86,15 @@ export class RasterSphere {
    * @param {Shader} shader - The shader used to render
    */
   render (shader) {
+    shader.getUniformInt('textured').set(0)
+
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertexBuffer)
     const positionLocation = shader.getAttributeLocation('a_position')
     this.gl.enableVertexAttribArray(positionLocation)
     this.gl.vertexAttribPointer(positionLocation, 3, this.gl.FLOAT, false, 0, 0)
 
-    // this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorBuffer)
     const colorLocation = shader.getAttributeLocation('a_color')
     this.gl.disableVertexAttribArray(colorLocation)
-    // this.gl.enableVertexAttribArray(colorLocation)
-    // this.gl.vertexAttribPointer(colorLocation, 4, this.gl.FLOAT, false, 0, 0)
     this.gl.vertexAttrib4fv(colorLocation, new Float32Array(this.color.valueOf()))
 
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.normalBuffer)
@@ -116,7 +111,6 @@ export class RasterSphere {
 
   teardown () {
     this.gl.deleteBuffer(this.vertexBuffer)
-    // this.gl.deleteBuffer(this.colorBuffer)
     this.gl.deleteBuffer(this.normalBuffer)
     this.gl.deleteBuffer(this.indexBuffer)
   }

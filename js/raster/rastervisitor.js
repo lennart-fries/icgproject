@@ -6,7 +6,6 @@ import { Matrix } from '../primitives/matrix.js'
 import { RasterSphere } from './raster-sphere.js'
 import { RasterAabox } from './raster-aabox.js'
 import { Visitor } from '../scenegraph/visitor.js'
-import { CameraNode, LightNode } from '../scenegraph/nodes.js'
 
 export class RasterVisitor extends Visitor {
   /**
@@ -47,25 +46,7 @@ export class RasterVisitor extends Visitor {
     }
   }
 
-  /**
-   * Visits a sphere node
-   * @param  {Node} node - The node to visit
-   */
-  visitSphereNode (node) {
-    let shader = this.calculateCurrentShader()
-    node.rastersphere.render(shader)
-  }
-
-  /**
-   * Visits an axis aligned box node
-   * @param  {Node} node - The node to visit
-   */
-  visitAABoxNode (node) {
-    let shader = this.calculateCurrentShader()
-    node.rasterbox.render(shader)
-  }
-
-  calculateCurrentShader () {
+  setUniformMatrices () {
     let shader = this.shader
     shader.use()
 
@@ -84,28 +65,22 @@ export class RasterVisitor extends Visitor {
     shader.getUniformMatrix('N').set(normal)
     return shader
   }
-
   /**
-   * Visits a textured box node
+   * Visits a sphere node
    * @param  {Node} node - The node to visit
    */
-  visitTextureBoxNode (node) {
-    let shader = this.textureshader
-    shader.use()
+  visitSphereNode (node) {
+    let shader = this.setUniformMatrices()
+    node.rastersphere.render(shader)
+  }
 
-    let mat = this.currentMatrix
-    shader.getUniformMatrix('M').set(mat)
-
-    let V = shader.getUniformMatrix('V')
-    if (V && this.lookat) {
-      V.set(this.lookat)
-    }
-    let P = shader.getUniformMatrix('P')
-    if (P && this.perspective) {
-      P.set(this.perspective)
-    }
-
-    node.rastertexturebox.render(shader)
+  /**
+   * Visits an axis aligned box node
+   * @param  {Node} node - The node to visit
+   */
+  visitAABoxNode (node) {
+    let shader = this.setUniformMatrices()
+    node.rasterbox.render(shader)
   }
 }
 
@@ -148,32 +123,7 @@ export class RasterSetupVisitor extends Visitor {
    * @param  {Node} node - The node to visit
    */
   visitAABoxNode (node) {
-    node.rasterbox = new RasterAabox(this.gl, node.minPoint, node.maxPoint)
-  }
-
-  /**
-   * Visits a textured box node. Loads the texture
-   * and creates a uv coordinate buffer
-   * @param  {Node} node - The node to visit
-   */
-  visitTextureBoxNode (node) {
-    node.rastertexturebox = new RasterAabox(this.gl, node.minPoint, node.maxPoint, node.texture)
-  }
-
-  /**
-   * Visits a camera node
-   * @param  {Node} node - The node to visit
-   */
-  visitCameraNode (node) {
-    node.camera = new CameraNode(node.eye, node.center, node.up, node.fovy, node.aspect, node.near, node.far)
-  }
-
-  /**
-   * Visits a light node
-   * @param  {Node} node - The node to visit
-   */
-  visitLightNode (node) {
-    node.light = new LightNode(this.mat)
+    node.rasterbox = new RasterAabox(this.gl, node.minPoint, node.maxPoint, node.color, node.texture)
   }
 }
 
@@ -183,7 +133,7 @@ export class RasterTeardownVisitor extends Visitor {
   }
 
   /**
-   * Visits a light node
+   * visits a sphere for teardowning
    * @param  {Node} node - The node to visit
    */
   visitSphereNode (node) {
@@ -191,30 +141,10 @@ export class RasterTeardownVisitor extends Visitor {
   }
 
   /**
-   * Visits a light node
+   * visits a aa box for teardowning
    * @param  {Node} node - The node to visit
    */
   visitAABoxNode (node) {
     node.rasterbox.teardown()
-  }
-
-  visitTextureBoxNode (node) {
-    node.rastertexturebox.teardown()
-  }
-
-  /**
-   * Visits a light node
-   * @param  {Node} node - The node to visit
-   */
-  visitLightNode (node) {
-    node.light.teardown()
-  }
-
-  /**
-   * Visits a light node
-   * @param  {Node} node - The node to visit
-   */
-  visitCameraNode (node) {
-    node.camera.teardown()
   }
 }
