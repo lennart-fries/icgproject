@@ -42,8 +42,8 @@ void main(void) {
     vec3 viewDir = normalize(-v_position2.xyz);
 
     for(int i = 0; i < maxPos; i++) {
-        vec3 lightDir = normalize(lightPositions[i].xyz * lightPositions[i].w - v_position2.xyz);
-        float lj = length(lightPositions[i].xyz * lightPositions[i].w - v_position2.xyz);
+        vec3 lightDir = normalize(lightPositions[i].xyz - v_position2.xyz);
+        float lj = length(lightPositions[i].xyz - v_position2.xyz) * lightPositions[i].w;
         vec3 reflectDir = reflect(-lightDir,normal);
         float specAngle = max(dot(reflectDir, viewDir),0.0);
         float specPow = pow(specAngle, shininess);
