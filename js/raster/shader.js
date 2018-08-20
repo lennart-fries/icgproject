@@ -221,13 +221,13 @@ class UniformArray {
     this.position = position
   }
 
-  set (array) {
-    this.gl.uniform3fv(this.position, new Float32Array(
-      for(let i = 0; i < array.length, i+3) {
-          array[i] = array.x;
-          array[i+1] = array.y;
-          array[i+2] = array.z;
-      }
-    )
+  set (value) {
+    let array = []
+    for (let i = 0; i < value.length; i + 3) {
+      array[i] = value.x
+      array[i + 1] = value.y
+      array[i + 2] = value.z
+    }
+    this.gl.uniform3fv(this.position, new Array(array))
   }
 }
