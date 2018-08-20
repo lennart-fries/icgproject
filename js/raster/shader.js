@@ -223,10 +223,10 @@ class UniformArray {
 
   set (value) {
     let array = []
-    for (let i = 0; i < value.length; i + 3) {
-      array[i] = value.x
-      array[i + 1] = value.y
-      array[i + 2] = value.z
+    for (let i = 0; i < value.length; i++) {
+      array[i] = value[i].x
+      array[i + 1] = value[i].y
+      array[i + 2] = value[i].z
     }
     this.gl.uniform3fv(this.position, array)
   }
