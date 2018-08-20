@@ -66,7 +66,7 @@ export class RasterVisitor extends Visitor {
     let normal = this.lookat.mul(mat).invert().transpose()
     shader.getUniformMatrix('N').set(normal)
 
-    shader.getUniformArray('value').set(this.lightPositions)
+    shader.getUniformArray('lightPositions').set(this.lightPositions)
 
     return shader
   }
