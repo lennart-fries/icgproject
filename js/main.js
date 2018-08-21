@@ -55,7 +55,7 @@ let camera = {
   eye: new Vector(-0.5, 0.5, -1, 1),
   center: new Vector(0, 0, 0, 1),
   up: new Vector(0, 1, 0, 0),
-  fovy: 90,
+  fovy: 60,
   aspect: canvas.clientWidth / canvas.clientHeight,
   near: 0.1,
   far: 100

@@ -14,7 +14,11 @@ export class AABox {
    * @param  {string} texture  - The image filename for the texture, optional
    */
   constructor (minPoint, maxPoint, color, texture = '') {
-    this.color = color
+    if (typeof color.constructor !== Vector) {
+      this.color = new Vector(color[0], color[1], color[2], color[3])
+    } else {
+      this.color = color
+    }
     this.texture = texture
     /*
               Λ y
