@@ -1,4 +1,6 @@
 /* global Image */
+import { Vector } from '../primitives/vector.js'
+
 /**
  * A class creating buffers for an axis aligned box to render it with WebGL
  */
@@ -21,9 +23,11 @@ export class RasterAabox {
    */
   constructor (gl, minPoint, maxPoint, color, texture = '') {
     this.gl = gl
-    this.texture = texture
     const mi = minPoint
     const ma = maxPoint
+    this.color = this.checkColor(color)
+    this.texture = texture
+
     const vertices = [ // 8x cube corners
       mi.x, mi.y, ma.z,
       ma.x, mi.y, ma.z,
@@ -102,7 +106,7 @@ export class RasterAabox {
 
     const surfaceBuffer = gl.createBuffer()
     gl.bindBuffer(gl.ARRAY_BUFFER, surfaceBuffer)
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array((texture === '') ? color : uv), gl.STATIC_DRAW)
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array((this.texture === '') ? this.color : uv), gl.STATIC_DRAW)
     this.surfaceBuffer = surfaceBuffer
 
     if (texture !== '') {
@@ -119,6 +123,28 @@ export class RasterAabox {
       }
       cubeImage.src = texture
       this.texBuffer = cubeTexture
+    }
+  }
+
+  checkColor (color) {
+    if (color instanceof Vector) { // single vector
+      let colorArray = color.valueOf()
+      return colorArray.concat(colorArray, colorArray, colorArray, colorArray, colorArray, colorArray, colorArray)
+    } else if (color instanceof Array && color[0] instanceof Vector) { // array of vectors
+      if (color.length > 8) {
+        console.error('too many colors!')
+      } else {
+        let colorArray = []
+        color.forEach(vector => {
+          colorArray = colorArray.concat(vector.valueOf())
+        })
+        for (colorArray.length; colorArray.length < 32;) {
+          colorArray.push(1)
+        }
+        return colorArray
+      }
+    } else { // wrong format
+      console.log('given colors are not in the correct format!')
     }
   }
 

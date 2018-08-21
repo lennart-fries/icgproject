@@ -14,10 +14,12 @@ export class AABox {
    * @param  {string} texture  - The image filename for the texture, optional
    */
   constructor (minPoint, maxPoint, color, texture = '') {
-    if (typeof color.constructor !== Vector) {
-      this.color = new Vector(color[0], color[1], color[2], color[3])
-    } else {
+    if (color instanceof Vector) {
       this.color = color
+    } else if (color instanceof Array && color[0] instanceof Vector) {
+      this.color = color[0]
+    } else {
+      console.error('wrong color format!')
     }
     this.texture = texture
     /*
@@ -34,7 +36,6 @@ export class AABox {
           /
         |_  z
          */
-
     // array index = point number in drawing
     this.vertices = [
       new Vector(minPoint.x, minPoint.y, maxPoint.z, 1), // 0,0,1
@@ -65,7 +66,6 @@ export class AABox {
    * @param  {Ray} ray      - The ray to intersect with
    * @return {Intersection}   The intersection if there is one, null if there is none
    */
-
   intersect (ray) {
     let inters = []
     this.sides.forEach(function (side, i) {

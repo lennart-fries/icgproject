@@ -11,7 +11,7 @@ export class Settings {
     this.settingsStr = {renderer: 'Raster', renderResolution: '1'}
     this.settingsObj = {}
     this.setSettings(this.settingsStr)
-    console.log(this)
+    // console.log(this)
   }
 
   setURL () {
@@ -30,21 +30,21 @@ export class Settings {
         switch (settingKey) {
           case 'renderer':
             let newRenderer = newSettings.renderer
-            console.log(this, newRenderer)
+            // console.log(this, newRenderer)
             if (renderers.includes(newSettings.renderer)) {
               this.settingsStr.renderer = newRenderer
               this.settingsObj.renderer = renderersToClasses[newRenderer]
             }
-            console.log(this, newRenderer)
+            // console.log(this, newRenderer)
             break
           case 'renderResolution':
             let newRes = parseInt(newSettings.renderResolution)
-            console.log(this, newRes)
+            // console.log(this, newRes)
             if (newRes > 0) {
               this.settingsStr.renderResolution = newRes.toString()
               this.settingsObj.renderResolution = newRes
             }
-            console.log(this, newRes)
+            // console.log(this, newRes)
             break
         }
       }

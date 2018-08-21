@@ -23,25 +23,30 @@ gn3.add(sphere)
 let gn2 = new GroupNode(Matrix.translation(new Vector(-0.7, -0.4, 0.1)))
 sg.add(gn2)
 
-const colors = [
-  0.0, 1.0, 0.0, 1.0,
-  0.0, 0.0, 1.0, 1.0,
-  1.0, 0.0, 0.0, 1.0,
-  0.0, 0.0, 0.0, 1.0,
-  // untenrechts
-  0.0, 1.0, 0.0, 1.0, // grün
-  // untenlinks
-  1.0, 0.0, 0.0, 1.0, // rot
-  // obenlinks
-  1.0, 0.0, 1.0, 1.0, // rosa
-  // obenrechts
-  0.0, 0.0, 1.0, 1.0 // blau
+const colorsArray = [
+  new Vector(0.0, 1.0, 0.0, 1.0),
+  new Vector(0.0, 0.0, 1.0, 1.0),
+  new Vector(1.0, 0.0, 0.0, 1.0),
+  new Vector(0.0, 0.0, 0.0, 1.0),
+  new Vector(0.0, 1.0, 0.0, 1.0),
+  new Vector(1.0, 0.0, 0.0, 1.0),
+  new Vector(1.0, 0.0, 1.0, 1.0),
+  new Vector(0.0, 0.0, 1.0, 1.0)
 ]
+
+const colorsArrayHalf = [
+  new Vector(0.0, 1.0, 0.0, 1.0),
+  new Vector(0.0, 0.0, 1.0, 1.0),
+  new Vector(1.0, 0.0, 0.0, 1.0),
+  new Vector(1.0, 0.0, 0.0, 1.0)
+]
+
+const colorVector = new Vector(0.0, 1.0, 0.0, 1.0)
 
 const cube = new AABoxNode(
   new Vector(-1, -1, -1, 1),
   new Vector(1, 1, 1, 1),
-  colors/* ,
+  colorsArrayHalf/* ,
   'assets/diamond_ore.png' */
 )
 
