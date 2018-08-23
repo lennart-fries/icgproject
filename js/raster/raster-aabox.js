@@ -146,16 +146,22 @@ export class RasterAabox {
   checkColor (color) {
     if (color instanceof Vector) { // single vector
       let colorArray = color.valueOf()
-      return colorArray.concat(colorArray, colorArray, colorArray, colorArray, colorArray, colorArray, colorArray)
+
+      for (let i = 0; i < 8; i++) {
+        colorArray[i] += colorArray[i]
+      }
+
+      return colorArray
+      // return colorArray.concat(colorArray, colorArray, colorArray, colorArray, colorArray, colorArray, colorArray)
     } else if (color instanceof Array && color[0] instanceof Vector) { // array of vectors
-      if (color.length > 8) {
+      if (color.length > (this.elements / 3 * 4)) {
         console.error('too many colors!')
       } else {
         let colorArray = []
         color.forEach(vector => {
           colorArray = colorArray.concat(vector.valueOf())
         })
-        for (colorArray.length; colorArray.length < 32;) {
+        for (colorArray.length; colorArray.length < (this.elements * 4);) {
           colorArray.push(1)
         }
         return colorArray
