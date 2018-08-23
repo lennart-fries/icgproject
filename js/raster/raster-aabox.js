@@ -25,18 +25,27 @@ export class RasterAabox {
     this.gl = gl
     const mi = minPoint
     const ma = maxPoint
-    this.color = this.checkColor(color)
     this.texture = texture
 
     const vertices = [ // 8x cube corners
-      mi.x, mi.y, ma.z,
-      ma.x, mi.y, ma.z,
-      ma.x, ma.y, ma.z,
-      mi.x, ma.y, ma.z,
-      ma.x, mi.y, mi.z,
-      mi.x, mi.y, mi.z,
-      mi.x, ma.y, mi.z,
-      ma.x, ma.y, mi.z
+      // front
+      mi.x, mi.y, ma.z, ma.x, mi.y, ma.z,
+      ma.x, ma.y, ma.z, mi.x, ma.y, ma.z,
+      // back
+      ma.x, mi.y, mi.z, mi.x, mi.y, mi.z,
+      mi.x, ma.y, mi.z, ma.x, ma.y, mi.z,
+      // right
+      ma.x, mi.y, ma.z, ma.x, mi.y, mi.z,
+      ma.x, ma.y, mi.z, ma.x, ma.y, ma.z,
+      // top
+      mi.x, ma.y, ma.z, ma.x, ma.y, ma.z,
+      ma.x, ma.y, mi.z, mi.x, ma.y, mi.z,
+      // left
+      mi.x, mi.y, mi.z, mi.x, mi.y, ma.z,
+      mi.x, ma.y, ma.z, mi.x, ma.y, mi.z,
+      // bottom
+      mi.x, mi.y, mi.z, ma.x, mi.y, mi.z,
+      ma.x, mi.y, ma.z, mi.x, mi.y, ma.z
     ]
     const indices = [ // triangles, two per cube side
       // front
@@ -44,30 +53,37 @@ export class RasterAabox {
       // back
       4, 5, 6, 6, 7, 4,
       // right
-      1, 4, 7, 7, 2, 1,
+      8, 9, 10, 10, 11, 8,
       // top
-      3, 2, 7, 7, 6, 3,
+      12, 13, 14, 14, 15, 12,
       // left
-      5, 0, 3, 3, 6, 5,
+      16, 17, 18, 18, 19, 16,
       // bottom
-      5, 4, 1, 1, 0, 5
+      20, 21, 22, 22, 23, 20
     ]
+
     const normals = [ // Normals for each vertex
       // front
       0.0, 0.0, 1.0, 0.0, 0.0, 1.0,
+      0.0, 0.0, 1.0, 0.0, 0.0, 1.0,
       // back
+      0.0, 0.0, -1.0, 0.0, 0.0, -1.0,
       0.0, 0.0, -1.0, 0.0, 0.0, -1.0,
       // right
       1.0, 0.0, 0.0, 1.0, 0.0, 0.0,
+      1.0, 0.0, 0.0, 1.0, 0.0, 0.0,
       // top
+      0.0, 1.0, 0.0, 0.0, 1.0, 0.0,
       0.0, 1.0, 0.0, 0.0, 1.0, 0.0,
       // left
       -1.0, 0.0, 0.0, -1.0, 0.0, 0.0,
+      -1.0, 0.0, 0.0, -1.0, 0.0, 0.0,
       // bottom
+      0.0, -1.0, 0.0, 0.0, -1.0, 0.0,
       0.0, -1.0, 0.0, 0.0, -1.0, 0.0
     ]
 
-    const uv = [ // Texture coordinates per index
+    const uv = [ // Texture coordinates per vertex
       //  front
       0, 0, 1, 0, 1, 1,
       1, 1, 0, 1, 0, 0,
@@ -88,6 +104,10 @@ export class RasterAabox {
       1, 1, 0, 1, 0, 0
     ]
 
+    this.numTriangles = indices.length / 3
+
+    this.color = this.checkColor(color)
+
     const vertexBuffer = gl.createBuffer()
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer)
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW)
@@ -97,7 +117,6 @@ export class RasterAabox {
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer)
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW)
     this.indexBuffer = indexBuffer
-    this.elements = indices.length
 
     const normalBuffer = gl.createBuffer()
     gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer)
@@ -127,25 +146,30 @@ export class RasterAabox {
   }
 
   checkColor (color) {
+    let colorArray
     if (color instanceof Vector) { // single vector
-      let colorArray = color.valueOf()
-      return colorArray.concat(colorArray, colorArray, colorArray, colorArray, colorArray, colorArray, colorArray)
-    } else if (color instanceof Array && color[0] instanceof Vector) { // array of vectors
-      if (color.length > 8) {
-        console.error('too many colors!')
-      } else {
-        let colorArray = []
-        color.forEach(vector => {
-          colorArray = colorArray.concat(vector.valueOf())
-        })
-        for (colorArray.length; colorArray.length < 32;) {
-          colorArray.push(1)
-        }
-        return colorArray
+      colorArray = color.valueOf()
+      for (let i = 0; i < 8; i++) {
+        colorArray = colorArray.concat(colorArray)
       }
+      return colorArray
+    } else if (color instanceof Array && color[0] instanceof Vector) { // array of vectors
+      if (color.length > (this.numTriangles * 2)) {
+        console.error('too many colors!')
+      }
+      colorArray = []
+      color.forEach(vector => {
+        colorArray = colorArray.concat(vector.valueOf())
+      })
     } else { // wrong format
-      console.log('given colors are not in the correct format!')
+      console.error('given colors are not in the correct format!')
+      colorArray = [1, 0, 0.75, 1, 0, 0, 0, 1]
     }
+    while (colorArray.length < (this.numTriangles * 2 * 4)) {
+      colorArray = colorArray.concat(colorArray)
+    }
+    console.log(this.numTriangles * 2 * 4)
+    return colorArray
   }
 
   /**
@@ -188,7 +212,7 @@ export class RasterAabox {
     }
 
     this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer)
-    this.gl.drawElements(this.gl.TRIANGLES, this.elements, this.gl.UNSIGNED_SHORT, 0)
+    this.gl.drawElements(this.gl.TRIANGLES, this.numTriangles * 3, this.gl.UNSIGNED_SHORT, 0)
 
     this.gl.disableVertexAttribArray(positionLocation)
     this.gl.disableVertexAttribArray(surfaceLocation)

@@ -12,8 +12,8 @@ uniform int textured;
 uniform vec4 lightPositions[maxPos];
 uniform int lightPosCount;
 
-const float coefficientAmbient = .6;
-const float coefficientDiffuse = 1.2;
+const float coefficientAmbient = 0.3;
+const float coefficientDiffuse = 0.6;
 const float coefficientSpecular = 1.5;
 const float shininess = 4.0;
 
@@ -37,7 +37,7 @@ void main(void) {
     vec3 normal = normalize(v_normal);
     vec3 viewDir = normalize(-v_position2.xyz);
 
-    for(int i = 0; i < maxPos; i++) {
+    for(int i = 0; i < 1; i++) {
         vec3 lightDir = normalize(lightPositions[i].xyz - v_position2.xyz);
         float lj = length(lightPositions[i].xyz - v_position2.xyz) * lightPositions[i].w;
         vec3 reflectDir = reflect(-lightDir,normal);
