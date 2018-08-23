@@ -48,21 +48,28 @@ export class RasterVisitor extends Visitor {
     }
   }
 
-  setUniformMatrices () {
+  /**
+   * Helper function to set all the uniform parameters for the shader
+   * @returns {Object} shader - The shader used
+   */
+  setUniforms () {
     let shader = this.shader
     shader.use()
 
+    // model matrix
     let mat = this.currentMatrix
     shader.getUniformMatrix('M').set(mat)
 
+    // view matrix
     let V = shader.getUniformMatrix('V')
-    if (V && this.lookat) {
-      V.set(this.lookat)
-    }
+    V.set(this.lookat)
+
+    // projection matrix
     let P = shader.getUniformMatrix('P')
-    if (P && this.perspective) {
-      P.set(this.perspective)
-    }
+
+    P.set(this.perspective)
+
+    // normal matrix
     let normal = this.lookat.mul(mat).invert().transpose()
     shader.getUniformMatrix('N').set(normal)
 
@@ -75,7 +82,7 @@ export class RasterVisitor extends Visitor {
    * @param  {Node} node - The node to visit
    */
   visitSphereNode (node) {
-    let shader = this.setUniformMatrices()
+    let shader = this.setUniforms()
     node.rastersphere.render(shader)
   }
 
@@ -84,7 +91,7 @@ export class RasterVisitor extends Visitor {
    * @param  {Node} node - The node to visit
    */
   visitAABoxNode (node) {
-    let shader = this.setUniformMatrices()
+    let shader = this.setUniforms()
     node.rasterbox.render(shader)
   }
 }

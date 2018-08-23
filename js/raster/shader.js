@@ -128,6 +128,11 @@ export class Shader {
     )
   }
 
+  /**
+   * Returns an Object that can be used to set an Array on the GPU
+   * @param {string} name - The name of the uniform to set
+   * @returns {UniformArray} The resulting Object
+   */
   getUniformArray (name) {
     return new UniformArray(this.gl,
       this.gl.getUniformLocation(this.shaderProgram, name))
