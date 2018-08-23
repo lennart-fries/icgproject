@@ -37,7 +37,9 @@ void main(void) {
     vec3 normal = normalize(v_normal);
     vec3 viewDir = normalize(-v_position2.xyz);
 
-    for(int i = 0; i < maxPos; i++) {
+    float ljdebug;
+
+    for(int i = 0; i < 1; i++) {
         vec3 lightDir = normalize(lightPositions[i].xyz - v_position2.xyz);
         float lj = length(lightPositions[i].xyz - v_position2.xyz) * lightPositions[i].w;
         vec3 reflectDir = reflect(-lightDir,normal);
@@ -45,6 +47,7 @@ void main(void) {
         float specPow = pow(specAngle, shininess);
         LightPosDiffuse += lj * max(dot(lightDir, normal), 0.0);
         LightPosSpecular += lj * specPow;
+        ljdebug = lj;
     }
 
    // diffuse
@@ -58,4 +61,5 @@ void main(void) {
     color += specularVector;
 
     gl_FragColor = vec4(color, raw_color.w);
+    gl_FragColor = vec4(ljdebug, 0, 0, 1);
 }
