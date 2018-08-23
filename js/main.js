@@ -46,7 +46,7 @@ const colorVector = new Vector(0.0, 1.0, 0.0, 1.0)
 const cube = new AABoxNode(
   new Vector(-1, -1, -1, 1),
   new Vector(1, 1, 1, 1),
-  colorsArrayHalf/* ,
+  colorVector/* ,
   'assets/diamond_ore.png' */
 )
 
