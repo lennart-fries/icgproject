@@ -29,14 +29,24 @@ export class RasterAabox {
     this.texture = texture
 
     const vertices = [ // 8x cube corners
-      mi.x, mi.y, ma.z,
-      ma.x, mi.y, ma.z,
-      ma.x, ma.y, ma.z,
-      mi.x, ma.y, ma.z,
-      ma.x, mi.y, mi.z,
-      mi.x, mi.y, mi.z,
-      mi.x, ma.y, mi.z,
-      ma.x, ma.y, mi.z
+      // front
+      mi.x, mi.y, ma.z, ma.x, mi.y, ma.z,
+      ma.x, ma.y, ma.z, mi.x, ma.y, ma.z,
+      // back
+      ma.x, mi.y, mi.z, mi.x, mi.y, mi.z,
+      mi.x, ma.y, mi.z, ma.x, ma.y, mi.z,
+      // right
+      ma.x, mi.y, ma.z, ma.x, mi.y, mi.z,
+      ma.x, ma.y, mi.z, ma.x, ma.y, ma.z,
+      // top
+      mi.x, ma.y, ma.z, ma.x, ma.y, ma.z,
+      ma.x, ma.y, mi.z, mi.x, ma.y, mi.z,
+      // left
+      mi.x, mi.y, mi.z, mi.x, mi.y, ma.z,
+      mi.x, ma.y, ma.z, mi.x, ma.y, mi.z,
+      // bottom
+      mi.x, mi.y, mi.z, ma.x, mi.y, mi.z,
+      ma.x, mi.y, ma.z, mi.x, mi.y, ma.z
     ]
     const indices = [ // triangles, two per cube side
       // front
@@ -44,26 +54,33 @@ export class RasterAabox {
       // back
       4, 5, 6, 6, 7, 4,
       // right
-      1, 4, 7, 7, 2, 1,
+      8, 9, 10, 10, 11, 8,
       // top
-      3, 2, 7, 7, 6, 3,
+      12, 13, 14, 14, 15, 12,
       // left
-      5, 0, 3, 3, 6, 5,
+      16, 17, 18, 18, 19, 16,
       // bottom
-      5, 4, 1, 1, 0, 5
+      20, 21, 22, 22, 23, 20
     ]
+
     const normals = [ // Normals for each vertex
       // front
       0.0, 0.0, 1.0, 0.0, 0.0, 1.0,
+      0.0, 0.0, 1.0, 0.0, 0.0, 1.0,
       // back
+      0.0, 0.0, -1.0, 0.0, 0.0, -1.0,
       0.0, 0.0, -1.0, 0.0, 0.0, -1.0,
       // right
       1.0, 0.0, 0.0, 1.0, 0.0, 0.0,
+      1.0, 0.0, 0.0, 1.0, 0.0, 0.0,
       // top
+      0.0, 1.0, 0.0, 0.0, 1.0, 0.0,
       0.0, 1.0, 0.0, 0.0, 1.0, 0.0,
       // left
       -1.0, 0.0, 0.0, -1.0, 0.0, 0.0,
+      -1.0, 0.0, 0.0, -1.0, 0.0, 0.0,
       // bottom
+      0.0, -1.0, 0.0, 0.0, -1.0, 0.0,
       0.0, -1.0, 0.0, 0.0, -1.0, 0.0
     ]
 

@@ -63,5 +63,5 @@ void main(void) {
     color += specularVector;
 
     gl_FragColor = vec4(color, raw_color.w);
-    gl_FragColor = vec4(reflectDirdebug, 1);
+    gl_FragColor = vec4(normal, 1);
 }
