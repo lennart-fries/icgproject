@@ -109,6 +109,9 @@ export class RasterSphere {
     this.gl.disableVertexAttribArray(normalLocation)
   }
 
+  /**
+   * deletes sphere in buffer
+   */
   teardown () {
     this.gl.deleteBuffer(this.vertexBuffer)
     this.gl.deleteBuffer(this.normalBuffer)

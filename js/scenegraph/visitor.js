@@ -3,7 +3,7 @@ import { Matrix } from '../primitives/matrix.js'
 export class Visitor {
   /**
    * Creates a new Visitor
-   * @param {WebGLRenderingContext} context                 - The 3D context to render to
+   * @param {WebGLRenderingContext} context   - The 3D context to render to
    */
   constructor (context) {
     this.gl = context

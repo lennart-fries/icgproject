@@ -3,24 +3,26 @@
 
 import { Matrix } from './primitives/matrix.js'
 import { Vector } from './primitives/vector.js'
-import { GroupNode, SphereNode, AABoxNode } from './scenegraph/nodes.js'
+import { GroupNode, SphereNode, AABoxNode, CameraNode, LightNode } from './scenegraph/nodes.js'
 import { RotationNode } from './scenegraph/animation-nodes.js'
 import { settings } from './ui/ui.js'
+import { PreviewVisitor } from './scenegraph/previewvisitor.js'
 
 let r
+let previewVisitor = new PreviewVisitor();
 
 const canvasID = 'render-surface'
 let canvas = document.getElementById(canvasID)
 
 // construct scene graph
-const sg = new GroupNode(Matrix.scaling(new Vector(0.2, 0.2, 0.2)))
-const gn1 = new GroupNode(Matrix.translation(new Vector(1, 1, 0)))
+const sg = new GroupNode(Matrix.scaling(new Vector(0.2, 0.2, 0.2, 0.0)))
+const gn1 = new GroupNode(Matrix.translation(new Vector(1, 1, 0, 0.0)))
 sg.add(gn1)
 const gn3 = new GroupNode(Matrix.identity())
 gn1.add(gn3)
 const sphere = new SphereNode(new Vector(0.5, -0.8, 0, 1), 0.4, new Vector(0.8, 0.4, 0.1, 1))
 gn3.add(sphere)
-let gn2 = new GroupNode(Matrix.translation(new Vector(-0.7, -0.4, 0.1)))
+let gn2 = new GroupNode(Matrix.translation(new Vector(-0.7, -0.4, 0.1, 0.0)))
 sg.add(gn2)
 
 const colorsArray = [
@@ -46,16 +48,18 @@ const colorVector = new Vector(0.0, 1.0, 0.0, 1.0)
 const cube = new AABoxNode(
   new Vector(-1, -1, -1, 1),
   new Vector(1, 1, 1, 1),
-  colorVector,
-  'assets/diamond_ore.png'
+  colorVector
+  // 'assets/diamond_ore.png'
 )
 
 gn2.add(cube)
 
-const lightPositions = [
-  new Vector(0.2, 1, -1, 1)
-]
+const light1 = new LightNode(new Vector(0.2, 1, -1, 1))
+gn1.add(light1)
+const light2 = new LightNode(new Vector(0.2, 1, 1, 1))
+gn1.add(light2)
 
+/*
 let camera = {
   eye: new Vector(-0.5, 0.5, -1, 1),
   center: new Vector(0, 0, 0, 1),
@@ -64,10 +68,13 @@ let camera = {
   aspect: canvas.clientWidth / canvas.clientHeight,
   near: 0.1,
   far: 100
-}
+}*/
+
+const camera = new CameraNode(new Vector(-0.5, 0.5, -1, 1), new Vector(0, 0, 0, 1), new Vector(0, 1, 0, 0), 60, canvas.clientWidth / canvas.clientHeight, 0.1, 100)
+gn1.add(camera)
 
 let animationNodes = [
-  new RotationNode(gn2, new Vector(0, 0, 1))
+  new RotationNode(gn2, new Vector(0, 0, 1, 0))
 ]
 
 export function simulate (deltaT) {
@@ -78,6 +85,10 @@ export function simulate (deltaT) {
 
 let lastTimestamp = performance.now()
 
+/**
+ * todo
+ * @return {boolean}
+ */
 function updateRenderer () {
   if (r == null || !(r instanceof settings.settings.renderer)) {
     if (r != null) {
@@ -98,9 +109,12 @@ function updateRenderer () {
   return false
 }
 
+/**
+ * todo
+ */
 function updateResolution () {
-  var width = Math.ceil(canvas.clientWidth / settings.settings.renderResolution)
-  var height = Math.ceil(canvas.clientHeight / settings.settings.renderResolution)
+  let width = Math.ceil(canvas.clientWidth / settings.settings.renderResolution)
+  let height = Math.ceil(canvas.clientHeight / settings.settings.renderResolution)
   if (canvas.width !== width || canvas.height !== height) {
     canvas.width = width
     canvas.height = height
@@ -109,13 +123,19 @@ function updateResolution () {
   }
 }
 
+/**
+ * todo
+ * @param timestamp
+ */
 function animate (timestamp) {
   if (updateRenderer()) {
     return
   }
+  // camera und light stuff
   updateResolution()
   simulate(timestamp - lastTimestamp)
-  r.loop(sg, camera, lightPositions)
+  let cameraAndLights = previewVisitor.run(sg)
+  r.loop(sg, cameraAndLights[0], cameraAndLights.slice(1))
   lastTimestamp = timestamp
   window.requestAnimationFrame(animate)
 }

@@ -145,6 +145,11 @@ export class RasterAabox {
     }
   }
 
+  /**
+   * check if the parameter is a single color vector or an array of colors
+   * @param color             - color
+   * @return {Array.<Vector>} - array with 8 colors
+   */
   checkColor (color) {
     let colorArray
     if (color instanceof Vector) { // single vector
@@ -219,6 +224,9 @@ export class RasterAabox {
     this.gl.disableVertexAttribArray(normalLocation)
   }
 
+  /**
+   * deletes aabox from buffer
+   */
   teardown () {
     this.gl.deleteBuffer(this.vertexBuffer)
     this.gl.deleteBuffer(this.normalBuffer)

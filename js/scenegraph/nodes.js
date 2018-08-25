@@ -127,7 +127,7 @@ export class CameraNode extends Node {
    * @param  {Visitor} visitor - The visitor
    */
   accept (visitor) {
-    visitor.visitGroupNode(this)
+    visitor.visitCameraNode(this)
   }
 }
 
@@ -146,6 +146,6 @@ export class LightNode extends Node {
    * @param  {Visitor} visitor - The visitor
    */
   accept (visitor) {
-    visitor.visitGroupNode(this)
+    visitor.visitLightNode(this)
   }
 }

@@ -19,6 +19,10 @@ export class Shader {
     this.gl = gl
   }
 
+  /**
+   * todo
+   * @return {Promise<[any]>}
+   */
   async load () {
     let gl = this.gl
     const vertexShader = this.getShader(gl, this.vsFilename, gl.VERTEX_SHADER)
@@ -221,11 +225,20 @@ class UniformInt {
 }
 
 class UniformArray {
+  /**
+   * todo
+   * @param gl
+   * @param position
+   */
   constructor (gl, position) {
     this.gl = gl
     this.position = position
   }
 
+  /**
+   * todo
+   * @param value
+   */
   set (value) {
     let array = []
     for (let i = 0; i < value.length; i++) {

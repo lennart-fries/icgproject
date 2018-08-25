@@ -12,6 +12,7 @@ export class RasterVisitor extends Visitor {
    * Renders the Scenegraph
    * @param  {Node} rootNode                 - The root node of the Scenegraph
    * @param  {Object} camera                 - The camera used
+   * @param  {Array.<Vector>} lightPositions - The light light positions
    */
   run (rootNode, camera, lightPositions) {
     // clear
@@ -77,6 +78,7 @@ export class RasterVisitor extends Visitor {
 
     return shader
   }
+
   /**
    * Visits a sphere node
    * @param  {Node} node - The node to visit

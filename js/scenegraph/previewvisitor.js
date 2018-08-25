@@ -1,42 +1,37 @@
 import { Visitor } from './visitor.js'
-import { Matrix } from '../primitives/matrix'
 
 export class PreviewVisitor extends Visitor {
-  run (rootNode, camera) {
-    this.setupCamera(camera)
 
+  /**
+   * Searches the Scenegraph for the camera node and all light nodes
+   * @param  {Node} rootNode    - The root node of the Scenegraph
+   * @returns {Array.<Object>}  - The camera in array[0] and all lights after that
+   */
+  run (rootNode) {
+    this.camera = []
+    this.lightPositions = []
+    rootNode.accept(this)
+    return this.camera.concat(this.lightPositions)
   }
 
-  setupCamera (camera) {
-    if (camera) {
-      this.lookat = Matrix.lookat(
-        camera.eye,
-        camera.center,
-        camera.up)
-
-      this.perspective = Matrix.perspective(
-        camera.fovy,
-        camera.aspect,
-        camera.near,
-        camera.far
-      )
-      if (typeof this.perspective === 'undefined') {
-        this.perspective = Matrix.identity()
-      }
-    }
-  }
-
+  /**
+   * Visits a camera node and safes it in the previewVisitor
+   * @param  {Node} node - The node to visit
+   */
   visitCameraNode (node) {
     let mat = this.currentMatrix
-    // iwi mat.mul
-    this.objects.push([node.eye, node.center, node.up])
+    this.camera.push(node)
+    this.camera.eye = mat.mul(node.eye)
+    this.camera.center = mat.mul(node.center)
+    this.camera.up = mat.mul(node.up)
   }
 
+  /**
+   * Visits a light node and writes it to the lightsPosition array
+   * @param  {Node} node - The node to visit
+   */
   visitLightNode (node) {
     let mat = this.currentMatrix
-    // iwi mat.mul
-    // woher light positions
-    // node.x node.y node.z
-    this.objects.push(node.something)
+    this.lightPositions.push(mat.mul(node.mat))
   }
 }
