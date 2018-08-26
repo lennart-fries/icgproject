@@ -1,4 +1,5 @@
 import { MatrixVisitor } from './visitor.js'
+import { Vector } from '../primitives/vector.js'
 
 export class PreviewVisitor extends MatrixVisitor {
   /**
@@ -30,11 +31,11 @@ export class PreviewVisitor extends MatrixVisitor {
   }
 
   /**
-   * Visits a light node and writes it to the lightsPosition array
+   * Visits a light node and adds it to the array of light positions
    * @param  {LightNode} node - Node to visit
    */
   visitLightNode (node) {
-    let mat = this.currentMatrix
-    this.lightPositions.push(mat.mul(node.mat))
+    let vec = this.currentMatrix.mul(node.position)
+    this.lightPositions.push(new Vector(vec.x, vec.y, vec.z, node.intensity))
   }
 }

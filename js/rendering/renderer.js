@@ -24,20 +24,17 @@ export class Renderer {
    * @param {Object} camera                 - Object containing camera parameters for the scene
    * @param {Array.<Vector>} lightPositions - Array of vectors representing light positions
    */
-  loop (sg, camera, lightPositions) {
-  }
+  loop (sg, camera, lightPositions) { }
 
   /**
    * Updates the canvas resolution
    * @param {int} width  - Width of the canvas
    * @param {int} height - Height of the canvas
    */
-  updateResolution (width, height) {
-  }
+  updateResolution (width, height) { }
 
   /**
-   *  Tears down the renderer
+   * Tears down the renderer
    */
-  teardown () {
-  }
+  teardown () { }
 }

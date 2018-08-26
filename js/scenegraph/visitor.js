@@ -6,7 +6,7 @@ import { Matrix } from '../primitives/matrix.js'
 export class Visitor {
   /**
    * Creates a new Visitor
-   * @param {Context} context   - 3D context to render to
+   * @param {CanvasRenderingContext2D | WebGLRenderingContext} context - Context to render to
    */
   constructor (context) {
     this.context = context

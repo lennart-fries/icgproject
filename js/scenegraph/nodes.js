@@ -102,14 +102,14 @@ export class AABoxNode extends Node {
 
 export class CameraNode extends Node {
   /**
-   * Constructor
-   * @param eye     - position of the camera
-   * @param center  - alignment of the camera
-   * @param up      - Farthest up on the y-axis
-   * @param fovy    - field of view in degree
-   * @param aspect  - aspect ratio of the camera (width/height)
-   * @param near    - nearest distance of the rendered view
-   * @param far     - furthest distance of the rendered view
+   * Creates a camera
+   * @param  {Vector} eye    - position of the camera
+   * @param  {Vector} center - center of the camera
+   * @param  {Vector} up     - vector pointing up on the y-axis
+   * @param  {number} fovy   - vertical field of view in degrees
+   * @param  {number} aspect - aspect ratio of the camera (width/height)
+   * @param  {number} near   - nearest distance of the rendered view
+   * @param  {number} far    - furthest distance of the rendered view
    */
   constructor (eye, center, up, fovy, aspect, near, far) {
     super()
@@ -133,12 +133,14 @@ export class CameraNode extends Node {
 
 export class LightNode extends Node {
   /**
-   * Constructor
-   * @param mat
+   * Creates a point light.
+   * @param  {Vector} position  - position of the light
+   * @param  {number} intensity - how strong the light is, from 0 to 1
    */
-  constructor (mat) {
+  constructor (position, intensity) {
     super()
-    this.mat = mat
+    this.position = position
+    this.intensity = intensity
   }
 
   /**

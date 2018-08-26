@@ -61,7 +61,7 @@ export class RayAABox {
   }
 
   /**
-   * Calculates the intersection of the AAbox with the given ray
+   * Calculates the intersection of the box with the given ray
    * @param  {Ray} ray      - Ray to intersect with
    * @return {Intersection}   Intersection if there is one, null if there is none
    */

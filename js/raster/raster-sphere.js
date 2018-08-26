@@ -110,7 +110,7 @@ export class RasterSphere {
   }
 
   /**
-   * deletes sphere in buffer
+   * Deletes WebGL buffers
    */
   teardown () {
     this.gl.deleteBuffer(this.vertexBuffer)

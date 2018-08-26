@@ -8,8 +8,7 @@ import { RotationNode } from './scenegraph/animation-nodes.js'
 import { settings } from './ui/ui.js'
 import { PreviewVisitor } from './scenegraph/preview-visitor.js'
 
-let r
-let previewVisitor = new PreviewVisitor()
+let r, previewVisitor
 
 const canvasID = 'render-surface'
 let canvas = document.getElementById(canvasID)
@@ -46,9 +45,9 @@ const cube = new AABoxNode(
 )
 gn2.add(cube)
 
-const light1 = new LightNode(new Vector(-10, 3, -3, 0.2))
+const light1 = new LightNode(new Vector(-10, 3, -3, 1), 0.2)
 gn1.add(light1)
-const light2 = new LightNode(new Vector(10, 3, -3, 0.2))
+const light2 = new LightNode(new Vector(10, 3, -3, 1), 0.2)
 gn1.add(light2)
 
 const cameraNode = new CameraNode(new Vector(0, 0, 10, 1), new Vector(0, 0, 0, 1), new Vector(0, 1, 0, 0), 60, 1, 0.1, 100)
@@ -58,6 +57,10 @@ let animationNodes = [
   new RotationNode(gn2, new Vector(0, 0, 1, 0))
 ]
 
+/**
+ * Advances the animations described by the animation nodes
+ * @param deltaT - Time since last invocation
+ */
 function simulate (deltaT) {
   for (let animationNode of animationNodes) {
     animationNode.simulate(deltaT)
@@ -82,6 +85,7 @@ function updateRenderer () {
       canvas = newCanvas
     }
     r = new settings.settings.renderer(canvas, sg)
+    previewVisitor = new PreviewVisitor()
     r.setup().then(() =>
       window.requestAnimationFrame(animate)
     )

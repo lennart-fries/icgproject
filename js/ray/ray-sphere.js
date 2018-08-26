@@ -6,7 +6,7 @@ import { Intersection } from './intersection.js'
 
 export class RaySphere {
   /**
-   * Creates a new Sphere with center and radius
+   * Creates a new sphere with center and radius
    * @param  {Vector} center - Center of the Sphere
    * @param  {number} radius - Radius of the Sphere
    * @param  {Vector} color  - Color of the Sphere

@@ -1,7 +1,7 @@
 import { Vector } from '../primitives/vector.js'
 
 /**
- * Calculate the color of an object at the intersection point according to the Phong lighting model.
+ * Calculate the color of an object at the intersection point according to the Phong lighting model
  * @param {Vector} objColor               - Color of the intersected object
  * @param {Intersection} intersection     - Intersection information
  * @param {Array.<Vector>} lightPositions - Light positions

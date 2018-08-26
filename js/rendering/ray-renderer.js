@@ -5,7 +5,7 @@ export class RayRenderer extends Renderer {
   /**
    * Creates a renderer that uses ray tracing
    * @param {HTMLCanvasElement} canvas - Canvas to draw on
-   * @param {Node} sg             - Root node of the scene graph
+   * @param {Node} sg                  - Root node of the scene graph
    */
   constructor (canvas, sg) {
     super()
