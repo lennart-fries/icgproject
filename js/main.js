@@ -4,7 +4,7 @@
 import { Matrix } from './primitives/matrix.js'
 import { Vector } from './primitives/vector.js'
 import { GroupNode, SphereNode, AABoxNode, CameraNode, LightNode } from './scenegraph/nodes.js'
-import { RotationNode } from './scenegraph/animation-nodes.js'
+import { AnimationNode, BackAndForthAnimationNode } from './animation/animation-nodes.js'
 import { settings } from './ui/ui.js'
 import { PreviewVisitor } from './scenegraph/preview-visitor.js'
 
@@ -54,7 +54,8 @@ const cameraNode = new CameraNode(new Vector(0, 0, 10, 1), new Vector(0, 0, 0, 1
 gn1.add(cameraNode)
 
 let animationNodes = [
-  new RotationNode(gn2, new Vector(0, 0, 1, 0))
+  new AnimationNode(gn2, 1.0, true, new Vector(0, 0, 1, 0), Matrix.rotation),
+  new BackAndForthAnimationNode(gn3, 1.0, true, new Vector(0, 0, 1, 0), Matrix.translation, 3, 1.5)
 ]
 
 /**
@@ -99,6 +100,7 @@ function updateRenderer () {
  * @param camera - Camera object to inject the correct aspect ratio into
  */
 function updateResolution (camera) {
+  // ensure canvas size is a whole number
   let width = Math.ceil(canvas.clientWidth / settings.settings.renderResolution)
   let height = Math.ceil(canvas.clientHeight / settings.settings.renderResolution)
   if (canvas.width !== width || canvas.height !== height) {

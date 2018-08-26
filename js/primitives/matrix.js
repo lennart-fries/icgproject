@@ -6,7 +6,7 @@ import { Vector } from './vector.js'
 
 export class Matrix {
   /**
-   * Constructor of the matrix. Expects an array in row-major layout. Saves the data as column major internally.
+   * Constructor of the matrix. Expects an array in row-major layout. Saves the data as column major internally
    * @param  {Array.<number>|Float32Array} mat - Matrix values row major
    */
   constructor (mat) {
@@ -33,23 +33,28 @@ export class Matrix {
   }
 
   /**
-   * Returns a matrix that represents a rotation. The rotation axis is either the x, y or z axis (either x, y, z is 1).
-   * @param  {Vector} axis  - Axis to rotate around
-   * @param  {number} angle - Angle to rotate
-   * @return {Matrix}         Resulting rotation matrix
+   * Returns a matrix that represents a rotation
+   * @param  {Vector} angles - Angle to rotate per axis, applied in order x, y, z
+   * @return {Matrix}          Resulting rotation matrix
    */
-  static rotation (axis, angle) {
+  static rotation (angles) {
     let m = Matrix.identity()
+    let values = angles.valueOf()
+    for (let i = 0; i < 3; i++) {
+      let sin = Math.sin(values[i])
+      let cos = Math.cos(values[i])
+      let offset = (i + 1) % 3
+      let offset2 = (i + 2) % 3
 
-    let sin = Math.sin(angle)
-    let cos = Math.cos(angle)
-    let offset = axis.x + 2 * axis.y
+      let temp = Matrix.identity()
 
-    m.setVal((offset) % 3, (offset) % 3, cos)
-    m.setVal((offset) % 3, (1 + offset) % 3, -sin)
-    m.setVal((1 + offset) % 3, (offset) % 3, sin)
-    m.setVal((1 + offset) % 3, (1 + offset) % 3, cos)
+      temp.setVal(offset, offset, cos)
+      temp.setVal(offset, offset2, -sin)
+      temp.setVal(offset2, offset, sin)
+      temp.setVal(offset2, offset2, cos)
 
+      m = m.mul(temp)
+    }
     return m
   }
 
@@ -60,11 +65,36 @@ export class Matrix {
    */
   static scaling (scale) {
     let m = Matrix.identity()
-
     for (let i = 0; i < 3; i++) {
       m.setVal(i, i, scale.data[i])
     }
     return m
+  }
+
+  /**
+   * Returns a matrix that represents a shear on the upper triangle of the matrix
+   * @param  {Vector} shear - Amount to shear in each direction, the X component describes the YZ shear etc.
+   * @return {Matrix}         Resulting scaling matrix
+   */
+  static shear (shear) {
+    let m = Matrix.identity()
+    let i = 2
+    for (let row = 0; row < 2; row++) {
+      for (let col = row; col < 3; col++) {
+        m.setVal(row, col, shear.data[i])
+        i--
+      }
+    }
+    return m
+  }
+
+  /**
+   * Returns a matrix that represents a shear on the lower triangle of the matrix
+   * @param  {Vector} shear - Amount to shear in each direction, the X component describes the ZY shear etc.
+   * @return {Matrix}         Resulting scaling matrix
+   */
+  static shearLower (shear) {
+    return Matrix.shear(shear).transpose()
   }
 
   /**
