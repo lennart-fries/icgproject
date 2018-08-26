@@ -6,7 +6,7 @@ import { Vector } from './primitives/vector.js'
 import { GroupNode, SphereNode, AABoxNode, CameraNode, LightNode } from './scenegraph/nodes.js'
 import { RotationNode } from './scenegraph/animation-nodes.js'
 import { settings } from './ui/ui.js'
-import { PreviewVisitor } from './scenegraph/previewvisitor.js'
+import { PreviewVisitor } from './scenegraph/preview-visitor.js'
 
 let r
 let previewVisitor = new PreviewVisitor()
@@ -25,7 +25,7 @@ gn3.add(sphere)
 let gn2 = new GroupNode(Matrix.translation(new Vector(-0.7, -0.4, 0.1, 0.0)))
 sg.add(gn2)
 
-const colorsArray = [
+/* const colorsArray = [
   new Vector(0.0, 1.0, 0.0, 1.0),
   new Vector(0.0, 0.0, 1.0, 1.0),
   new Vector(1.0, 0.0, 0.0, 1.0),
@@ -34,7 +34,7 @@ const colorsArray = [
   new Vector(1.0, 0.0, 0.0, 1.0),
   new Vector(1.0, 0.0, 1.0, 1.0),
   new Vector(0.0, 0.0, 1.0, 1.0)
-]
+] */
 
 const colorVector = new Vector(0.0, 1.0, 0.0, 1.0)
 
@@ -51,14 +51,14 @@ gn1.add(light1)
 const light2 = new LightNode(new Vector(10, 3, -3, 0.2))
 gn1.add(light2)
 
-const camera = new CameraNode(new Vector(0, 0, 10, 1), new Vector(0, 0, 0, 1), new Vector(0, 1, 0, 0), 60, canvas.clientWidth / canvas.clientHeight, 0.1, 100)
-gn1.add(camera)
+const cameraNode = new CameraNode(new Vector(0, 0, 10, 1), new Vector(0, 0, 0, 1), new Vector(0, 1, 0, 0), 60, 1, 0.1, 100)
+gn1.add(cameraNode)
 
 let animationNodes = [
   new RotationNode(gn2, new Vector(0, 0, 1, 0))
 ]
 
-export function simulate (deltaT) {
+function simulate (deltaT) {
   for (let animationNode of animationNodes) {
     animationNode.simulate(deltaT)
   }
@@ -67,8 +67,8 @@ export function simulate (deltaT) {
 let lastTimestamp = performance.now()
 
 /**
- * todo
- * @return {boolean}
+ * Makes sure the current renderer is the selected one
+ * @return {boolean} - True if renderer changed
  */
 function updateRenderer () {
   if (r == null || !(r instanceof settings.settings.renderer)) {
@@ -91,32 +91,36 @@ function updateRenderer () {
 }
 
 /**
- * todo
+ * Makes sure the resolution of the canvas corresponds to the window size and configure camera accordingly
+ * @param camera - Camera object to inject the correct aspect ratio into
  */
-function updateResolution () {
+function updateResolution (camera) {
   let width = Math.ceil(canvas.clientWidth / settings.settings.renderResolution)
   let height = Math.ceil(canvas.clientHeight / settings.settings.renderResolution)
   if (canvas.width !== width || canvas.height !== height) {
     canvas.width = width
     canvas.height = height
     r.updateResolution(width, height)
-    camera.aspect = width / height
   }
+  camera.aspect *= width / height
 }
 
 /**
- * todo
- * @param timestamp
+ * Changes settings, advances the animations and draws a new frame
+ * @param timestamp - Current time
  */
 function animate (timestamp) {
   if (updateRenderer()) {
+    // Changing the renderer already calls requestAnimationFrame, which calls this method, so quit
     return
   }
-  // camera und light stuff
-  updateResolution()
+  // Set background color of scene
+  document.getElementById('content').style.backgroundColor = '#' + settings.settings.backgroundColor
   simulate(timestamp - lastTimestamp)
-  let cameraAndLights = previewVisitor.run(sg)
-  r.loop(sg, cameraAndLights[0], cameraAndLights[1])
+  let [camera, lights] = previewVisitor.run(sg)
+  updateResolution(camera)
+  // Render new frame
+  r.loop(sg, camera, lights)
   lastTimestamp = timestamp
   window.requestAnimationFrame(animate)
 }

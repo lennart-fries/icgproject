@@ -1,13 +1,13 @@
 import { Vector } from '../primitives/vector.js'
 
 /**
- * Calculate the colour of an object at the intersection point according to the Phong Lighting model.
- * @param {Vector} objColor               - The colour of the intersected object
- * @param {Intersection} intersection     - The intersection information
- * @param {Array.<Vector>} lightPositions - The light positions
- * @param {number} shininess              - The shininess parameter of the Phong model
- * @param {vector} cameraPosition         - The position of the camera
- * @return {Vector}                         The resulting color
+ * Calculate the color of an object at the intersection point according to the Phong lighting model.
+ * @param {Vector} objColor               - Color of the intersected object
+ * @param {Intersection} intersection     - Intersection information
+ * @param {Array.<Vector>} lightPositions - Light positions
+ * @param {number} shininess              - Shininess parameter of the Phong model
+ * @param {Vector} cameraPosition         - Position of the camera
+ * @return {Vector}                         Resulting color
  */
 export function phong (objColor, intersection, lightPositions, shininess, cameraPosition) {
   let color = objColor
@@ -40,20 +40,20 @@ export function phong (objColor, intersection, lightPositions, shininess, camera
   // specular
   let ssum = 0
   lightPositions.forEach(function (light) {
-      let n = intersection.normal
-      let l = light.sub(intersection.point).normalised()
-      let firstPart = 2 * n.dot(l)
-      let middlePart = n.mul(firstPart)
-      let r = middlePart.sub(l).normalised()
+    let n = intersection.normal
+    let l = light.sub(intersection.point).normalised()
+    let firstPart = 2 * n.dot(l)
+    let middlePart = n.mul(firstPart)
+    let r = middlePart.sub(l).normalised()
 
-      let v = cameraPosition.normalised()
+    let v = cameraPosition.normalised()
 
-      if (r.dot(v) > 0) {
-        ssum = ssum + energy * Math.pow((r.dot(v)), ke)
-      } else {
-        ssum = ssum + Math.pow(0, ke)
-      }
+    if (r.dot(v) > 0) {
+      ssum = ssum + energy * Math.pow((r.dot(v)), ke)
+    } else {
+      ssum = ssum + Math.pow(0, ke)
     }
+  }
   )
 
   let specular = ks * ssum

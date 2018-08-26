@@ -4,8 +4,8 @@
 export class Ray {
   /**
    * Creates a new ray with origin and direction
-   * @param  {Vector} origin    - The origin of the Ray
-   * @param  {Vector} direction - The direction of the Ray
+   * @param  {Vector} origin    - Origin of the Ray
+   * @param  {Vector} direction - Direction of the Ray
    */
   constructor (origin, direction) {
     this.origin = origin
@@ -14,12 +14,12 @@ export class Ray {
 
   /**
    * Creates a ray from the camera through the image plane. The plane is located at (0, 0, -1) with x ∈ [-1,1] and y ∈ [-1, 1]
-   * @param  {number} width  - The width of the canvas
-   * @param  {number} height - The height of the canvas
-   * @param  {number} xpos   - The pixel's x-position in the canvas
-   * @param  {number} ypos   - The pixel's y-position in the canvas
-   * @param  {Vector} camera - The Camera-position
-   * @return {Ray}             The resulting Ray
+   * @param  {number} width  - Width of the canvas
+   * @param  {number} height - Height of the canvas
+   * @param  {number} xpos   - Pixel's x-position in the canvas
+   * @param  {number} ypos   - Pixel's y-position in the canvas
+   * @param  {Vector} camera - Camera-position
+   * @return {Ray}             Resulting Ray
    */
   static makeRay (width, height, xpos, ypos, camera) {
     const fovyRadian = camera.fovy * Math.PI / 180

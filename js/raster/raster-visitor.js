@@ -1,22 +1,22 @@
 /**
- * Class representing a Visitor that uses Rasterisation to render a Scenegraph
+ * Visitor that uses rasterization to render a scene graph
  */
 
 import { Matrix } from '../primitives/matrix.js'
 import { RasterSphere } from './raster-sphere.js'
-import { RasterAabox } from './raster-aabox.js'
-import { Visitor } from '../scenegraph/visitor.js'
+import { RasterAABox } from './raster-aabox.js'
+import { MatrixVisitor, Visitor } from '../scenegraph/visitor.js'
 
-export class RasterVisitor extends Visitor {
+export class RasterVisitor extends MatrixVisitor {
   /**
-   * Renders the Scenegraph
-   * @param  {Node} rootNode                 - The root node of the Scenegraph
-   * @param  {Object} camera                 - The camera used
-   * @param  {Array.<Vector>} lightPositions - The light light positions
+   * Renders the scene graph
+   * @param  {Node} rootNode                 - Root node of the scene graph
+   * @param  {Object} camera                 - Camera to use
+   * @param  {Array.<Vector>} lightPositions - Array of point light positions to use
    */
   run (rootNode, camera, lightPositions) {
     // clear
-    this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT)
+    this.context.clear(this.context.COLOR_BUFFER_BIT | this.context.DEPTH_BUFFER_BIT)
 
     this.setupCamera(camera)
 
@@ -28,7 +28,7 @@ export class RasterVisitor extends Visitor {
 
   /**
    * Helper function to setup camera matrices
-   * @param  {Object} camera - The camera used
+   * @param  {Object} camera - Camera to use
    */
   setupCamera (camera) {
     if (camera) {
@@ -51,7 +51,7 @@ export class RasterVisitor extends Visitor {
 
   /**
    * Helper function to set all the uniform parameters for the shader
-   * @returns {Object} shader - The shader used
+   * @return {Object} shader - Shader to use
    */
   setUniforms () {
     let shader = this.shader
@@ -80,85 +80,78 @@ export class RasterVisitor extends Visitor {
   }
 
   /**
-   * Visits a sphere node
-   * @param  {Node} node - The node to visit
+   * Visits a sphere node for rendering
+   * @param  {SphereNode} node - Node to visit
    */
   visitSphereNode (node) {
     let shader = this.setUniforms()
-    node.rastersphere.render(shader)
+    node.rasterSphere.render(shader)
   }
 
   /**
-   * Visits an axis aligned box node
-   * @param  {Node} node - The node to visit
+   * Visits an axis aligned box node for rendering
+   * @param  {AABoxNode} node - Node to visit
    */
   visitAABoxNode (node) {
     let shader = this.setUniforms()
-    node.rasterbox.render(shader)
+    node.rasterBox.render(shader)
   }
 }
 
-/** Class representing a Visitor that sets up buffers for use by the RasterVisitor */
+/**
+ * Visitor that sets up buffers for use by the RasterVisitor
+ */
 export class RasterSetupVisitor extends Visitor {
   /**
    * Sets up all needed buffers
-   * @param  {Node} rootNode - The root node of the Scenegraph
+   * @param  {Node} rootNode - Root node of the scene graph
    */
   run (rootNode) {
-    // Clear to white, fully opaque
-    this.gl.clearColor(1.0, 1.0, 1.0, 1.0)
+    // Clear to transparent
+    this.context.clearColor(0.0, 0.0, 0.0, 0.0)
     // Clear everything
-    this.gl.clearDepth(1.0)
+    this.context.clearDepth(1.0)
     // Enable depth testing
-    this.gl.enable(this.gl.DEPTH_TEST)
-    this.gl.depthFunc(this.gl.LEQUAL)
+    this.context.enable(this.context.DEPTH_TEST)
+    this.context.depthFunc(this.context.LEQUAL)
 
     super.run(rootNode)
   }
 
   /**
-   * Visits a group node
-   * @param  {Node} node - The node to visit
-   */
-  visitGroupNode (node) {
-    super.visitGroupNode2(node)
-  }
-
-  /**
-   * Visits a sphere node
-   * @param  {Node} node - The node to visit
+   * Visits a sphere node for setup
+   * @param  {SphereNode} node - Node to visit
    */
   visitSphereNode (node) {
-    node.rastersphere = new RasterSphere(this.gl, node.center, node.radius, node.color)
+    node.rasterSphere = new RasterSphere(this.context, node.center, node.radius, node.color)
   }
 
   /**
-   * Visits an axis aligned box node
-   * @param  {Node} node - The node to visit
+   * Visits an axis aligned box node for setup
+   * @param  {AABoxNode} node - Node to visit
    */
   visitAABoxNode (node) {
-    node.rasterbox = new RasterAabox(this.gl, node.minPoint, node.maxPoint, node.color, node.texture)
+    node.rasterBox = new RasterAABox(this.context, node.minPoint, node.maxPoint, node.color, node.texture)
   }
 }
 
+/**
+ * Visitor that tears down WebGL buffers
+ */
 export class RasterTeardownVisitor extends Visitor {
-  visitGroupNode (node) {
-    super.visitGroupNode2(node)
-  }
-
   /**
-   * visits a sphere for teardowning
-   * @param  {Node} node - The node to visit
+   * Visits a sphere node for teardown
+   * @param  {SphereNode} node - Node to visit
    */
   visitSphereNode (node) {
-    node.rastersphere.teardown()
+    node.rasterSphere.teardown()
   }
 
   /**
-   * visits a aa box for teardowning
-   * @param  {Node} node - The node to visit
+   * Visits an axis aligned box node for teardown
+   * @param  {AABoxNode} node - Node to visit
    */
   visitAABoxNode (node) {
-    node.rasterbox.teardown()
+    node.rasterBox.teardown()
   }
 }

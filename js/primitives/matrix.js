@@ -7,7 +7,7 @@ import { Vector } from './vector.js'
 export class Matrix {
   /**
    * Constructor of the matrix. Expects an array in row-major layout. Saves the data as column major internally.
-   * @param  {Array.<number>} mat - Matrix values row major
+   * @param  {Array.<number>|Float32Array} mat - Matrix values row major
    */
   constructor (mat) {
     this.data = new Float32Array(16)
@@ -20,8 +20,8 @@ export class Matrix {
 
   /**
    * Returns a matrix that represents a translation
-   * @param  {Vector} translation - The translation vector that shall be expressed by the matrix
-   * @return {Matrix}               The resulting translation matrix
+   * @param  {Vector} translation - Translation vector that shall be expressed by the matrix
+   * @return {Matrix}               Resulting translation matrix
    */
   static translation (translation) {
     let m = Matrix.identity()
@@ -34,9 +34,9 @@ export class Matrix {
 
   /**
    * Returns a matrix that represents a rotation. The rotation axis is either the x, y or z axis (either x, y, z is 1).
-   * @param  {Vector} axis  - The axis to rotate around
-   * @param  {number} angle - The angle to rotate
-   * @return {Matrix}         The resulting rotation matrix
+   * @param  {Vector} axis  - Axis to rotate around
+   * @param  {number} angle - Angle to rotate
+   * @return {Matrix}         Resulting rotation matrix
    */
   static rotation (axis, angle) {
     let m = Matrix.identity()
@@ -55,8 +55,8 @@ export class Matrix {
 
   /**
    * Returns a matrix that represents a scaling
-   * @param  {Vector} scale - The amount to scale in each direction
-   * @return {Matrix}         The resulting scaling matrix
+   * @param  {Vector} scale - Amount to scale in each direction
+   * @return {Matrix}         Resulting scaling matrix
    */
   static scaling (scale) {
     let m = Matrix.identity()
@@ -68,11 +68,11 @@ export class Matrix {
   }
 
   /**
-   * Constructs a lookat matrix
-   * @param  {Vector} eye    - The position of the viewer
-   * @param  {Vector} center - The position to look at
-   * @param  {Vector} up     - The up direction
-   * @return {Matrix}          The resulting lookat matrix
+   * Constructs a viewing matrix
+   * @param  {Vector} eye    - Position of the viewer
+   * @param  {Vector} center - Position to look at
+   * @param  {Vector} up     - Up direction
+   * @return {Matrix}          Resulting viewing matrix
    */
   static lookat (eye, center, up) {
     // https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/gluLookAt.xml
@@ -96,7 +96,7 @@ export class Matrix {
    * @param  {number} top    - Camera-space top value of upper right far point
    * @param  {number} near   - Camera-space near value of lower lower near point
    * @param  {number} far    - Camera-space far value of upper right far point
-   * @return {Matrix}          The rotation matrix
+   * @return {Matrix}          Rotation matrix
    */
   static frustum (left, right, bottom, top, near, far) {
     return new Matrix([
@@ -113,7 +113,7 @@ export class Matrix {
    * @param  {number} aspect - Aspect ratio between width and height
    * @param  {number} near   - Camera-space distance to near plane
    * @param  {number} far    - Camera-space distance to far plane
-   * @return {Matrix}          The resulting matrix
+   * @return {Matrix}          Resulting matrix
    */
   static perspective (fovy, aspect, near, far) {
     // calculates frustum from fov and near pane
@@ -139,9 +139,9 @@ export class Matrix {
 
   /**
    * Returns the value of the matrix at position row, col
-   * @param  {number} row - The value's row
-   * @param  {number} col - The value's column
-   * @return {number}       The requested value
+   * @param  {number} row - Value's row
+   * @param  {number} col - Value's column
+   * @return {number}       Requested value
    */
   getVal (row, col) {
     return this.data[col * 4 + row]
@@ -149,9 +149,9 @@ export class Matrix {
 
   /**
    * Sets the value of the matrix at position row, col
-   * @param {number} row - The value's row
-   * @param {number} val - The value to set to
-   * @param {number} col - The value's column
+   * @param {number} row - Value's row
+   * @param {number} val - Value to set to
+   * @param {number} col - Value's column
    */
   setVal (row, col, val) {
     this.data[col * 4 + row] = val
@@ -159,8 +159,8 @@ export class Matrix {
 
   /**
    * Matrix multiplication
-   * @param  {Matrix|Vector} other - The matrix or vector to multiplicate with
-   * @return {Matrix|Vector}         The result of the multiplication this*other
+   * @param  {Matrix|Vector} other - Matrix or vector to multiplicate with
+   * @return {Matrix|Vector}         Result of the multiplication this*other
    */
   mul (other) {
     if (other instanceof Matrix) {
@@ -211,7 +211,7 @@ export class Matrix {
 
   /**
    * Returns a new matrix that is the inverse of this matrix
-   * @return {Matrix} The inverse matrix
+   * @return {Matrix} Inverse matrix
    */
   invert () {
     let mat = this.data

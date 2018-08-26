@@ -7,7 +7,7 @@ import { Matrix } from '../primitives/matrix.js'
 export class AnimationNode {
   /**
    * Creates a new AnimationNode
-   * @param {GroupNode} groupNode - The GroupNode to attach to
+   * @param {GroupNode} groupNode - GroupNode to attach to
    */
   constructor (groupNode) {
     this.groupNode = groupNode
@@ -20,6 +20,13 @@ export class AnimationNode {
   toggleActive () {
     this.active = !this.active
   }
+
+  /**
+   * Advances the animation by deltaT
+   * @param  {number} deltaT - Time difference the animation is advanced by
+   */
+  simulate (deltaT) {
+  }
 }
 
 /**
@@ -29,8 +36,8 @@ export class AnimationNode {
 export class RotationNode extends AnimationNode {
   /**
    * Creates a new RotationNode
-   * @param {GroupNode} groupNode - The group node to attach to
-   * @param {Vector} axis         - The axis to rotate around
+   * @param {GroupNode} groupNode - Group node to attach to
+   * @param {Vector} axis         - Axis to rotate around
    */
   constructor (groupNode, axis) {
     super(groupNode)
@@ -40,7 +47,7 @@ export class RotationNode extends AnimationNode {
 
   /**
    * Advances the animation by deltaT
-   * @param  {number} deltaT - The time difference, the animation is advanced by
+   * @param  {number} deltaT - Time difference the animation is advanced by
    */
   simulate (deltaT) {
     // change the matrix of the attached

@@ -4,7 +4,7 @@ import { Vector } from '../primitives/vector.js'
 /**
  * A class creating buffers for an axis aligned box to render it with WebGL
  */
-export class RasterAabox {
+export class RasterAABox {
   /**
    * Creates all WebGL buffers for the box
    *     6 ------- 7
@@ -15,11 +15,11 @@ export class RasterAabox {
    *   | /       | /
    *   0 ------- 1
    *  looking in negative z axis direction
-   * @param {WebGLRenderingContext} gl - The canvas' context
-   * @param {Vector} minPoint - The minimal x,y,z of the box
-   * @param {Vector} maxPoint - The maximal x,y,z of the box
-   * @param {Vector} color - the color of the box
-   * @param {string} texture  - The image filename for the texture, optional
+   * @param {WebGLRenderingContext} gl - Canvas' context
+   * @param {Vector} minPoint - Minimal x,y,z of the box
+   * @param {Vector} maxPoint - Maximal x,y,z of the box
+   * @param {Vector} color - Color of the box
+   * @param {string} texture  - Image filename for the texture, optional
    */
   constructor (gl, minPoint, maxPoint, color, texture = '') {
     this.gl = gl
@@ -180,7 +180,7 @@ export class RasterAabox {
   /**
    * Renders the box
    *
-   * @param {Shader} shader - The shader used to render
+   * @param {Shader} shader - Shader used to render
    */
   render (shader) {
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertexBuffer)

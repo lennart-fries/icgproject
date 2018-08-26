@@ -1,21 +1,20 @@
-import { Visitor } from './visitor.js'
+import { MatrixVisitor } from './visitor.js'
 
-export class PreviewVisitor extends Visitor {
-
+export class PreviewVisitor extends MatrixVisitor {
   /**
-   * Searches the Scenegraph for the camera node and all light nodes
-   * @param  {Node} rootNode    - The root node of the Scenegraph
-   * @returns {Array.<Object>}  - The camera in array[0] and all lights after that
+   * Searches the scene graph for the camera node and all light nodes
+   * @param  {Node} rootNode - Root node of the scene graph
+   * @return {Array.<Object>}  First element: camera, second element: array of light positions as vectors
    */
   run (rootNode) {
     this.lightPositions = []
-    rootNode.accept(this)
+    super.run(rootNode)
     return [this.camera, this.lightPositions]
   }
 
   /**
-   * Visits a camera node and safes it in the previewVisitor
-   * @param  {Node} node - The node to visit
+   * Visits a camera node and saves the data in a camera object
+   * @param  {CameraNode} node - Node to visit
    */
   visitCameraNode (node) {
     let mat = this.currentMatrix
@@ -32,7 +31,7 @@ export class PreviewVisitor extends Visitor {
 
   /**
    * Visits a light node and writes it to the lightsPosition array
-   * @param  {Node} node - The node to visit
+   * @param  {LightNode} node - Node to visit
    */
   visitLightNode (node) {
     let mat = this.currentMatrix

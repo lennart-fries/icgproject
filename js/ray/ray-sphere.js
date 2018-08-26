@@ -4,12 +4,12 @@
 
 import { Intersection } from './intersection.js'
 
-export class Sphere {
+export class RaySphere {
   /**
    * Creates a new Sphere with center and radius
-   * @param  {Vector} center - The center of the Sphere
-   * @param  {number} radius - The radius of the Sphere
-   * @param  {Vector} color  - The colour of the Sphere
+   * @param  {Vector} center - Center of the Sphere
+   * @param  {number} radius - Radius of the Sphere
+   * @param  {Vector} color  - Color of the Sphere
    */
   constructor (center, radius, color) {
     this.center = center
@@ -19,8 +19,8 @@ export class Sphere {
 
   /**
    * Calculates the intersection of the sphere with the given ray
-   * @param  {Ray} ray      - The ray to intersect with
-   * @return {Intersection}   The intersection if there is one, null if there is none
+   * @param  {Ray} ray      - Ray to intersect with
+   * @return {Intersection}   Intersection if there is one, null if there is none
    */
   intersect (ray) {
     const xZero = ray.origin.sub(this.center)
