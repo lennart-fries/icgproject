@@ -36,13 +36,6 @@ const colorsArray = [
   new Vector(0.0, 0.0, 1.0, 1.0)
 ]
 
-const colorsArrayHalf = [
-  new Vector(0.0, 1.0, 0.0, 1.0),
-  new Vector(0.0, 0.0, 1.0, 1.0),
-  new Vector(1.0, 0.0, 0.0, 1.0),
-  new Vector(1.0, 0.0, 0.0, 1.0)
-]
-
 const colorVector = new Vector(0.0, 1.0, 0.0, 1.0)
 
 const cube = new AABoxNode(
@@ -51,24 +44,12 @@ const cube = new AABoxNode(
   colorVector
   // 'assets/diamond_ore.png'
 )
-
 gn2.add(cube)
 
-const light1 = new LightNode(new Vector(0.2, 1, -1, 1))
+const light1 = new LightNode(new Vector(0.2, 1, -1, 0.7))
 gn1.add(light1)
-const light2 = new LightNode(new Vector(0.2, 1, 1, 1))
+const light2 = new LightNode(new Vector(0.2, -10, 1, 0.5))
 gn1.add(light2)
-
-/*
-let camera = {
-  eye: new Vector(-0.5, 0.5, -1, 1),
-  center: new Vector(0, 0, 0, 1),
-  up: new Vector(0, 1, 0, 0),
-  fovy: 60,
-  aspect: canvas.clientWidth / canvas.clientHeight,
-  near: 0.1,
-  far: 100
-}*/
 
 const camera = new CameraNode(new Vector(-0.5, 0.5, -1, 1), new Vector(0, 0, 0, 1), new Vector(0, 1, 0, 0), 60, canvas.clientWidth / canvas.clientHeight, 0.1, 100)
 gn1.add(camera)

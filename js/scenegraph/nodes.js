@@ -103,13 +103,13 @@ export class AABoxNode extends Node {
 export class CameraNode extends Node {
   /**
    * Constructor
-   * @param eye
-   * @param center
-   * @param up
-   * @param fovy
-   * @param aspect
-   * @param near
-   * @param far
+   * @param eye     - position of the camera
+   * @param center  - alignment of the camera
+   * @param up      - Farthest up on the y-axis
+   * @param fovy    - field of view in degree
+   * @param aspect  - aspect ratio of the camera (width/height)
+   * @param near    - nearest distance of the rendered view
+   * @param far     - furthest distance of the rendered view
    */
   constructor (eye, center, up, fovy, aspect, near, far) {
     super()
