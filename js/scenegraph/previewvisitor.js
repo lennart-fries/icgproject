@@ -8,10 +8,9 @@ export class PreviewVisitor extends Visitor {
    * @returns {Array.<Object>}  - The camera in array[0] and all lights after that
    */
   run (rootNode) {
-    this.camera = []
     this.lightPositions = []
     rootNode.accept(this)
-    return this.camera.concat(this.lightPositions)
+    return [this.camera, this.lightPositions]
   }
 
   /**
@@ -20,7 +19,7 @@ export class PreviewVisitor extends Visitor {
    */
   visitCameraNode (node) {
     let mat = this.currentMatrix
-    this.camera.push(node)
+    this.camera = node
     this.camera.eye = mat.mul(node.eye)
     this.camera.center = mat.mul(node.center)
     this.camera.up = mat.mul(node.up)

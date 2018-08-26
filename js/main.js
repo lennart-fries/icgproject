@@ -9,7 +9,7 @@ import { settings } from './ui/ui.js'
 import { PreviewVisitor } from './scenegraph/previewvisitor.js'
 
 let r
-let previewVisitor = new PreviewVisitor();
+let previewVisitor = new PreviewVisitor()
 
 const canvasID = 'render-surface'
 let canvas = document.getElementById(canvasID)
@@ -41,7 +41,7 @@ const colorVector = new Vector(0.0, 1.0, 0.0, 1.0)
 const cube = new AABoxNode(
   new Vector(-1, -1, -1, 1),
   new Vector(1, 1, 1, 1),
-  colorVector
+  colorVector,
   // 'assets/diamond_ore.png'
 )
 gn2.add(cube)
@@ -51,7 +51,7 @@ gn1.add(light1)
 const light2 = new LightNode(new Vector(0.2, -10, 1, 0.5))
 gn1.add(light2)
 
-const camera = new CameraNode(new Vector(-0.5, 0.5, -1, 1), new Vector(0, 0, 0, 1), new Vector(0, 1, 0, 0), 60, canvas.clientWidth / canvas.clientHeight, 0.1, 100)
+const camera = new CameraNode(new Vector(0, 0, 100, 1), new Vector(0, 0, 0, 1), new Vector(0, 1, 0, 0), 60, canvas.clientWidth / canvas.clientHeight, 0.1, 100)
 gn1.add(camera)
 
 let animationNodes = [
@@ -116,7 +116,7 @@ function animate (timestamp) {
   updateResolution()
   simulate(timestamp - lastTimestamp)
   let cameraAndLights = previewVisitor.run(sg)
-  r.loop(sg, cameraAndLights[0], cameraAndLights.slice(1))
+  r.loop(sg, cameraAndLights[0], cameraAndLights[1])
   lastTimestamp = timestamp
   window.requestAnimationFrame(animate)
 }
