@@ -37,7 +37,7 @@ void main(void) {
     vec3 normal = normalize(v_normal);
     vec3 viewDir = normalize(-v_position2.xyz);
 
-    for(int i = 0; i < 1; i++) {
+    for(int i = 0; i < maxPos; i++) {
         vec3 lightDir = normalize(lightPositions[i].xyz - v_position2.xyz);
         float lj = length(lightPositions[i].xyz - v_position2.xyz) * lightPositions[i].w;
         vec3 reflectDir = reflect(-lightDir,normal);
