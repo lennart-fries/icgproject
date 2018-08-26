@@ -15,7 +15,7 @@ const canvasID = 'render-surface'
 let canvas = document.getElementById(canvasID)
 
 // construct scene graph
-const sg = new GroupNode(Matrix.scaling(new Vector(0.2, 0.2, 0.2, 0.0)))
+const sg = new GroupNode(Matrix.identity())
 const gn1 = new GroupNode(Matrix.translation(new Vector(1, 1, 0, 0.0)))
 sg.add(gn1)
 const gn3 = new GroupNode(Matrix.identity())
@@ -46,9 +46,9 @@ const cube = new AABoxNode(
 )
 gn2.add(cube)
 
-const light1 = new LightNode(new Vector(0.2, 1, -1, 0.7))
+const light1 = new LightNode(new Vector(-10, 3, -3, 0.2))
 gn1.add(light1)
-const light2 = new LightNode(new Vector(0.2, -10, 1, 0.5))
+const light2 = new LightNode(new Vector(10, 3, -3, 0.2))
 gn1.add(light2)
 
 const camera = new CameraNode(new Vector(0, 0, 10, 1), new Vector(0, 0, 0, 1), new Vector(0, 1, 0, 0), 60, canvas.clientWidth / canvas.clientHeight, 0.1, 100)
