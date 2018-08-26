@@ -19,10 +19,15 @@ export class PreviewVisitor extends Visitor {
    */
   visitCameraNode (node) {
     let mat = this.currentMatrix
-    this.camera = node
-    this.camera.eye = mat.mul(node.eye)
-    this.camera.center = mat.mul(node.center)
-    this.camera.up = mat.mul(node.up)
+    this.camera = {
+      eye: mat.mul(node.eye),
+      center: mat.mul(node.center),
+      up: mat.mul(node.up),
+      fovy: node.fovy,
+      aspect: node.aspect,
+      near: node.near,
+      far: node.far
+    }
   }
 
   /**

@@ -41,7 +41,7 @@ const colorVector = new Vector(0.0, 1.0, 0.0, 1.0)
 const cube = new AABoxNode(
   new Vector(-1, -1, -1, 1),
   new Vector(1, 1, 1, 1),
-  colorVector,
+  colorVector
   // 'assets/diamond_ore.png'
 )
 gn2.add(cube)
@@ -51,7 +51,7 @@ gn1.add(light1)
 const light2 = new LightNode(new Vector(0.2, -10, 1, 0.5))
 gn1.add(light2)
 
-const camera = new CameraNode(new Vector(0, 0, 100, 1), new Vector(0, 0, 0, 1), new Vector(0, 1, 0, 0), 60, canvas.clientWidth / canvas.clientHeight, 0.1, 100)
+const camera = new CameraNode(new Vector(0, 0, 10, 1), new Vector(0, 0, 0, 1), new Vector(0, 1, 0, 0), 60, canvas.clientWidth / canvas.clientHeight, 0.1, 100)
 gn1.add(camera)
 
 let animationNodes = [
