@@ -13,7 +13,7 @@ export function phong (objColor, intersection, lightPositions, shininess, camera
   let coefficientAmbient = 0.3
   let coefficientDiffuse = 0.6
   let coefficientSpecular = 1.5
-  let color = objColor
+  let color
   let vertexNormal = intersection.normal
   let vertexPosition = intersection
 
@@ -22,8 +22,7 @@ export function phong (objColor, intersection, lightPositions, shininess, camera
   // shininess
 
   // ambient new
-  let ambientVec = objColor.mul(coefficientAmbient)
-  color = color.add(ambientVec)
+  color = objColor.mul(coefficientAmbient)
 
   // diffuse new
 
