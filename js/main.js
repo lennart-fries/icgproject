@@ -46,9 +46,13 @@ const cube = new AABoxNode(
 gn2.add(cube)
 
 const light1 = new LightNode(new Vector(-10, 3, -3, 1), 0.2)
+const lsphere1 = new SphereNode(new Vector(-10, 3, -3, 1), 0.1, new Vector(1, 1, 1, 1))
 gn1.add(light1)
+gn1.add(lsphere1)
 const light2 = new LightNode(new Vector(10, 3, -3, 1), 0.2)
+const lsphere2 = new SphereNode(new Vector(10, 3, -3, 1), 0.1, new Vector(1, 1, 1, 1))
 gn1.add(light2)
+gn1.add(lsphere2)
 
 const cameraNode = new CameraNode(new Vector(0, 0, 10, 1), new Vector(0, 0, 0, 1), new Vector(0, 1, 0, 0), 60, 1, 0.1, 100)
 gn1.add(cameraNode)
