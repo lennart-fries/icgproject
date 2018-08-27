@@ -13,7 +13,7 @@ export function phong (objColor, intersection, lightPositions, shininess, camera
   let coefficientAmbient = 0.3
   let coefficientDiffuse = 0.6
   let coefficientSpecular = 1.5
-  let baseColor = objColor
+  let color = objColor
   let vertexNormal = intersection.normal
   let vertexPosition = intersection
 
@@ -22,8 +22,8 @@ export function phong (objColor, intersection, lightPositions, shininess, camera
   // shininess
 
   // ambient new
-  let ambientVec = baseColor.mul(coefficientAmbient)
-  objColor = objColor.add(ambientVec)
+  let ambientVec = objColor.mul(coefficientAmbient)
+  color = color.add(ambientVec)
 
   // diffuse new
 
@@ -49,15 +49,15 @@ export function phong (objColor, intersection, lightPositions, shininess, camera
   }
 
   let diffuseLambertian = coefficientDiffuse * diffuseSum
-  let diffuseVec = baseColor.mul(diffuseLambertian)
-  objColor = objColor.add(diffuseVec)
+  let diffuseVec = objColor.mul(diffuseLambertian)
+  color = color.add(diffuseVec)
 
   // specular new
   let specularLambertian = coefficientSpecular * specularSum
-  let specularVec = specularLambertian * baseColor
-  //objColor = objColor.add(specularVec)
+  let specularVec = specularLambertian * objColor
+  //color = color.add(specularVec)
 
-  return objColor
+  return color
 }
 
 /*
