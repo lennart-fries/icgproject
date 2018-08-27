@@ -49,7 +49,7 @@ export class RayVisitor extends MatrixVisitor {
             data[4 * (width * y + x) + 2] = 0
             data[4 * (width * y + x) + 3] = 1
           } else {
-            let color = phong(minObj.color, minIntersection, lightPositions, 10, camera.eye)
+            let color = phong(minObj.color, minIntersection, lightPositions, 4, camera.eye)
             data[4 * (width * y + x)] = color.r * 255
             data[4 * (width * y + x) + 1] = color.g * 255
             data[4 * (width * y + x) + 2] = color.b * 255
