@@ -43,17 +43,19 @@ export class RayVisitor extends MatrixVisitor {
           }
         }
         if (minObj) {
+          // mirror around Y axis to match WebGL coordinates
+          let offset = 4 * (width * (height - y) + x)
           if (!minObj.color) {
-            data[4 * (width * y + x)] = 0
-            data[4 * (width * y + x) + 1] = 0
-            data[4 * (width * y + x) + 2] = 0
-            data[4 * (width * y + x) + 3] = 1
+            data[offset] = 0
+            data[offset + 1] = 0
+            data[offset + 2] = 0
+            data[offset + 3] = 255
           } else {
-            let color = phong(minObj.color, minIntersection, lightPositions, 4, camera.eye)
-            data[4 * (width * y + x)] = color.r * 255
-            data[4 * (width * y + x) + 1] = color.g * 255
-            data[4 * (width * y + x) + 2] = color.b * 255
-            data[4 * (width * y + x) + 3] = color.a * 255
+            let color = phong(minObj.color, minIntersection, lightPositions, 4.0, camera.eye)
+            data[offset] = color.r * 255
+            data[offset + 1] = color.g * 255
+            data[offset + 2] = color.b * 255
+            data[offset + 3] = color.a * 255
           }
         }
       }
