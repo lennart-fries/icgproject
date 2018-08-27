@@ -14,7 +14,6 @@ export function phong (objColor, intersection, lightPositions, shininess, camera
   let coefficientDiffuse = 0.6
   let coefficientSpecular = 1.5
   let baseColor = objColor
-  // ??? need to get that right
   let vertexNormal = intersection.normal
   let vertexPosition = intersection
 
@@ -23,22 +22,19 @@ export function phong (objColor, intersection, lightPositions, shininess, camera
   // shininess
 
   // ambient new
-
-  let ambientColor = coefficientAmbient * baseColor
-
-  let ambientVec = new Vector(ambientColor, ambientColor, ambientColor, 0)
+  let ambientVec = baseColor.mul(coefficientAmbient)
   objColor = objColor.add(ambientVec)
 
   // diffuse new
 
   let diffuseSum = 0
   let specularSum = 0
-  let viewDirection = (vertexNormal.mul(-1)).normalised()
+  let viewDirection = intersection.point.sub(cameraPosition)
 
   for (let i = 0; i < lightPositions.size; i++) {
-    let lj = (lightPositions.sub(vertexPosition)).length * lightPositions[i].w()
+    let lj = (lightPositions.sub(vertexPosition)).length * lightPositions[i].w
     let lightDirection = (lightPositions[i].sub(intersection.point)).normalised()
-    diffuseSum += lj * vertexNormal.dot(lightDirection)
+    diffuseSum += lj * Math.max(vertexNormal.dot(lightDirection), 0)
     // specular
     let firstPart = 2 * vertexNormal.dot(lightDirection)
     let secondPart = vertexNormal.mul(firstPart)
@@ -53,13 +49,13 @@ export function phong (objColor, intersection, lightPositions, shininess, camera
   }
 
   let diffuseLambertian = coefficientDiffuse * diffuseSum
-  let diffuseVec = diffuseLambertian * baseColor
+  let diffuseVec = baseColor.mul(diffuseLambertian)
   objColor = objColor.add(diffuseVec)
 
   // specular new
   let specularLambertian = coefficientSpecular * specularSum
   let specularVec = specularLambertian * baseColor
-  objColor = objColor.add(specularVec)
+  //objColor = objColor.add(specularVec)
 
   return objColor
 }
