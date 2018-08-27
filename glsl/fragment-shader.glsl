@@ -19,8 +19,8 @@ const float shininess = 4.0;
 
 void main(void) {
     vec4 raw_color;
-    float LightPosDiffuse;
-    float LightPosSpecular;
+    float diffuseSum;
+    float specularSum;
 
 
     if (textured == 1) {
@@ -35,27 +35,27 @@ void main(void) {
     vec3 color = coefficientAmbient * base_color;
 
     vec3 normal = normalize(v_normal);
-    vec3 viewDir = normalize(-v_position2.xyz);
+    vec3 viewDirection = normalize(-v_position2.xyz);
 
     for(int i = 0; i < maxPos; i++) {
-        vec3 lightDir = normalize(lightPositions[i].xyz - v_position2.xyz);
+        vec3 lightDirection = normalize(lightPositions[i].xyz - v_position2.xyz);
         float lj = length(lightPositions[i].xyz - v_position2.xyz) * lightPositions[i].w;
-        vec3 reflectDir = reflect(-lightDir,normal);
-        float specAngle = max(dot(reflectDir, viewDir),0.0);
+        vec3 reflectDirection = reflect(-lightDirection,normal);
+        float specAngle = max(dot(reflectDirection, viewDirection),0.0);
         float specPow = pow(specAngle, shininess);
-        LightPosDiffuse += lj * max(dot(lightDir, normal), 0.0);
-        LightPosSpecular += lj * specPow;
+        diffuseSum += lj * max(dot(lightDirection, normal), 0.0);
+        specularSum += lj * specPow;
     }
 
    // diffuse
-    float lambertian = coefficientDiffuse * LightPosDiffuse;
-    vec3 diffuseColor = lambertian * base_color;
+    float diffuseLambertian = coefficientDiffuse * diffuseSum;
+    vec3 diffuseColor = diffuseLambertian * base_color;
     color += diffuseColor;
 
-    //specular
-    float specular = coefficientSpecular * LightPosSpecular;
-    vec3 specularVector =  specular * base_color;
-    color += specularVector;
+    // specular
+    float specularLambertian = coefficientSpecular * specularSum;
+    vec3 specularColor =  specularLambertian * base_color;
+    //color += specularColor;
 
     gl_FragColor = vec4(color, raw_color.w);
 }

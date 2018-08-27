@@ -14,10 +14,7 @@ export function phong (objColor, intersection, lightPositions, shininess, camera
   let coefficientDiffuse = 0.6
   let coefficientSpecular = 1.5
   let color
-
-  // lightPositions
-  // cameraPosition
-  // shininess
+  let normal = intersection.normal.normalised()
 
   // ambient new
   color = objColor.mul(coefficientAmbient)
@@ -29,15 +26,16 @@ export function phong (objColor, intersection, lightPositions, shininess, camera
   let viewDirection = intersection.point.sub(cameraPosition)
 
   for (let i = 0; i < lightPositions.length; i++) {
-    let lj = (lightPositions[i].sub(intersection.point)).length * lightPositions[i].w
+    // diffuse
     let lightDirection = (lightPositions[i].sub(intersection.point)).normalised()
+    let lj = (lightPositions[i].sub(intersection.point)).length * lightPositions[i].w
     diffuseSum += lj * Math.max(lightDirection.dot(intersection.normal), 0)
     // specular
     let negativeLightDir = lightDirection.mul(-1)
     let reflectDirection = negativeLightDir.sub(intersection.normal.mul(2.0 * intersection.normal.dot(negativeLightDir)))
-    let specularAngle = Math.max(viewDirection.dot(reflectDirection), 0)
+    let specularAngle = Math.max(reflectDirection.normalised().dot(viewDirection), 0)
     let specPow = Math.pow(specularAngle, shininess)
-    specularSum += lj * specPow
+    specularSum = specularSum + lj * specPow
   }
 
   let diffuseLambertian = coefficientDiffuse * diffuseSum
@@ -47,7 +45,7 @@ export function phong (objColor, intersection, lightPositions, shininess, camera
   // specular new
   let specularLambertian = coefficientSpecular * specularSum
   let specularVec = objColor.mul(specularLambertian)
-  color = color.add(specularVec)
+  //color = color.add(specularVec)
 
   return new Vector(color.x, color.y, color.z, objColor.w)
 }
@@ -84,11 +82,11 @@ export function phong (objColor, intersection, lightPositions, shininess, camera
   // specular
   let ssum = 0
   lightPositions.forEach(function (light) {
-    let n = intersection.normal // normal
-    let l = light.sub(intersection.point).normalised() // lightDirection
-    let firstPart = 2 * n.dot(l) // normal dot light
-    let middlePart = n.mul(firstPart) // normal mul firstPart
-    let r = middlePart.sub(l).normalised() // sub for specangle
+    let n = intersection.normal                             // normal
+    let l = light.sub(intersection.point).normalised()      // lightDirection
+    let firstPart = 2 * n.dot(l)                            // normal dot light
+    let middlePart = n.mul(firstPart)                       // normal mul firstPart
+    let r = middlePart.sub(l).normalised()                  // sub for specangle
 
     let v = cameraPosition.normalised()
 
