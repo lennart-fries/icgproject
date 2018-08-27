@@ -14,7 +14,6 @@ export function phong (objColor, intersection, lightPositions, shininess, camera
   let coefficientDiffuse = 0.6
   let coefficientSpecular = 1.5
   let color
-  let normal = intersection.normal.normalised()
 
   // ambient new
   color = objColor.mul(coefficientAmbient)
@@ -23,7 +22,7 @@ export function phong (objColor, intersection, lightPositions, shininess, camera
 
   let diffuseSum = 0
   let specularSum = 0
-  let viewDirection = intersection.point.sub(cameraPosition)
+  let viewDirection = (cameraPosition.sub(intersection.point)).normalised()
 
   for (let i = 0; i < lightPositions.length; i++) {
     // diffuse
