@@ -31,13 +31,13 @@ export function phong (objColor, intersection, lightPositions, shininess, camera
   for (let i = 0; i < lightPositions.length; i++) {
     let lj = (lightPositions[i].sub(intersection.point)).length * lightPositions[i].w
     let lightDirection = (lightPositions[i].sub(intersection.point)).normalised()
-    diffuseSum = diffuseSum + lj * Math.max(lightDirection.dot(intersection.normal), 0)
+    diffuseSum += lj * Math.max(lightDirection.dot(intersection.normal), 0)
     // specular
     let negativeLightDir = lightDirection.mul(-1)
     let reflectDirection = negativeLightDir.sub(intersection.normal.mul(2.0 * intersection.normal.dot(negativeLightDir)))
     let specularAngle = Math.max(viewDirection.dot(reflectDirection), 0)
     let specPow = Math.pow(specularAngle, shininess)
-    specularSum = lj * specPow
+    specularSum += lj * specPow
   }
 
   let diffuseLambertian = coefficientDiffuse * diffuseSum
