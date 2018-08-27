@@ -1,14 +1,14 @@
-/**
- * Calculate the colour of an object at the intersection point according to the Phong Lighting model.
- * @param {Vector} objColor               - The colour of the intersected object
- * @param {Intersection} intersection     - The intersection information
- * @param {Array.<Vector>} lightPositions - The light positions
- * @param {number} shininess              - The shininess parameter of the Phong model
- * @return {Vector}                         The resulting colour
- */
-
 import { Vector } from '../primitives/vector.js'
 
+/**
+ * Calculate the color of an object at the intersection point according to the Phong lighting model
+ * @param {Vector} objColor               - Color of the intersected object
+ * @param {Intersection} intersection     - Intersection information
+ * @param {Array.<Vector>} lightPositions - Light positions
+ * @param {number} shininess              - Shininess parameter of the Phong model
+ * @param {Vector} cameraPosition         - Position of the camera
+ * @return {Vector}                         Resulting color
+ */
 export function phong (objColor, intersection, lightPositions, shininess, cameraPosition) {
   let coefficientAmbient = 0.3
   let coefficientDiffuse = 0.6

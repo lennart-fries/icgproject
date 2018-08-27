@@ -8,17 +8,21 @@
 export class Shader {
   /**
    * Creates a shader
-   * @param {WebGLRenderingContext} gl   - The 3D context
-   * @param {string} vsId - The id of the vertex shader script node
-   * @param {string} fsId - The id of the fragment shader script node
+   * @param {WebGLRenderingContext} gl - 3D context
+   * @param {string} vsFilename        - File name of the vertex shader script node
+   * @param {string} fsFilename        - File name of the fragment shader script node
    */
-  constructor (gl, vsId, fsId) {
-    this.vsFilename = vsId
-    this.fsFilename = fsId
+  constructor (gl, vsFilename, fsFilename) {
+    this.vsFilename = vsFilename
+    this.fsFilename = fsFilename
 
     this.gl = gl
   }
 
+  /**
+   * Loads shader from files, compiles and links it
+   * @return {Promise} Finishes when loading is done
+   */
   async load () {
     let gl = this.gl
     const vertexShader = this.getShader(gl, this.vsFilename, gl.VERTEX_SHADER)
@@ -39,8 +43,7 @@ export class Shader {
   }
 
   /**
-   * Use this shader program for the next
-   * WebGL calls
+   * Use this shader program for the next WebGL calls
    */
   use () {
     this.gl.useProgram(this.shaderProgram)
@@ -48,8 +51,8 @@ export class Shader {
 
   /**
    * Returns the attribute location of a variable in the shader program
-   * @param  {string} name - The name of the variable
-   * @return {number}        The variable's location
+   * @param  {string} name - Name of the variable
+   * @return {number}        Variable's location
    */
   getAttributeLocation (name) {
     const attr = this.gl.getAttribLocation(this.shaderProgram, name)
@@ -60,10 +63,11 @@ export class Shader {
   }
 
   /**
-   * Loads a shader part from its script DOM node and compiles it
-   * @param  {Object} gl - The 3D context
-   * @param  {string} id - The id of the shader script node
-   * @return {Object}      The resulting shader part
+   * Loads a shader part from its file and compiles it
+   * @param  {Object} gl                                - 3D context
+   * @param  {string} filename                          - File name of shader part
+   * @param  {gl.VERTEX_SHADER|gl.FRAGMENT_SHADER} type - Type of shader part
+   * @return {Object}                                     Resulting shader part
    */
   async getShader (gl, filename, type) {
     const source = fetch(filename).then(response => response.text())
@@ -86,8 +90,8 @@ export class Shader {
 
   /**
    * Returns an object that can be used to set a matrix on the GPU
-   * @param  {string} name   - The name of the uniform to set
-   * @return {UniformMatrix}   The resulting object
+   * @param  {string} name   - Name of the uniform to set
+   * @return {UniformMatrix}   Resulting object
    */
   getUniformMatrix (name) {
     return new UniformMatrix(this.gl,
@@ -97,8 +101,8 @@ export class Shader {
 
   /**
    * Returns an object that can be used to set a vector on the GPU
-   * @param  {string} name - The name of the uniform to set
-   * @return {UniformVec3}   The resulting object
+   * @param  {string} name - Name of the uniform to set
+   * @return {UniformVec3}   Resulting object
    */
   getUniformVec3 (name) {
     return new UniformVec3(this.gl,
@@ -107,9 +111,9 @@ export class Shader {
   }
 
   /**
-   * Returns an object that can be used to set an int on the GPU
-   * @param  {string} name - The name of the uniform to set
-   * @return {UniformInt}    The resulting object
+   * Returns an object that can be used to set a float on the GPU
+   * @param  {string} name - Name of the uniform to set
+   * @return {UniformFloat}  Resulting object
    */
   getUniformFloat (name) {
     return new UniformFloat(this.gl,
@@ -119,8 +123,8 @@ export class Shader {
 
   /**
    * Returns an object that can be used to set an int on the GPU
-   * @param  {string} name - The name of the uniform to set
-   * @return {UniformInt}    The resulting object
+   * @param  {string} name - Name of the uniform to set
+   * @return {UniformInt}    Resulting object
    */
   getUniformInt (name) {
     return new UniformInt(this.gl,
@@ -129,9 +133,9 @@ export class Shader {
   }
 
   /**
-   * Returns an Object that can be used to set an Array on the GPU
-   * @param {string} name - The name of the uniform to set
-   * @returns {UniformArray} The resulting Object
+   * Returns an Object that can be used to set an array on the GPU
+   * @param  {string} name - Name of the uniform to set
+   * @return {UniformArray}  Resulting Object
    */
   getUniformArray (name) {
     return new UniformArray(this.gl,
@@ -140,10 +144,14 @@ export class Shader {
 }
 
 /**
- * Handler class to set uniform matrices
- * in the shader program
+ * Handler class to set uniform matrices in the shader program
  */
 class UniformMatrix {
+  /**
+   * Creates an uniform that holds a matrix
+   * @param gl       - 3D context
+   * @param position - Position of the uniform variable in the shader program
+   */
   constructor (gl, position) {
     this.gl = gl
     this.position = position
@@ -151,7 +159,7 @@ class UniformMatrix {
 
   /**
    * Sends the given matrix to the GPU
-   * @param {Matrix} matrix - The matrix to send
+   * @param {Matrix} matrix - Matrix to send
    */
   set (matrix) {
     this.gl.uniformMatrix4fv(
@@ -162,10 +170,14 @@ class UniformMatrix {
 }
 
 /**
- * Handler class to set uniform vectors
- * in the shader program
+ * Handler class to set uniform 3-component vectors in the shader program
  */
 class UniformVec3 {
+  /**
+   * Creates an uniform that holds a 3-component vector
+   * @param gl       - 3D context
+   * @param position - Position of the uniform variable in the shader program
+   */
   constructor (gl, position) {
     this.gl = gl
     this.position = position
@@ -173,7 +185,7 @@ class UniformVec3 {
 
   /**
    * Sends the given vector to the GPU as 3dimensional vector
-   * @param {Vector} vec - The vector to send
+   * @param {Vector} vec - Vector to send
    */
   set (vec) {
     this.gl.uniform3f(
@@ -183,10 +195,14 @@ class UniformVec3 {
 }
 
 /**
- * Handler class to set uniform floats
- * in the shader program
+ * Handler class to set uniform floating point numbers in the shader program
  */
 class UniformFloat {
+  /**
+   * Creates an uniform that holds a floating point number
+   * @param gl       - 3D context
+   * @param position - Position of the uniform variable in the shader program
+   */
   constructor (gl, position) {
     this.gl = gl
     this.position = position
@@ -194,7 +210,7 @@ class UniformFloat {
 
   /**
    * Sends the given float value to the GPU
-   * @param {number} value - The float value to send
+   * @param {number} value - Float value to send
    */
   set (value) {
     this.gl.uniform1f(this.position, value)
@@ -202,10 +218,14 @@ class UniformFloat {
 }
 
 /**
- * Handler class to set uniform ints
- * in the shader program
+ * Handler class to set uniform integers in the shader program
  */
 class UniformInt {
+  /**
+   * Creates an uniform that holds an integer
+   * @param gl       - 3D context
+   * @param position - Position of the uniform variable in the shader program
+   */
   constructor (gl, position) {
     this.gl = gl
     this.position = position
@@ -213,19 +233,31 @@ class UniformInt {
 
   /**
    * Sends the given int value to the GPU
-   * @param {number} value - The int value to send
+   * @param {number} value - Int value to send
    */
   set (value) {
     this.gl.uniform1i(this.position, value)
   }
 }
 
+/**
+ * Handler class to set uniform arrays of 4-component vectors in the shader program
+ */
 class UniformArray {
+  /**
+   * Creates an uniform that holds an array of 4-component vectors
+   * @param gl       - 3D context
+   * @param position - Position of the uniform variable in the shader program
+   */
   constructor (gl, position) {
     this.gl = gl
     this.position = position
   }
 
+  /**
+   * Sends the given array to the GPU
+   * @param {Array.<number>} value - Array of vectors to send
+   */
   set (value) {
     let array = []
     for (let i = 0; i < value.length; i++) {

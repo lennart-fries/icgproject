@@ -1,26 +1,25 @@
 /**
- * Class representing a Visitor that uses
- * Raytracing to render a Scenegraph
+ * Class representing a Visitor that uses ray tracing to render a scene graph
  */
 
 import { Ray } from './ray.js'
-import { Sphere } from './sphere.js'
+import { RaySphere } from './ray-sphere.js'
 import { Intersection } from './intersection.js'
-import { AABox } from './aabox.js'
+import { RayAABox } from './ray-aabox.js'
 import { phong } from './phong.js'
-import { Visitor } from '../scenegraph/visitor.js'
+import { MatrixVisitor } from '../scenegraph/visitor.js'
 
-export class RayVisitor extends Visitor {
+export class RayVisitor extends MatrixVisitor {
   /**
-   * Renders the Scenegraph
-   * @param  {Node} rootNode                 - The root node of the Scenegraph
-   * @param  {Object} camera                 - The camera used
-   * @param  {Array.<Vector>} lightPositions - The light light positions
-   * @param {number} width   - The width of the canvas
-   * @param {number} height  - The height of the canvas
+   * Renders the scene graph
+   * @param  {Node} rootNode                 - Root node of the scene graph
+   * @param  {Object} camera                 - Camera to use
+   * @param  {Array.<Vector>} lightPositions - Array of point light positions to use
+   * @param  {number} width                  - Width of the canvas
+   * @param  {number} height                 - Height of the canvas
    */
   run (rootNode, camera, lightPositions, width, height) {
-    this.imageData = this.gl.getImageData(0, 0, width, height)
+    this.imageData = this.context.getImageData(0, 0, width, height)
     // clear
     let data = this.imageData.data
     data.fill(0)
@@ -29,7 +28,7 @@ export class RayVisitor extends Visitor {
     // build list of render objects
     super.run(rootNode)
 
-    // raytrace
+    // ray trace
     for (let x = 0; x < width; x++) {
       for (let y = 0; y < height; y++) {
         const ray = Ray.makeRay(width, height, x, y, camera)
@@ -59,24 +58,24 @@ export class RayVisitor extends Visitor {
         }
       }
     }
-    this.gl.putImageData(this.imageData, 0, 0)
+    this.context.putImageData(this.imageData, 0, 0)
   }
 
   /**
    * Visits a sphere node
-   * @param  {Node} node - The node to visit
+   * @param  {SphereNode} node - Node to visit
    */
   visitSphereNode (node) {
     let mat = this.currentMatrix
-    this.objects.push(new Sphere(mat.mul(node.center), node.radius, node.color))
+    this.objects.push(new RaySphere(mat.mul(node.center), node.radius, node.color))
   }
 
   /**
    * Visits an axis aligned box node
-   * @param  {Node} node - The node to visit
+   * @param  {AABoxNode} node - Node to visit
    */
   visitAABoxNode (node) {
     let mat = this.currentMatrix
-    this.objects.push(new AABox(mat.mul(node.minPoint), mat.mul(node.maxPoint), node.color))
+    this.objects.push(new RayAABox(mat.mul(node.minPoint), mat.mul(node.maxPoint), node.color))
   }
 }

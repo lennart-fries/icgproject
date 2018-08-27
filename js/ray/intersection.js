@@ -3,11 +3,11 @@
  */
 export class Intersection {
   /**
-     * Create an Intersection
-     * @param {number} t      - The distance on the ray
-     * @param {Vector} point  - The intersection points
-     * @param {Vector} normal - The normal in the intersection
-     */
+   * Create an Intersection
+   * @param {number} t      - Distance on the ray
+   * @param {Vector} point  - Intersection points
+   * @param {Vector} normal - Normal in the intersection
+   */
   constructor (t, point, normal) {
     if (t) {
       this.t = t
@@ -19,13 +19,11 @@ export class Intersection {
   }
 
   /**
-     * Determines whether this intersection
-     * is closer than the other
-     * @param  {Intersection} other - The other Intersection
-     * @return {Boolean}              The result
-     */
+   * Determines whether this intersection is closer than the other
+   * @param  {Intersection} other - Other Intersection
+   * @return {Boolean}              Result
+   */
   closerThan (other) {
-    if (this.t < other.t) return true
-    else return false
+    return this.t < other.t
   }
 }

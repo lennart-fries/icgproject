@@ -7,10 +7,10 @@ import { Vector } from '../primitives/vector.js'
 export class RasterSphere {
   /**
    * Creates all WebGL buffers for the sphere
-   * @param {WebGLRenderingContext} gl - The canvas' context
-   * @param {Vector} center   - The center of the sphere
-   * @param {number} radius   - The radius of the sphere
-   * @param {Vector} color    - The color of the sphere
+   * @param {WebGLRenderingContext} gl - Canvas' context
+   * @param {Vector} center            - Center of the sphere
+   * @param {number} radius            - Radius of the sphere
+   * @param {Vector} color             - Color of the sphere
    */
   constructor (gl, center, radius, color) {
     this.gl = gl
@@ -83,7 +83,7 @@ export class RasterSphere {
 
   /**
    * Renders the sphere
-   * @param {Shader} shader - The shader used to render
+   * @param {Shader} shader - Shader used to render
    */
   render (shader) {
     shader.getUniformInt('textured').set(0)
@@ -109,6 +109,9 @@ export class RasterSphere {
     this.gl.disableVertexAttribArray(normalLocation)
   }
 
+  /**
+   * Deletes WebGL buffers
+   */
   teardown () {
     this.gl.deleteBuffer(this.vertexBuffer)
     this.gl.deleteBuffer(this.normalBuffer)

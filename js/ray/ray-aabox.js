@@ -5,13 +5,13 @@
 import { Vector } from '../primitives/vector.js'
 import { Intersection } from './intersection.js'
 
-export class AABox {
+export class RayAABox {
   /**
    * Creates an axis aligned box
-   * @param  {Vector} minPoint - The minimum Point
-   * @param  {Vector} maxPoint - The maximum Point
-   * @param  {Vector} color    - The colour of the cube
-   * @param  {string} texture  - The image filename for the texture, optional
+   * @param  {Vector} minPoint - Minimum Point
+   * @param  {Vector} maxPoint - Maximum Point
+   * @param  {Vector} color    - Color of the cube
+   * @param  {string} texture  - Image filename for the texture, optional
    */
   constructor (minPoint, maxPoint, color, texture = '') {
     if (color instanceof Vector) {
@@ -21,7 +21,6 @@ export class AABox {
     } else {
       console.error('wrong color format!')
     }
-    this.texture = texture
     /*
               Λ y
               |
@@ -52,19 +51,19 @@ export class AABox {
     this.maxPoint = maxPoint
 
     this.sides = [
-      [this.vertices[0], this.vertices[1], this.vertices[2], this.vertices[3]], // vorne
-      [this.vertices[5], this.vertices[4], this.vertices[7], this.vertices[6]], // hinten
-      [this.vertices[3], this.vertices[2], this.vertices[6], this.vertices[7]], // oben
-      [this.vertices[0], this.vertices[4], this.vertices[5], this.vertices[1]], // unten
-      [this.vertices[4], this.vertices[0], this.vertices[3], this.vertices[7]], // links
-      [this.vertices[1], this.vertices[5], this.vertices[6], this.vertices[2]] // rechts
+      [this.vertices[0], this.vertices[1], this.vertices[2], this.vertices[3]], // front
+      [this.vertices[5], this.vertices[4], this.vertices[7], this.vertices[6]], // back
+      [this.vertices[3], this.vertices[2], this.vertices[6], this.vertices[7]], // top
+      [this.vertices[0], this.vertices[4], this.vertices[5], this.vertices[1]], // bottom
+      [this.vertices[4], this.vertices[0], this.vertices[3], this.vertices[7]], // left
+      [this.vertices[1], this.vertices[5], this.vertices[6], this.vertices[2]] // right
     ]
   }
 
   /**
-   * Calculates the intersection of the AAbox with the given ray
-   * @param  {Ray} ray      - The ray to intersect with
-   * @return {Intersection}   The intersection if there is one, null if there is none
+   * Calculates the intersection of the box with the given ray
+   * @param  {Ray} ray      - Ray to intersect with
+   * @return {Intersection}   Intersection if there is one, null if there is none
    */
   intersect (ray) {
     let inters = []

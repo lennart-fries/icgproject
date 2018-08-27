@@ -1,17 +1,17 @@
 /**
- * Class representing a Node in a Scenegraph
+ * Class representing a Node in a scene graph
  */
 class Node {
   /**
    * Accepts a visitor according to the visitor pattern
-   * @param  {Visitor} visitor - The visitor
+   * @param  {Visitor} visitor - Visitor
    */
   accept (visitor) {
   }
 }
 
 /**
- * Class representing a GroupNode in the Scenegraph.
+ * Class representing a GroupNode in the scene graph.
  * A GroupNode holds a transformation and is able
  * to have child nodes attached to it.
  * @extends Node
@@ -29,7 +29,7 @@ export class GroupNode extends Node {
 
   /**
    * Accepts a visitor according to the visitor pattern
-   * @param  {Visitor} visitor - The visitor
+   * @param  {Visitor} visitor - Visitor
    */
   accept (visitor) {
     visitor.visitGroupNode(this)
@@ -37,7 +37,7 @@ export class GroupNode extends Node {
 
   /**
    * Adds a child node
-   * @param {Node} childNode - The child node to add
+   * @param {Node} childNode - Child node to add
    */
   add (childNode) {
     this.children.push(childNode)
@@ -45,15 +45,15 @@ export class GroupNode extends Node {
 }
 
 /**
- * Class representing a Sphere in the Scenegraph
+ * Class representing a Sphere in the scene graph
  * @extends Node
  */
 export class SphereNode extends Node {
   /**
    * Creates a new Sphere with center and radius
-   * @param  {Vector} center - The center of the Sphere
-   * @param  {number} radius - The radius of the Sphere
-   * @param  {Vector} color  - The colour of the Sphere
+   * @param  {Vector} center - Center of the Sphere
+   * @param  {number} radius - Radius of the Sphere
+   * @param  {Vector} color  - Color of the Sphere
    */
   constructor (center, radius, color) {
     super()
@@ -64,7 +64,7 @@ export class SphereNode extends Node {
 
   /**
    * Accepts a visitor according to the visitor pattern
-   * @param  {Visitor} visitor - The visitor
+   * @param  {Visitor} visitor - Visitor
    */
   accept (visitor) {
     visitor.visitSphereNode(this)
@@ -72,16 +72,16 @@ export class SphereNode extends Node {
 }
 
 /**
- * Class representing an Axis Aligned Box in the Scenegraph
+ * Class representing an Axis Aligned Box in the scene graph
  * @extends Node
  */
 export class AABoxNode extends Node {
   /**
    * Creates an axis aligned box
-   * @param  {Vector} minPoint - The minimum Point
-   * @param  {Vector} maxPoint - The maximum Point
-   * @param  {Vector} color    - The colour of the cube
-   * @param  {String} texture  - The texture of the cube, optional
+   * @param  {Vector} minPoint - Minimum Point
+   * @param  {Vector} maxPoint - Maximum Point
+   * @param  {Vector} color    - Color of the cube
+   * @param  {String} texture  - Texture of the cube, optional
    */
   constructor (minPoint, maxPoint, color, texture = '') {
     super()
@@ -93,7 +93,7 @@ export class AABoxNode extends Node {
 
   /**
    * Accepts a visitor according to the visitor pattern
-   * @param  {Visitor} visitor - The visitor
+   * @param  {Visitor} visitor - Visitor
    */
   accept (visitor) {
     visitor.visitAABoxNode(this)
@@ -102,14 +102,14 @@ export class AABoxNode extends Node {
 
 export class CameraNode extends Node {
   /**
-   * Constructor
-   * @param eye
-   * @param center
-   * @param up
-   * @param fovy
-   * @param aspect
-   * @param near
-   * @param far
+   * Creates a camera
+   * @param  {Vector} eye    - position of the camera
+   * @param  {Vector} center - center of the camera
+   * @param  {Vector} up     - vector pointing up on the y-axis
+   * @param  {number} fovy   - vertical field of view in degrees
+   * @param  {number} aspect - aspect ratio of the camera (width/height)
+   * @param  {number} near   - nearest distance of the rendered view
+   * @param  {number} far    - furthest distance of the rendered view
    */
   constructor (eye, center, up, fovy, aspect, near, far) {
     super()
@@ -124,28 +124,30 @@ export class CameraNode extends Node {
 
   /**
    * Accepts a visitor according to the visitor pattern
-   * @param  {Visitor} visitor - The visitor
+   * @param  {Visitor} visitor - Visitor
    */
   accept (visitor) {
-    visitor.visitGroupNode(this)
+    visitor.visitCameraNode(this)
   }
 }
 
 export class LightNode extends Node {
   /**
-   * Constructor
-   * @param mat
+   * Creates a point light.
+   * @param  {Vector} position  - position of the light
+   * @param  {number} intensity - how strong the light is, from 0 to 1
    */
-  constructor (mat) {
+  constructor (position, intensity) {
     super()
-    this.mat = mat
+    this.position = position
+    this.intensity = intensity
   }
 
   /**
    * Accepts a visitor according to the visitor pattern
-   * @param  {Visitor} visitor - The visitor
+   * @param  {Visitor} visitor - Visitor
    */
   accept (visitor) {
-    visitor.visitGroupNode(this)
+    visitor.visitLightNode(this)
   }
 }

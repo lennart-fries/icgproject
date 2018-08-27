@@ -21,8 +21,12 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
           integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 
-    <!-- jquery-sortable-->
+    <!-- jquery-sortable -->
     <script src="vendor/jquery-sortable.js"></script>
+
+    <!-- bootstrap-colorpicker -->
+    <script src="vendor/bootstrap-colorpicker.js"></script>
+    <link rel="stylesheet" href="vendor/bootstrap-colorpicker.css">
 
     <!-- Local files -->
     <link rel="stylesheet" href="css/style.css">
@@ -64,10 +68,10 @@
         </ul>
     </nav>
     <div id="content">
-        <button type="button" id="collapse-left" class="btn btn-sidebar float-left">
+        <button type="button" id="collapse-left" class="btn btn-sidebar top-left">
             <i class="fas fa-bars"></i>
         </button>
-        <button type="button" id="collapse-right" class="btn btn-sidebar float-right">
+        <button type="button" id="collapse-right" class="btn btn-sidebar top-right">
             <i class="fas fa-sliders-h"></i>
         </button>
         <canvas id="render-surface"></canvas>
@@ -83,7 +87,7 @@
                                 <input type="radio" name="renderer" value="Raster" autocomplete="off">Rasterizer
                             </label>
                             <label class="btn btn-primary">
-                                <input type="radio" name="renderer" value="Ray" autocomplete="off">Raytracer
+                                <input type="radio" name="renderer" value="Ray" autocomplete="off">Ray tracer
                             </label>
                         </div>
                     </li>
@@ -104,6 +108,14 @@
                             <label class="btn btn-primary">
                                 <input type="radio" name="renderResolution" value="8" autocomplete="off">&frac18;
                             </label>
+                        </div>
+                    </li>
+                    <li class="list-group-item">Background color
+                        <div id="backgroundColorPicker" class="input-group">
+                            <input type="text" id="backgroundColor" class="form-control input-lg">
+                            <span class="input-group-append">
+                                <span class="input-group-text colorpicker-input-addon"><i></i></span>
+                            </span>
                         </div>
                     </li>
                 </ul>

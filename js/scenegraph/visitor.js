@@ -1,37 +1,30 @@
 import { Matrix } from '../primitives/matrix.js'
 
+/**
+ * Traverses the scene graph, executing different functionality based on the type of node encountered
+ */
 export class Visitor {
   /**
    * Creates a new Visitor
-   * @param {WebGLRenderingContext} context                 - The 3D context to render to
+   * @param {CanvasRenderingContext2D | WebGLRenderingContext} context - Context to render to
    */
   constructor (context) {
-    this.gl = context
-    this.currentMatrix = Matrix.identity()
+    this.context = context
   }
 
+  /**
+   * Begins visiting the scene graph
+   * @param  {Node} rootNode - Root node of the scene graph
+   */
   run (rootNode) {
     rootNode.accept(this)
   }
 
   /**
-   * Visits a group node
-   * @param  {Node} node - The node to visit
+   * Visits a group node for Setup or Teardown
+   * @param  {GroupNode} node - Node to visit
    */
   visitGroupNode (node) {
-    let oldMatrix = this.currentMatrix
-    this.currentMatrix = oldMatrix.mul(node.matrix)
-    for (let child of node.children) {
-      child.accept(this)
-    }
-    this.currentMatrix = oldMatrix
-  }
-
-  /**
-   * Visits a group node for Setup or Teardown
-   * @param  {Node} node - The node to visit
-   */
-  visitGroupNode2 (node) {
     for (let child of node.children) {
       child.accept(this)
     }
@@ -39,31 +32,50 @@ export class Visitor {
 
   /**
    * Visits a sphere node
-   * @param  {Node} node - The node to visit
+   * @param  {SphereNode} node - Node to visit
    */
   visitSphereNode (node) { }
 
   /**
-   * Visits a axis aligned box node
-   * @param  {Node} node - The node to visit
+   * Visits an axis aligned box node
+   * @param  {AABoxNode} node - Node to visit
    */
   visitAABoxNode (node) { }
 
   /**
-   * Visits a textured box node
-   * @param  {Node} node - The node to visit
-   */
-  visitTextureBoxNode (node) { }
-
-  /**
    * Visits a camera node
-   * @param  {Node} node - The node to visit
+   * @param  {CameraNode} node - Node to visit
    */
   visitCameraNode (node) { }
 
   /**
    * Visits a light node
-   * @param  {Node} node - The node to visit
+   * @param  {LightNode} node - Node to visit
    */
   visitLightNode (node) { }
+}
+
+/**
+ * Visitor that works with a matrix stack
+ */
+export class MatrixVisitor extends Visitor {
+  /**
+   * Creates a new Visitor
+   * @param {WebGLRenderingContext} context   - 3D context to render to
+   */
+  constructor (context) {
+    super(context)
+    this.currentMatrix = Matrix.identity()
+  }
+
+  /**
+   * Visits a group node
+   * @param  {GroupNode} node - Node to visit
+   */
+  visitGroupNode (node) {
+    let oldMatrix = this.currentMatrix
+    this.currentMatrix = oldMatrix.mul(node.matrix)
+    super.visitGroupNode(node)
+    this.currentMatrix = oldMatrix
+  }
 }

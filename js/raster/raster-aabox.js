@@ -4,7 +4,7 @@ import { Vector } from '../primitives/vector.js'
 /**
  * A class creating buffers for an axis aligned box to render it with WebGL
  */
-export class RasterAabox {
+export class RasterAABox {
   /**
    * Creates all WebGL buffers for the box
    *     6 ------- 7
@@ -15,11 +15,11 @@ export class RasterAabox {
    *   | /       | /
    *   0 ------- 1
    *  looking in negative z axis direction
-   * @param {WebGLRenderingContext} gl - The canvas' context
-   * @param {Vector} minPoint - The minimal x,y,z of the box
-   * @param {Vector} maxPoint - The maximal x,y,z of the box
-   * @param {Vector} color - the color of the box
-   * @param {string} texture  - The image filename for the texture, optional
+   * @param {WebGLRenderingContext} gl - Canvas' context
+   * @param {Vector} minPoint          - Minimal x,y,z of the box
+   * @param {Vector} maxPoint          - Maximal x,y,z of the box
+   * @param {Vector} color             - Color of the box
+   * @param {string} texture             Image filename for the texture, optional
    */
   constructor (gl, minPoint, maxPoint, color, texture = '') {
     this.gl = gl
@@ -145,37 +145,41 @@ export class RasterAabox {
     }
   }
 
+  /**
+   * Turn a single vector or array of vectors into an array of numbers with the correct length
+   * @param  {Vector, Array.<Vector>} color  - color
+   * @return {Array.<number>}                 array with correct number of colors
+   */
   checkColor (color) {
     let colorArray
+
+    // get numbers into array format
     if (color instanceof Vector) { // single vector
       colorArray = color.valueOf()
-      for (let i = 0; i < 8; i++) {
-        colorArray = colorArray.concat(colorArray)
-      }
-      return colorArray
     } else if (color instanceof Array && color[0] instanceof Vector) { // array of vectors
       if (color.length > (this.numTriangles * 2)) {
-        console.error('too many colors!')
+        console.error('Too many colors')
       }
       colorArray = []
       color.forEach(vector => {
         colorArray = colorArray.concat(vector.valueOf())
       })
     } else { // wrong format
-      console.error('given colors are not in the correct format!')
-      colorArray = [1, 0, 0.75, 1, 0, 0, 0, 1]
+      console.error('Given colors are not in the correct format')
+      colorArray = [1, 0, 0.75, 1, 0, 0, 0, 1] // pink and black
     }
+
+    // stretch to correct number of colors
     while (colorArray.length < (this.numTriangles * 2 * 4)) {
       colorArray = colorArray.concat(colorArray)
     }
-    console.log(this.numTriangles * 2 * 4)
+
     return colorArray
   }
 
   /**
    * Renders the box
-   *
-   * @param {Shader} shader - The shader used to render
+   * @param  {Shader} shader - Shader used to render
    */
   render (shader) {
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertexBuffer)
@@ -219,6 +223,9 @@ export class RasterAabox {
     this.gl.disableVertexAttribArray(normalLocation)
   }
 
+  /**
+   * Deletes WebGL buffers
+   */
   teardown () {
     this.gl.deleteBuffer(this.vertexBuffer)
     this.gl.deleteBuffer(this.normalBuffer)
