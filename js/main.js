@@ -59,7 +59,7 @@ gn1.add(cameraNode)
 
 let animationNodes = [
   new AnimationNode(gn2, 1.0, true, new Vector(0, 0, 1, 0), Matrix.rotation),
-  new BackAndForthAnimationNode(gn3, 1.0, true, new Vector(0, 0, 1, 0), Matrix.translation, 3, 1.5)
+  //new BackAndForthAnimationNode(gn3, 1.0, true, new Vector(0, 0, 1, 0), Matrix.translation, 3, 1.5)
 ]
 
 /**
