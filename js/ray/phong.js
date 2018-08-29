@@ -48,9 +48,9 @@ export function phong (objColor, intersection, lightPositions, shininess, camera
   let specularVec = objColor.mul(specularLambertian)
   //color = color.add(specularVec)
 
-  return new Vector(intersection.point.x, intersection.point.y, intersection.point.z, objColor.w)
+  //return new Vector(intersection.point.x, intersection.point.y, intersection.point.z, objColor.w)
 
-  //return new Vector(color.x, color.y, color.z, objColor.w)
+  return new Vector(color.x, color.y, color.z, objColor.w)
 }
 
 /*
