@@ -26,7 +26,7 @@ void main() {
     v_texCoord = a_texCoord;
     v_normal = (N * vec4(a_normal, 0)).xyz;
     for (int i = 0; i < maxPos; i++) {
-        lightPositionsT[i] = vec4((V * lightPositions[i]).xyz, lightPositions[i]);
+        lightPositionsT[i] = vec4((V * lightPositions[i]).xyz, lightPositions[i].w);
         //lightPositionsT[i] = lightPositions[i];
     }
 }
