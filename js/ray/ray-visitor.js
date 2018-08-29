@@ -45,14 +45,6 @@ export class RayVisitor extends MatrixVisitor {
         if (minObj) {
           // mirror around Y axis to match WebGL coordinates
           let offset = 4 * (width * (height - y) + x)
-          if (y === 95 && x === 105) {
-            console.log(minObj, minIntersection)
-            data[offset] = 255
-            data[offset + 1] = 255
-            data[offset + 2] = 255
-            data[offset + 3] = 255
-            continue
-          }
           if (!minObj.color) {
             data[offset] = 0
             data[offset + 1] = 0
@@ -64,6 +56,14 @@ export class RayVisitor extends MatrixVisitor {
             data[offset + 1] = color.g * 255
             data[offset + 2] = color.b * 255
             data[offset + 3] = color.a * 255
+          }
+          if (y === 95 && x === 105) {
+            console.log(minObj, minIntersection, data[offset], data[offset+1], data[offset+2], data[offset+3])
+            data[offset] = 255
+            data[offset + 1] = 255
+            data[offset + 2] = 255
+            data[offset + 3] = 255
+            continue
           }
         }
       }

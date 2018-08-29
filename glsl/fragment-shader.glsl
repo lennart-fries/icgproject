@@ -6,7 +6,8 @@ varying vec4 v_color;
 varying vec2 v_texCoord;
 varying vec4 v_position2;
 
-varying vec4 lightPositionsT[maxPos];
+varying vec3 lightPositionsT[maxPos];
+varying float intensity[maxPos];
 
 uniform sampler2D sampler;
 uniform int textured;
@@ -41,8 +42,8 @@ void main(void) {
     vec3 lightDirection;
 
     for(int i = 0; i < 1; i++) {
-        /*vec3*/ lightDirection = normalize(lightPositionsT[i].xyz - v_position2.xyz);
-        float lj = length(lightPositionsT[i].xyz - v_position2.xyz) * lightPositionsT[i].w;
+        /*vec3*/ lightDirection = normalize(lightPositionsT[i] - v_position2.xyz);
+        float lj = length(lightPositionsT[i].xyz - v_position2.xyz) * intensity[i];
         vec3 reflectDirection = reflect(-lightDirection,normal);
         float specAngle = max(dot(reflectDirection, viewDirection),0.0);
         float specPow = pow(specAngle, shininess);
@@ -60,6 +61,6 @@ void main(void) {
     vec3 specularColor =  specularLambertian * base_color;
     //color += specularColor;
 
-    //gl_FragColor = vec4(v_position2/*, raw_color.w*/);
-    gl_FragColor = vec4(color, raw_color.w);
+    gl_FragColor = vec4(lightDirection, raw_color.w);
+    //gl_FragColor = vec4(color, raw_color.w);
 }
