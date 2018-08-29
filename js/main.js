@@ -128,7 +128,6 @@ function animate (timestamp) {
   document.getElementById('content').style.backgroundColor = '#' + settings.settings.backgroundColor
   simulate(timestamp - lastTimestamp)
   let [camera, lights] = previewVisitor.run(sg)
-  console.log(lights[0])
   updateResolution(camera)
   // Render new frame
   r.loop(sg, camera, lights)
