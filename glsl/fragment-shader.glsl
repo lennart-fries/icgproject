@@ -37,8 +37,10 @@ void main(void) {
     vec3 normal = normalize(v_normal);
     vec3 viewDirection = normalize(-v_position2.xyz);
 
-    for(int i = 0; i < maxPos; i++) {
-        vec3 lightDirection = normalize(lightPositions[i].xyz - v_position2.xyz);
+    vec3 lightDirection;
+
+    for(int i = 0; i < 1; i++) {
+        /*vec3*/ lightDirection = normalize(lightPositions[i].xyz - v_position2.xyz);
         float lj = length(lightPositions[i].xyz - v_position2.xyz) * lightPositions[i].w;
         vec3 reflectDirection = reflect(-lightDirection,normal);
         float specAngle = max(dot(reflectDirection, viewDirection),0.0);
@@ -57,5 +59,5 @@ void main(void) {
     vec3 specularColor =  specularLambertian * base_color;
     //color += specularColor;
 
-    gl_FragColor = vec4(color, raw_color.w);
+    gl_FragColor = vec4(v_position2/*, raw_color.w*/);
 }
