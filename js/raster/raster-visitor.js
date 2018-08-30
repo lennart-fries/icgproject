@@ -123,7 +123,7 @@ export class RasterSetupVisitor extends Visitor {
    * @param  {SphereNode} node - Node to visit
    */
   visitSphereNode (node) {
-    node.rasterSphere = new RasterSphere(this.context, node.center, node.radius, node.color)
+    node.rasterSphere = new RasterSphere(this.context, node.center, node.radius, node.colors, node.materials, node.texture)
   }
 
   /**
@@ -131,7 +131,7 @@ export class RasterSetupVisitor extends Visitor {
    * @param  {AABoxNode} node - Node to visit
    */
   visitAABoxNode (node) {
-    node.rasterBox = new RasterAABox(this.context, node.minPoint, node.maxPoint, node.color, node.texture)
+    node.rasterBox = new RasterAABox(this.context, node.minPoint, node.maxPoint, node.colors, node.materials, node.texture)
   }
 }
 

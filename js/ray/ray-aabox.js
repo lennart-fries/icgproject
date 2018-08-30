@@ -34,7 +34,7 @@ export class RayAABox {
 
           /
         |_  z
-         */
+    */
     // array index = point number in drawing
     this.vertices = [
       new Vector(minPoint.x, minPoint.y, maxPoint.z, 1), // 0,0,1
