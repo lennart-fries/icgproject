@@ -54,7 +54,7 @@ export class RayAABox {
       [this.vertices[0], this.vertices[1], this.vertices[2], this.vertices[3]], // front
       [this.vertices[5], this.vertices[4], this.vertices[7], this.vertices[6]], // back
       [this.vertices[3], this.vertices[2], this.vertices[6], this.vertices[7]], // top
-      [this.vertices[0], this.vertices[4], this.vertices[5], this.vertices[1]], // bottom
+      [this.vertices[4], this.vertices[5], this.vertices[1], this.vertices[0]], // bottom
       [this.vertices[4], this.vertices[0], this.vertices[3], this.vertices[7]], // left
       [this.vertices[1], this.vertices[5], this.vertices[6], this.vertices[2]] // right
     ]
