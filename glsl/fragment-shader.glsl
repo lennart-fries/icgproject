@@ -5,6 +5,10 @@ varying vec3 v_normal;
 varying vec4 v_color;
 varying vec2 v_texCoord;
 varying vec4 v_position2;
+varying float v_ambient;
+varying float v_diffuse;
+varying float v_specular;
+varying float v_shininess;
 
 varying vec3 lightPositionsT[maxPos];
 varying float intensity[maxPos];
