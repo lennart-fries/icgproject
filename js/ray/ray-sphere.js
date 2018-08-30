@@ -24,16 +24,16 @@ export class RaySphere {
    */
   intersect (ray) {
     const xZero = ray.origin.sub(this.center)
-    const b = xZero.dot(ray.direction)
-    const c = xZero.dot(xZero) - this.radius * this.radius
+    const b = xZero.dot(ray.direction) // (x_0*d)^2
+    const c = b * b - xZero.dot(xZero) + this.radius * this.radius // VL 4x38
 
-    if (b * b - c < 0) {
+    if (c < 0) {
       return null
-    } else if (b * b - c === 0) {
+    } else if (c === 0) {
       return new Intersection(-b)
     } else {
-      const t = Math.min(-b + Math.sqrt(b * b - c), -b - Math.sqrt(b * b - c))
-      const point = ray.origin.add(ray.direction.mul(t))
+      const t = Math.min(-b + Math.sqrt(c), -b - Math.sqrt(c)) // VL 4x38
+      const point = ray.origin.add(ray.direction.mul(t)) // VL 4x39
       return new Intersection(t, point, point.sub(this.center).normalised())
     }
   }
