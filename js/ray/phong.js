@@ -15,21 +15,17 @@ export function phong (objColor, intersection, lightPositions, shininess, camera
   let coefficientSpecular = 1.5
   let color
 
-  // ambient new
+  // ambient
   color = objColor.mul(coefficientAmbient)
-
-  // diffuse new
 
   let diffuseSum = 0
   let specularSum = 0
   let viewDirection = (cameraPosition.sub(intersection.point)).normalised()
 
-  let lightDirection
-
   for (let i = 0; i < lightPositions.length; i++) {
     // diffuse
     let lightVector = lightPositions[i].sub(intersection.point)
-    /*let*/ lightDirection = lightVector.normalised()
+    let lightDirection = lightVector.normalised()
     let lj = lightVector.length * lightPositions[i].w
     diffuseSum += lj * Math.max(lightDirection.dot(intersection.normal), 0)
     // specular
@@ -40,74 +36,15 @@ export function phong (objColor, intersection, lightPositions, shininess, camera
     specularSum = specularSum + lj * specPow
   }
 
+  // diffuse
   let diffuseLambertian = coefficientDiffuse * diffuseSum
   let diffuseVec = objColor.mul(diffuseLambertian)
   color = color.add(diffuseVec)
 
-  // specular new
+  // specular
   let specularLambertian = coefficientSpecular * specularSum
   let specularVec = objColor.mul(specularLambertian)
   color = color.add(specularVec)
 
-  //return new Vector(lightDirection.x, lightDirection.y, lightDirection.z, objColor.w)
-
-  //return new Vector(intersection.point.x, intersection.point.y, intersection.point.z, objColor.w)
-
   return new Vector(color.x, color.y, color.z, objColor.w)
 }
-
-/*
-  // altes phong
-  let color = objColor
-
-  let ka = 0.6
-  let kd = 0.8
-  let ks = 0.8
-  let ke = shininess
-  let energy = 0.3
-
-  // ambient
-  let ambient = ka * energy
-  let ambientVector = new Vector(ambient, ambient, ambient, 0)
-  color = color.add(ambientVector)
-
-  // diffuse
-  let dsum = 0
-  lightPositions.forEach(function (light) {
-    let sj = light.sub(intersection.point)
-    let n = intersection.normal
-
-    if (n.dot(sj) > 0) {
-      dsum = dsum + (energy * n.dot(sj))
-    }
-  })
-  let diffuse = kd * dsum
-  let diffuseVector = new Vector(diffuse, diffuse, diffuse, 0)
-  color = color.add(diffuseVector)
-
-  // specular
-  let ssum = 0
-  lightPositions.forEach(function (light) {
-    let n = intersection.normal                             // normal
-    let l = light.sub(intersection.point).normalised()      // lightDirection
-    let firstPart = 2 * n.dot(l)                            // normal dot light
-    let middlePart = n.mul(firstPart)                       // normal mul firstPart
-    let r = middlePart.sub(l).normalised()                  // sub for specangle
-
-    let v = cameraPosition.normalised()
-
-    if (r.dot(v) > 0) {
-      ssum = ssum + energy * Math.pow((r.dot(v)), ke)
-    } else {
-      ssum = ssum + Math.pow(0, ke)
-    }
-  }
-  )
-
-  let specular = ks * ssum
-  let specularVector = new Vector(specular, specular, specular, 0)
-  color = color.add(specularVector)
-
-  return color
-}
-*/

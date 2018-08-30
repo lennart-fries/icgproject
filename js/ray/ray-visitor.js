@@ -57,15 +57,6 @@ export class RayVisitor extends MatrixVisitor {
             data[offset + 2] = color.b * 255
             data[offset + 3] = color.a * 255
           }
-          // FILS MAGISCHER DEBUGPUNKT
-          /* if (y === 95 && x === 105) {
-            console.log(minObj, minIntersection, data[offset], data[offset+1], data[offset+2], data[offset+3])
-            data[offset] = 255
-            data[offset + 1] = 255
-            data[offset + 2] = 255
-            data[offset + 3] = 255
-            continue
-          } */
         }
       }
     }

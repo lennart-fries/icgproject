@@ -29,6 +29,5 @@ void main() {
     for (int i = 0; i < maxPos; i++) {
         lightPositionsT[i] = (V * vec4(lightPositions[i].xyz, 1.0)).xyz;
         intensity[i] = lightPositions[i].w;
-        //lightPositionsT[i] = lightPositions[i];
     }
 }

@@ -39,15 +39,15 @@ void main(void) {
     vec3 normal = normalize(v_normal);
     vec3 viewDirection = normalize(-v_position2.xyz);
 
-    //vec3 lightDirection;
-
     for(int i = 0; i < maxPos; i++) {
+        // diffuse
         vec3 lightDirection = normalize(lightPositionsT[i] - v_position2.xyz);
-        float lj = length(lightPositionsT[i].xyz - v_position2.xyz) * intensity[i];
+        float lj = length(lightPositionsT[i] - v_position2.xyz) * intensity[i];
+        diffuseSum += lj * max(dot(lightDirection, normal), 0.0);
+        // specular
         vec3 reflectDirection = reflect(-lightDirection,normal);
         float specAngle = max(dot(reflectDirection, viewDirection),0.0);
         float specPow = pow(specAngle, shininess);
-        diffuseSum += lj * max(dot(lightDirection, normal), 0.0);
         specularSum += lj * specPow;
     }
 
@@ -61,6 +61,5 @@ void main(void) {
     vec3 specularColor =  specularLambertian * base_color;
     color += specularColor;
 
-    //gl_FragColor = vec4(lightDirection, raw_color.w);
     gl_FragColor = vec4(color, raw_color.w);
 }
