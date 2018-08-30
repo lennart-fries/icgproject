@@ -96,6 +96,15 @@ export class RasterVisitor extends MatrixVisitor {
     let shader = this.setUniforms()
     node.rasterBox.render(shader)
   }
+
+  /**
+   * Visits an tetrahedron pyramid node for rendering
+   * @param {PyramidNode} node - Node to visit
+   */
+  visitPyramidNode (node) {
+    let shader = this.setUniforms()
+    node.rasterPyramid.render(shader)
+  }
 }
 
 /**
