@@ -27,19 +27,9 @@ const sphere = new SphereNode(
   'assets/diamond_ore.png'
 )
 gn3.add(sphere)
-let gn2 = new GroupNode(Matrix.translation(new Vector(-0.7, -0.4, 0.1, 0.0)))
-sg.add(gn2)
 
-/* const colorsArray = [
-  new Vector(0.0, 1.0, 0.0, 1.0),
-  new Vector(0.0, 0.0, 1.0, 1.0),
-  new Vector(1.0, 0.0, 0.0, 1.0),
-  new Vector(0.0, 0.0, 0.0, 1.0),
-  new Vector(0.0, 1.0, 0.0, 1.0),
-  new Vector(1.0, 0.0, 0.0, 1.0),
-  new Vector(1.0, 0.0, 1.0, 1.0),
-  new Vector(0.0, 0.0, 1.0, 1.0)
-] */
+const gn2 = new GroupNode(Matrix.translation(new Vector(-0.7, -0.4, 0.1, 0.0)))
+sg.add(gn2)
 
 const colorVector = new Vector(0.0, 1.0, 0.0, 1.0)
 
@@ -61,8 +51,7 @@ const cameraNode = new CameraNode(new Vector(0, 0, 10, 1), new Vector(0, 0, 0, 1
 gn1.add(cameraNode)
 
 let animationNodes = [
-  //new AnimationNode(gn2, 1.0, true, new Vector(0.5, 0.5, 0.5, 0), Matrix.rotation),
-  new AnimationNode(gn2, 1.0, true, new Vector(0, 0, 0.5, 0), Matrix.rotation),
+  new AnimationNode(gn2, 1.0, true, new Vector(0, 0.5, 0.5, 0), Matrix.rotation),
   new BackAndForthAnimationNode(gn3, 1.0, true, new Vector(0, 0, 1, 0), Matrix.translation, 3, 1.5)
 ]
 

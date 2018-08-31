@@ -7,6 +7,8 @@ import { RaySphere } from './ray-sphere.js'
 import { Intersection } from './intersection.js'
 import { phong } from './phong.js'
 import { MatrixVisitor } from '../scenegraph/visitor.js'
+import { Vector } from '../primitives/vector.js'
+import { Matrix } from '../primitives/matrix.js'
 
 export class RayVisitor extends MatrixVisitor {
   /**
@@ -71,9 +73,20 @@ export class RayVisitor extends MatrixVisitor {
    * @param  {AABoxNode} node - Node to visit
    */
   visitAABoxNode (node) {
-    // let mat = this.currentMatrix
-    // todo sphere
-    // this.objects.push(new RayAABox(mat.mul(node.minPoint), mat.mul(node.maxPoint), node.colors))
+    let mat = this.currentMatrix
+    let center = node.minPoint.add(node.maxPoint.sub(node.minPoint)).mul(0.5)
+    let radius = (node.maxPoint.x - node.minPoint.x) / 2.0
+    this.objects.push(new RaySphere(mat.mul(center), radius, node.colors, node.materials))
   }
-  // todo pyramide
+
+  /**
+   * Visits an tetrahedron pyramid node
+   * @param  {AABoxNode} node - Node to visit
+   */
+  visitPyramidNode (node) {
+    let mat = this.currentMatrix
+    let center = node.center
+    center.y += node.height / 2
+    this.objects.push(new RaySphere(mat.mul(center), node.radius / 2.0, node.color, node.materials))
+  }
 }
