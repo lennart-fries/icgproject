@@ -1,5 +1,5 @@
 /* global Image */
-import { vecArrayToNumArray, vecOrVecArrayToNumArrayRepeating } from './array-utils.js'
+import { vecArrayToNumArray, vecOrVecArrayToNumArrayRepeating } from '../primitives/array-utils.js'
 
 /**
  * A class creating buffers for an axis aligned box to render it with WebGL

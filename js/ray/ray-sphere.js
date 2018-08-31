@@ -3,18 +3,22 @@
  */
 
 import { Intersection } from './intersection.js'
+import { elementOrArrayToElement } from '../primitives/array-utils.js'
 
 export class RaySphere {
   /**
    * Creates a new sphere with center and radius
-   * @param  {Vector} center - Center of the Sphere
-   * @param  {number} radius - Radius of the Sphere
-   * @param  {Vector} color  - Color of the Sphere
+   * @param  {Vector} center                     - Center of the sphere
+   * @param  {number} radius                     - Radius of the sphere
+   * @param  {Array.<Vector> | Vector} colors    - Color(s) of the sphere, only the first element is used
+   * @param  {Array.<Vector> | Vector} materials - Material(s) of the sphere, only the first element is used
+   *                                               x = ambient, y = diffuse, z = specular, w = shininess
    */
-  constructor (center, radius, color) {
+  constructor (center, radius, colors, materials) {
     this.center = center
     this.radius = radius
-    this.color = color
+    this.color = elementOrArrayToElement(colors)
+    this.material = elementOrArrayToElement(materials)
   }
 
   /**

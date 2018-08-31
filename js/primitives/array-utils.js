@@ -1,4 +1,4 @@
-import { Vector } from '../primitives/vector.js'
+import { Vector } from './vector.js'
 
 /**
  * Turn an array of vectors into an array of numbers x, y, z, w, optionally checking its length
@@ -67,21 +67,14 @@ export function stretchArray (array, minLength) {
 }
 
 /**
- * Stretches array to have a minimum number of elements, repeating values if necessary
- * @param  {Vector | Array.<Vector>} array - array to stretch
- * @param  {number} minLength              - minimum number of elements to output
- * @return {Array.<number>}                  stretched array
+ * Converts arrays into single objects by taking the first element
+ * @param  {Array | Object} elementOrArray - Array or single object
+ * @return {Object}                          Single object
  */
-export function multiArray (array, minLength) {
-  if (array.length < minLength) {
-    let newArray = []
-    let multiplier = Math.ceil(minLength / array.length)
-    for (let i in newArray) {
-      let offset = multiplier * i
-      newArray = newArray.fill(array[i], offset, offset + 1)
-    }
-    return newArray
+export function elementOrArrayToElement (elementOrArray) {
+  if (elementOrArray instanceof Array) {
+    return elementOrArray[0]
   } else {
-    return array
+    return elementOrArray
   }
 }

@@ -23,7 +23,8 @@ const sphere = new SphereNode(
   new Vector(0.5, -0.8, 0, 1),
   0.4,
   new Vector(0.8, 0.4, 0.1, 1),
-  new Vector(0.3, 0.6, 1.5, 4)
+  new Vector(0.3, 0.6, 1.5, 4),
+  'assets/diamond_ore.png'
 )
 gn3.add(sphere)
 let gn2 = new GroupNode(Matrix.translation(new Vector(-0.7, -0.4, 0.1, 0.0)))

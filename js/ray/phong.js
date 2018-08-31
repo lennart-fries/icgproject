@@ -5,15 +5,15 @@ import { Vector } from '../primitives/vector.js'
  * @param {Vector} objColor               - Color of the intersected object
  * @param {Intersection} intersection     - Intersection information
  * @param {Array.<Vector>} lightPositions - Light positions
- * @param {number} shininess              - Shininess parameter of the Phong model
+ * @param {Vector} material               - Material properties of the intersected object
+ *                                          x = ambient, y = diffuse, z = specular, w = shininess
  * @param {Vector} cameraPosition         - Position of the camera
  * @return {Vector}                         Resulting color
  */
-export function phong (objColor, intersection, lightPositions, shininess, cameraPosition) {
-  let coefficientAmbient = 0.3
-  let coefficientDiffuse = 0.6
-  let coefficientSpecular = 1.5
-  let color
+export function phong (objColor, intersection, lightPositions, material, cameraPosition) {
+  let coefficientAmbient, coefficientDiffuse, coefficientSpecular, shininess, color
+
+  [coefficientAmbient, coefficientDiffuse, coefficientSpecular, shininess] = material.valueOf()
 
   // ambient
   color = objColor.mul(coefficientAmbient)

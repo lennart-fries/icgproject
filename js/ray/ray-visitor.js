@@ -5,7 +5,6 @@
 import { Ray } from './ray.js'
 import { RaySphere } from './ray-sphere.js'
 import { Intersection } from './intersection.js'
-import { RayAABox } from './ray-aabox.js'
 import { phong } from './phong.js'
 import { MatrixVisitor } from '../scenegraph/visitor.js'
 
@@ -43,20 +42,15 @@ export class RayVisitor extends MatrixVisitor {
           }
         }
         if (minObj) {
+          let color = phong(minObj.color, minIntersection, lightPositions, minObj.material, camera.eye)
+
           // mirror around Y axis to match WebGL coordinates
           let offset = 4 * (width * (height - y) + x)
-          if (!minObj.color) {
-            data[offset] = 0
-            data[offset + 1] = 0
-            data[offset + 2] = 0
-            data[offset + 3] = 255
-          } else {
-            let color = phong(minObj.color, minIntersection, lightPositions, 4.0, camera.eye)
-            data[offset] = color.r * 255
-            data[offset + 1] = color.g * 255
-            data[offset + 2] = color.b * 255
-            data[offset + 3] = color.a * 255
-          }
+
+          data[offset] = color.r * 255
+          data[offset + 1] = color.g * 255
+          data[offset + 2] = color.b * 255
+          data[offset + 3] = color.a * 255
         }
       }
     }
@@ -69,7 +63,7 @@ export class RayVisitor extends MatrixVisitor {
    */
   visitSphereNode (node) {
     let mat = this.currentMatrix
-    this.objects.push(new RaySphere(mat.mul(node.center), node.radius, node.color))
+    this.objects.push(new RaySphere(mat.mul(node.center), node.radius, node.colors, node.materials))
   }
 
   /**
@@ -77,7 +71,9 @@ export class RayVisitor extends MatrixVisitor {
    * @param  {AABoxNode} node - Node to visit
    */
   visitAABoxNode (node) {
-    let mat = this.currentMatrix
-    this.objects.push(new RayAABox(mat.mul(node.minPoint), mat.mul(node.maxPoint), node.color))
+    // let mat = this.currentMatrix
+    // todo sphere
+    // this.objects.push(new RayAABox(mat.mul(node.minPoint), mat.mul(node.maxPoint), node.colors))
   }
+  // todo pyramide
 }
