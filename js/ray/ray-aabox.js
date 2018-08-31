@@ -13,14 +13,7 @@ export class RayAABox {
    * @param  {Vector} color    - Color of the cube
    * @param  {string} texture  - Image filename for the texture, optional
    */
-  constructor (minPoint, maxPoint, color, texture = '') {
-    if (color instanceof Vector) {
-      this.color = color
-    } else if (color instanceof Array && color[0] instanceof Vector) {
-      this.color = color[0]
-    } else {
-      console.error('wrong color format!')
-    }
+  constructor (minPoint, maxPoint, color, materials) {
     /*
               Λ y
               |
@@ -34,7 +27,7 @@ export class RayAABox {
 
           /
         |_  z
-         */
+    */
     // array index = point number in drawing
     this.vertices = [
       new Vector(minPoint.x, minPoint.y, maxPoint.z, 1), // 0,0,1

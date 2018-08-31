@@ -51,15 +51,20 @@ export class GroupNode extends Node {
 export class SphereNode extends Node {
   /**
    * Creates a new Sphere with center and radius
-   * @param  {Vector} center - Center of the Sphere
-   * @param  {number} radius - Radius of the Sphere
-   * @param  {Vector} color  - Color of the Sphere
+   * @param  {Vector} center                     - Center of the sphere
+   * @param  {number} radius                     - Radius of the sphere
+   * @param  {Array.<Vector> | Vector} colors    - Color(s) of the sphere
+   * @param  {Array.<Vector> | Vector} materials - Material(s) of the sphere
+   *                                               x = ambient, y = diffuse, z = specular, w = shininess
+   * @param  {string | null} texture               Image filename for the texture, optional
    */
-  constructor (center, radius, color) {
+  constructor (center, radius, colors, materials, texture = null) {
     super()
     this.center = center
     this.radius = radius
-    this.color = color
+    this.colors = colors
+    this.materials = materials
+    this.texture = texture
   }
 
   /**
@@ -78,16 +83,19 @@ export class SphereNode extends Node {
 export class AABoxNode extends Node {
   /**
    * Creates an axis aligned box
-   * @param  {Vector} minPoint - Minimum Point
-   * @param  {Vector} maxPoint - Maximum Point
-   * @param  {Vector} color    - Color of the cube
-   * @param  {String} texture  - Texture of the cube, optional
+   * @param  {Vector} minPoint                   - Minimum point
+   * @param  {Vector} maxPoint                   - Maximum point
+   * @param  {Array.<Vector> | Vector} colors    - Color(s) of the box
+   * @param  {Array.<Vector> | Vector} materials - Material(s) of the box
+   *                                               x = ambient, y = diffuse, z = specular, w = shininess
+   * @param  {string | null} texture               Image filename for the texture, optional
    */
-  constructor (minPoint, maxPoint, color, texture = '') {
+  constructor (minPoint, maxPoint, colors, materials, texture = null) {
     super()
     this.minPoint = minPoint
     this.maxPoint = maxPoint
-    this.color = color
+    this.colors = colors
+    this.materials = materials
     this.texture = texture
   }
 
