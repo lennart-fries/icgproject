@@ -54,7 +54,7 @@ export class RayAABox {
       [this.vertices[0], this.vertices[1], this.vertices[2], this.vertices[3]], // front
       [this.vertices[5], this.vertices[4], this.vertices[7], this.vertices[6]], // back
       [this.vertices[3], this.vertices[2], this.vertices[6], this.vertices[7]], // top
-      [this.vertices[0], this.vertices[4], this.vertices[5], this.vertices[1]], // bottom
+      [this.vertices[4], this.vertices[5], this.vertices[1], this.vertices[0]], // bottom
       [this.vertices[4], this.vertices[0], this.vertices[3], this.vertices[7]], // left
       [this.vertices[1], this.vertices[5], this.vertices[6], this.vertices[2]] // right
     ]
@@ -68,16 +68,16 @@ export class RayAABox {
   intersect (ray) {
     let inters = []
     this.sides.forEach(function (side, i) {
-      let c = Math.floor(i / 2)
-      let n = (side[1].sub(side[0])).cross(side[3].sub(side[0])).normalised()
+      let c = Math.floor(i / 2) // 0 for front back, 1 for top bottom, 2 for left right
+      let normal = (side[1].sub(side[0])).cross(side[3].sub(side[0])).normalised()
       let d = (c === 0) ? side[0].z : (c === 1) ? side[0].y : side[0].x
       d *= (i % 2) ? -1 : 1
-      let t = (d - n.dot(ray.origin)) / n.dot(ray.direction)
+      let t = (d - normal.dot(ray.origin)) / normal.dot(ray.direction) // VL 4x40
       let x = ray.origin.add(ray.direction.mul(t))
       if ((c === 2 || (x.x > this.minPoint.x && x.x < this.maxPoint.x)) &&
         (c === 1 || (x.y > this.minPoint.y && x.y < this.maxPoint.y)) &&
         (c === 0 || (x.z > this.minPoint.z && x.z < this.maxPoint.z))) {
-        inters.push(new Intersection(t, x, n))
+        inters.push(new Intersection(t, x, normal))
       }
     }, this)
     if (inters.length === 0) {

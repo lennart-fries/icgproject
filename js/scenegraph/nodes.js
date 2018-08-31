@@ -108,6 +108,35 @@ export class AABoxNode extends Node {
   }
 }
 
+/**
+ * Class representing a Tetrahedron Pyramid in the scene graph
+ * @extends Node
+ */
+export class PyramidNode extends Node {
+  /**
+   * Creates a tetrahedron pyramid
+   * @param {Vector} center   - Center of the Bottom Triangle
+   * @param {Vector} height   - Height of the Pyramid from the Center
+   * @param {Vector} color    - Color of the pyramid
+   * @param {String} texture  - Texture of the pyramid, optional
+   */
+  constructor (center, height, color, texture = '') {
+    super()
+    this.center = center
+    this.height = height
+    this.color = color
+    this.texture = texture
+  }
+
+  /**
+   * Accepts a visitor according to the visitor pattern
+   * @param {Visitor} visitor - Visitor
+   */
+  accept (visitor) {
+    visitor.visitPyramidNode(this)
+  }
+}
+
 export class CameraNode extends Node {
   /**
    * Creates a camera

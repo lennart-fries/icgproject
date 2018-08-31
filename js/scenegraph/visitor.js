@@ -43,6 +43,12 @@ export class Visitor {
   visitAABoxNode (node) { }
 
   /**
+   * Visits an tetrahedron pyramid node
+   * @param node
+   */
+  visitPyramidNode (node) { }
+
+  /**
    * Visits a camera node
    * @param  {CameraNode} node - Node to visit
    */
