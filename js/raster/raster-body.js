@@ -44,7 +44,7 @@ export class RasterBody {
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array((this.textured) ? uvsNum : colorsNum), gl.STATIC_DRAW)
     this.surfaceBuffer = surfaceBuffer
 
-    if (!this.textured) {
+    if (this.textured) {
       let cubeTexture = gl.createTexture()
       let cubeImage = new Image()
       cubeImage.onload = function () {
