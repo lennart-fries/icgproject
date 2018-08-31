@@ -5,6 +5,7 @@
 import { Matrix } from '../primitives/matrix.js'
 import { RasterSphere } from './raster-sphere.js'
 import { RasterAABox } from './raster-aabox.js'
+import { RasterPyramid } from './raster-pyramid.js'
 import { MatrixVisitor, Visitor } from '../scenegraph/visitor.js'
 
 export class RasterVisitor extends MatrixVisitor {
@@ -141,6 +142,10 @@ export class RasterSetupVisitor extends Visitor {
    */
   visitAABoxNode (node) {
     node.rasterBox = new RasterAABox(this.context, node.minPoint, node.maxPoint, node.colors, node.materials, node.texture)
+  }
+
+  visitPyramidNode (node) {
+    node.rasterPyramid = new RasterPyramid(this.context, node.center, node.height, node.materials, node.texture)
   }
 }
 

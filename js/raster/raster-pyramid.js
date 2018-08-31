@@ -5,67 +5,50 @@ import { RasterBody } from './raster-body.js'
 /**
  * A class creating buffers for an axis aligned box to render it with WebGL
  */
-export class RasterAABox extends RasterBody {
+export class RasterPyramid extends RasterBody {
   /**
-   * Creates all WebGL buffers for the box
-   *     6 ------- 7
-   *    / |       / |
-   *   3 ------- 2  |
-   *   |  |      |  |
-   *   |  5 -----|- 4
-   *   | /       | /
-   *   0 ------- 1
-   *  looking in negative z axis direction
+   * Creates all WebGL buffers for the sphere
    * @param  {WebGLRenderingContext} gl          - Canvas' context
-   * @param  {Vector} minPoint                   - Minimal x,y,z of the box
-   * @param  {Vector} maxPoint                   - Maximal x,y,z of the box
-   * @param  {Array.<Vector> | Vector} colors    - Color(s) of the box
-   * @param  {Array.<Vector> | Vector} materials - Material(s) of the box
+   * @param  {Vector} center                     - Center of the tetraeder
+   * @param  {number} height                     - Height of the Tetraeder
+   * @param  {Array.<Vector> | Vector} colors    - Color(s) of the sphere
+   * @param  {Array.<Vector> | Vector} materials - Material(s) of the sphere
    *                                               x = ambient, y = diffuse, z = specular, w = shininess
    * @param  {string | null} texture               Image filename for the texture, optional
    */
-  constructor (gl, minPoint, maxPoint, colors, materials, texture = null) {
-    const mi = minPoint
-    const ma = maxPoint
+  constructor (gl, center, height, colors, materials, texture = null) {
+    // right
+    const vertex0 = new Vector((center.x + Math.sqrt(8 / 9)) * height, center.y * height, center.z * height, 1)
+    // front left
+    const vertex1 = new Vector((center.x - Math.sqrt(2 / 9)) * height, center.y * height, (center.z - Math.sqrt(2 / 3)) * height, 1)
+    // back left
+    const vertex2 = new Vector((center.x - Math.sqrt(2 / 9)) * height, center.y * height, (center.z - Math.sqrt(2 / 3)) * height, 1)
+    // up
+    const vertex3 = new Vector(center.x * height, (center.y + 4 / 3) * height, center.z * height, 1)
 
-    const vertex0 = new Vector(mi.x, mi.y, ma.z, 1)
-    const vertex1 = new Vector(ma.x, mi.y, ma.z, 1)
-    const vertex2 = new Vector(ma.x, ma.y, ma.z, 1)
-    const vertex3 = new Vector(mi.x, ma.y, ma.z, 1)
-    const vertex4 = new Vector(ma.x, mi.y, mi.z, 1)
-    const vertex5 = new Vector(mi.x, mi.y, mi.z, 1)
-    const vertex6 = new Vector(mi.x, ma.y, mi.z, 1)
-    const vertex7 = new Vector(ma.x, ma.y, mi.z, 1)
+    // 12 = 3 for 4
 
     const vertices = [ // vertices for each side
-      // front
-      vertex0, vertex1, vertex2, vertex3,
-      // back
-      vertex4, vertex5, vertex6, vertex7,
-      // right
-      vertex1, vertex4, vertex7, vertex2,
-      // top
-      vertex3, vertex2, vertex7, vertex6,
-      // left
-      vertex5, vertex0, vertex3, vertex6,
       // bottom
-      vertex5, vertex4, vertex1, vertex0
+      vertex0, vertex1, vertex2,
+      // left
+      vertex1, vertex2, vertex3,
+      // right
+      vertex1, vertex3, vertex0,
+      // back
+      vertex2, vertex3, vertex0
     ]
 
     const normals = stretchArray([ // Normals for each vertex
-      // front
-      new Vector(0, 0, 1, 0),
-      // back
-      new Vector(0, 0, -1, 0),
-      // right
-      new Vector(1, 0, 0, 0),
-      // top
-      new Vector(0, 1, 0, 0),
-      // left
-      new Vector(-1, 0, 0, 0),
       // bottom
-      new Vector(0, -1, 0, 0)
-    ], 24)
+      new Vector(0, -1, 0, 0),
+      // left
+      new Vector((vertex1.sub(vertex3)).dot(vertex2.sub(vertex3)), (vertex3.sub(vertex1)).dot(vertex3.sub(vertex2)), (vertex1.sub(vertex3)).dot(vertex2.sub(vertex3)), 0),
+      // right
+      new Vector((vertex1.sub(vertex3)).dot(vertex0.sub(vertex3)), (vertex3.sub(vertex1)).dot(vertex3.sub(vertex0)), (vertex1.sub(vertex3)).dot(vertex1.sub(vertex0)), 0),
+      // back
+      new Vector((vertex2.sub(vertex3).dot(vertex0.sub(vertex3))), (vertex3.sub(vertex2)).dot(vertex3.sub(vertex0)), (vertex2.sub(vertex3)).dot(vertex2.sub(vertex0)), 0)
+    ], 12)
 
     const uvsRaw = [ // Texture coordinates per vertex, same for each side
       new Vector(0, 0, 0, 1),
