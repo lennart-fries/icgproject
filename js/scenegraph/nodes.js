@@ -42,6 +42,19 @@ export class GroupNode extends Node {
   add (childNode) {
     this.children.push(childNode)
   }
+
+  toJSON () {
+    return {
+      GroupNode: {
+        matrix: this.matrix,
+        children: this.children
+      }
+    }
+  }
+
+  static fromJSON (obj) {
+    return new this(obj)
+  }
 }
 
 /**
@@ -75,6 +88,19 @@ export class SphereNode extends Node {
    */
   accept (visitor) {
     visitor.visitSphereNode(this)
+  }
+
+  toJSON () {
+    return {
+      SphereNode: {
+        center: this.center,
+        radius: this.radius,
+        colors: this.colors,
+        materials: this.materials,
+        texture: this.texture,
+        children: this.children
+      }
+    }
   }
 }
 
@@ -110,6 +136,18 @@ export class AABoxNode extends Node {
   accept (visitor) {
     visitor.visitAABoxNode(this)
   }
+
+  toJSON () {
+    return {
+      AABoxNode: {
+        minPoint: this.minPoint,
+        maxPoint: this.maxPoint,
+        colors: this.colors,
+        materials: this.materials,
+        children: this.children
+      }
+    }
+  }
 }
 
 /**
@@ -144,6 +182,19 @@ export class PyramidNode extends Node {
   accept (visitor) {
     visitor.visitPyramidNode(this)
   }
+
+  toJSON () {
+    return {
+      PyramidNode: {
+        center: this.center,
+        height: this.height,
+        colors: this.colors,
+        materials: this.materials,
+        texture: this.texture,
+        children: this.children
+      }
+    }
+  }
 }
 
 export class CameraNode extends Node {
@@ -175,6 +226,20 @@ export class CameraNode extends Node {
   accept (visitor) {
     visitor.visitCameraNode(this)
   }
+
+  toJSON () {
+    return {
+      CameraNode: {
+        eye: this.eye,
+        center: this.center,
+        up: this.up,
+        fovy: this.fovy,
+        aspect: this.aspect,
+        near: this.near,
+        far: this.far
+      }
+    }
+  }
 }
 
 export class LightNode extends Node {
@@ -195,5 +260,14 @@ export class LightNode extends Node {
    */
   accept (visitor) {
     visitor.visitLightNode(this)
+  }
+
+  toJSON () {
+    return {
+      LightNode: {
+        position: this.position,
+        intensity: this.intensity
+      }
+    }
   }
 }

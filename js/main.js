@@ -148,6 +148,14 @@ function updateRenderer () {
   return false
 }
 
+window.getScenegraph = function () {
+  return sg
+}
+
+window.setScenegraph = function (scenegraph) {
+  r = new settings.settings.renderer(canvas, scenegraph)
+}
+
 /**
  * Makes sure the resolution of the canvas corresponds to the window size and configure camera accordingly
  * @param camera - Camera object to inject the correct aspect ratio into
