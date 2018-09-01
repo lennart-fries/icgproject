@@ -34,7 +34,7 @@ let gn4 = new GroupNode(Matrix.identity())
 
 sg.add(gn4)
 
-/* const colorsArray = [
+const colorsArray = [
   new Vector(0.0, 1.0, 0.0, 1.0),
   new Vector(0.0, 0.0, 1.0, 1.0),
   new Vector(1.0, 0.0, 0.0, 1.0),
@@ -43,7 +43,7 @@ sg.add(gn4)
   new Vector(1.0, 0.0, 0.0, 1.0),
   new Vector(1.0, 0.0, 1.0, 1.0),
   new Vector(0.0, 0.0, 1.0, 1.0)
-] */
+]
 
 const colorVector = new Vector(0.0, 1.0, 0.0, 1.0)
 
@@ -59,9 +59,8 @@ gn2.add(cube)
 const pyramid = new PyramidNode(
   new Vector(1.1, -1.5, 0.5, 0),
   1.5,
-  colorVector,
+  colorsArray,
   new Vector(0.3, 0.6, 1.5, 4),
-  'assets/diamond_ore.png'
 )
 
 gn4.add(pyramid)
