@@ -20,7 +20,7 @@ export class RasterPyramid extends RasterBody {
     // right
     const vertex0 = new Vector((center.x + Math.sqrt(8 / 9)) * height, center.y * height, center.z * height, 1)
     // front left
-    const vertex1 = new Vector((center.x - Math.sqrt(2 / 9)) * height, center.y * height, (center.z - Math.sqrt(2 / 3)) * height, 1)
+    const vertex1 = new Vector((center.x - Math.sqrt(2 / 9)) * height, center.y * height, (center.z + Math.sqrt(2 / 3)) * height, 1)
     // back left
     const vertex2 = new Vector((center.x - Math.sqrt(2 / 9)) * height, center.y * height, (center.z - Math.sqrt(2 / 3)) * height, 1)
     // up
@@ -32,11 +32,11 @@ export class RasterPyramid extends RasterBody {
       // bottom
       vertex0, vertex1, vertex2,
       // left
-      vertex1, vertex2, vertex3,
+      vertex3, vertex2, vertex1,
       // right
-      vertex1, vertex3, vertex0,
+      vertex0, vertex3, vertex1,
       // back
-      vertex2, vertex3, vertex0
+      vertex0, vertex3, vertex2
     ]
 
     const normals = stretchArray([ // Normals for each vertex
