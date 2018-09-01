@@ -55,7 +55,8 @@ gn2.add(cube)
 const pyramid = new PyramidNode(
   new Vector(1.1, -1.5, 0.5, 0),
   1.5,
-  colorVector
+  colorVector,
+  new Vector(0.3, 0.6, 1.5, 4)
 )
 
 gn2.add(pyramid)

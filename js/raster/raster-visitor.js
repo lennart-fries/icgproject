@@ -145,7 +145,7 @@ export class RasterSetupVisitor extends Visitor {
   }
 
   visitPyramidNode (node) {
-    node.rasterPyramid = new RasterPyramid(this.context, node.center, node.height, node.materials, node.texture)
+    node.rasterPyramid = new RasterPyramid(this.context, node.center, node.height, node.colors, node.materials, node.texture)
   }
 }
 
