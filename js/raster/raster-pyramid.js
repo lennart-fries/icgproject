@@ -43,7 +43,7 @@ export class RasterPyramid extends RasterBody {
       // bottom
       new Vector(0, -1, 0, 0),
       // left
-      (vertex1.sub(vertex3)).cross(vertex2.sub(vertex3)),
+      (vertex2.sub(vertex3)).cross(vertex1.sub(vertex3)),
       // right
       (vertex1.sub(vertex3)).cross(vertex0.sub(vertex3)),
       // back
