@@ -144,6 +144,10 @@ export class RasterSetupVisitor extends Visitor {
     node.rasterBox = new RasterAABox(this.context, node.minPoint, node.maxPoint, node.colors, node.materials, node.texture)
   }
 
+  /**
+   * Visits an tetrahedron pyramid node for setup
+   * @param {PyramidNode} node - Node to visit
+   */
   visitPyramidNode (node) {
     node.rasterPyramid = new RasterPyramid(this.context, node.center, node.height, node.colors, node.materials, node.texture)
   }

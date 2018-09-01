@@ -70,7 +70,7 @@ const cameraNode = new CameraNode(new Vector(0, 0, 10, 1), new Vector(0, 0, 0, 1
 gn1.add(cameraNode)
 
 let animationNodes = [
-  //new AnimationNode(gn2, 1.0, true, new Vector(0.5, 0.5, 0.5, 0), Matrix.rotation),
+  // new AnimationNode(gn2, 1.0, true, new Vector(0.5, 0.5, 0.5, 0), Matrix.rotation),
   new AnimationNode(gn2, 1.0, true, new Vector(0, 0, 0.5, 0), Matrix.rotation),
   new BackAndForthAnimationNode(gn3, 1.0, true, new Vector(0, 0, 1, 0), Matrix.translation, 3, 1.5)
 ]
