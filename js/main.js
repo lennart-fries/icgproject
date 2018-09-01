@@ -30,6 +30,10 @@ gn3.add(sphere)
 let gn2 = new GroupNode(Matrix.translation(new Vector(-0.7, -0.4, 0.1, 0.0)))
 sg.add(gn2)
 
+let gn4 = new GroupNode(Matrix.identity())
+
+sg.add(gn4)
+
 /* const colorsArray = [
   new Vector(0.0, 1.0, 0.0, 1.0),
   new Vector(0.0, 0.0, 1.0, 1.0),
@@ -59,7 +63,7 @@ const pyramid = new PyramidNode(
   new Vector(0.3, 0.6, 1.5, 4)
 )
 
-gn3.add(pyramid)
+gn4.add(pyramid)
 
 const light1 = new LightNode(new Vector(-10, 3, 3, 1), 0.2)
 gn1.add(light1)
@@ -72,7 +76,8 @@ gn1.add(cameraNode)
 let animationNodes = [
   // new AnimationNode(gn2, 1.0, true, new Vector(0.5, 0.5, 0.5, 0), Matrix.rotation),
   new AnimationNode(gn2, 1.0, true, new Vector(0, 0, 0.5, 0), Matrix.rotation),
-  new BackAndForthAnimationNode(gn3, 1.0, true, new Vector(0, 0, 1, 0), Matrix.translation, 3, 1.5)
+  new BackAndForthAnimationNode(gn3, 1.0, true, new Vector(0, 0, 1, 0), Matrix.translation, 3, 1.5),
+  new AnimationNode(gn4, 1.0, true, new Vector(1, 0, 0, 0), Matrix.rotation)
 ]
 
 /**
