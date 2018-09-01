@@ -43,7 +43,7 @@ export class RasterPyramid extends RasterBody {
       // bottom
       new Vector(0, -1, 0, 0),
       // left
-      vertex1.sub(vertex3).cross(vertex2.sub(vertex3)),
+      (vertex1.sub(vertex3)).cross(vertex2.sub(vertex3)),
       // right
       (vertex1.sub(vertex3)).cross(vertex0.sub(vertex3)),
       // back
@@ -53,17 +53,16 @@ export class RasterPyramid extends RasterBody {
     const uvsRaw = [ // Texture coordinates per vertex, same for each side
       new Vector(0, 0, 0, 1),
       new Vector(1, 0, 0, 1),
-      new Vector(1, 1, 0, 1),
-      new Vector(0, 1, 0, 1)
+      new Vector(0.5, 1, 0, 1)
     ]
     let uvs = []
 
-    const indicesRaw = [0, 1, 2, 2, 3, 0] // triangles, two per cube side
+    const indicesRaw = [0, 1, 2] // one triangle per side
     let indices = []
 
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 4; i++) {
       uvs = uvs.concat(uvsRaw)
-      indices = indices.concat(indicesRaw.map(x => x + (i * 4)))
+      indices = indices.concat(indicesRaw.map(x => x + (i * 3)))
     }
     super(gl, vertices, normals, uvs, colors, materials, indices, texture)
   }

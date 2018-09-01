@@ -116,7 +116,7 @@ export class PyramidNode extends Node {
   /**
    * Creates a tetrahedron pyramid
    * @param {Vector} center   - Center of the Bottom Triangle
-   * @param {Vector} height   - Height of the Pyramid from the Center
+   * @param {number} height   - Height of the Pyramid from the Center
    * @param {Vector} color    - Color of the pyramid
    * @param {String} texture  - Texture of the pyramid, optional
    */

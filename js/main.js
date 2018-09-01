@@ -3,7 +3,7 @@
 
 import { Matrix } from './primitives/matrix.js'
 import { Vector } from './primitives/vector.js'
-import { GroupNode, SphereNode, AABoxNode, CameraNode, LightNode } from './scenegraph/nodes.js'
+import { GroupNode, SphereNode, AABoxNode, PyramidNode, CameraNode, LightNode } from './scenegraph/nodes.js'
 import { AnimationNode, BackAndForthAnimationNode } from './animation/animation-nodes.js'
 import { settings } from './ui/ui.js'
 import { PreviewVisitor } from './scenegraph/preview-visitor.js'
@@ -25,6 +25,7 @@ const sphere = new SphereNode(
   new Vector(0.8, 0.4, 0.1, 1),
   new Vector(0.3, 0.6, 1.5, 4)
 )
+
 gn3.add(sphere)
 let gn2 = new GroupNode(Matrix.translation(new Vector(-0.7, -0.4, 0.1, 0.0)))
 sg.add(gn2)
@@ -50,6 +51,14 @@ const cube = new AABoxNode(
   'assets/diamond_ore.png'
 )
 gn2.add(cube)
+
+const pyramid = new PyramidNode(
+  new Vector(1.1, -1.5, 0.5, 0),
+  1.5,
+  colorVector
+)
+
+gn2.add(pyramid)
 
 const light1 = new LightNode(new Vector(-10, 3, 3, 1), 0.2)
 gn1.add(light1)
