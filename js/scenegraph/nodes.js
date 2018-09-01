@@ -122,7 +122,7 @@ export class PyramidNode extends Node {
    *                                               x = ambient, y = diffuse, z = specular, w = shininess
    * @param  {string | null} texture               Image filename for the texture, optional
    */
-  constructor (center, height, colors, materials, texture = '') {
+  constructor (center, height, colors, materials, texture = null) {
     super()
     this.center = center
     this.height = height
