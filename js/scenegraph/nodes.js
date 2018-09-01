@@ -115,16 +115,19 @@ export class AABoxNode extends Node {
 export class PyramidNode extends Node {
   /**
    * Creates a tetrahedron pyramid
-   * @param {Vector} center   - Center of the Bottom Triangle
-   * @param {number} height   - Height of the Pyramid from the Center
-   * @param {Vector} color    - Color of the pyramid
-   * @param {String} texture  - Texture of the pyramid, optional
+   * @param {Vector} center    - Center of the Bottom Triangle
+   * @param {number} height    - Height of the Pyramid from the Center
+   * @param {Vector} color     - Color of the pyramid
+   * @param {Vector} materials - Material(s) of the box
+   *                             x = ambient, y = diffuse, z = specular, w = shininess
+   * @param {String} texture   - Texture of the pyramid, optional
    */
-  constructor (center, height, color, texture = '') {
+  constructor (center, height, color, materials, texture = '') {
     super()
     this.center = center
     this.height = height
     this.color = color
+    this.materials = materials
     this.texture = texture
   }
 
