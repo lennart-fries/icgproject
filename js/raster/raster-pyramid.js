@@ -43,11 +43,11 @@ export class RasterPyramid extends RasterBody {
       // bottom
       new Vector(0, -1, 0, 0),
       // left
-      new Vector((vertex1.sub(vertex3)).dot(vertex2.sub(vertex3)), (vertex3.sub(vertex1)).dot(vertex3.sub(vertex2)), (vertex1.sub(vertex3)).dot(vertex2.sub(vertex3)), 0),
+      vertex1.sub(vertex3).cross(vertex2.sub(vertex3)),
       // right
-      new Vector((vertex1.sub(vertex3)).dot(vertex0.sub(vertex3)), (vertex3.sub(vertex1)).dot(vertex3.sub(vertex0)), (vertex1.sub(vertex3)).dot(vertex1.sub(vertex0)), 0),
+      (vertex1.sub(vertex3)).cross(vertex0.sub(vertex3)),
       // back
-      new Vector((vertex2.sub(vertex3).dot(vertex0.sub(vertex3))), (vertex3.sub(vertex2)).dot(vertex3.sub(vertex0)), (vertex2.sub(vertex3)).dot(vertex2.sub(vertex0)), 0)
+      (vertex0.sub(vertex3)).cross(vertex2.sub(vertex3))
     ], 12)
 
     const uvsRaw = [ // Texture coordinates per vertex, same for each side
