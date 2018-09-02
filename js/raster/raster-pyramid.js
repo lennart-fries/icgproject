@@ -1,5 +1,5 @@
 import { Vector } from '../primitives/vector.js'
-import { stretchArray } from './array-utils.js'
+import { stretchArray } from '../primitives/array-utils.js'
 import { RasterBody } from './raster-body.js'
 
 /**

@@ -7,8 +7,6 @@ import { RaySphere } from './ray-sphere.js'
 import { Intersection } from './intersection.js'
 import { phong } from './phong.js'
 import { MatrixVisitor } from '../scenegraph/visitor.js'
-import { Vector } from '../primitives/vector.js'
-import { Matrix } from '../primitives/matrix.js'
 
 export class RayVisitor extends MatrixVisitor {
   /**

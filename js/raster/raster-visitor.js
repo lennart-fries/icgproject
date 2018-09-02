@@ -145,7 +145,7 @@ export class RasterSetupVisitor extends Visitor {
   }
 
   /**
-   * Visits an tetrahedron pyramid node for setup
+   * Visits a tetrahedron pyramid node for setup
    * @param {PyramidNode} node - Node to visit
    */
   visitPyramidNode (node) {
@@ -171,5 +171,13 @@ export class RasterTeardownVisitor extends Visitor {
    */
   visitAABoxNode (node) {
     node.rasterBox.teardown()
+  }
+
+  /**
+   * Visits a tetrahedron pyramid node for setup
+   * @param {PyramidNode} node - Node to visit
+   */
+  visitPyramidNode (node) {
+    node.rasterPyramid.teardown()
   }
 }
