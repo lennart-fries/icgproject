@@ -24,7 +24,8 @@ const sphere = new SphereNode(
   0.4,
   new Vector(0.8, 0.4, 0.1, 1),
   new Vector(0.3, 0.6, 1.5, 4),
-  'assets/diamond_ore.png'
+  'assets/diamond_ore.png',
+  'assets/diamond_ore_n.png'
 )
 gn3.add(sphere)
 
@@ -38,12 +39,12 @@ sg.add(gn4)
 const colorsArray = [
   new Vector(0.0, 1.0, 0.0, 1.0),
   new Vector(0.0, 0.0, 1.0, 1.0),
-  new Vector(1.0, 0.0, 0.0, 1.0),
+  new Vector(1.0, 0.0, 0.0, 1.0)/* ,
   new Vector(0.0, 0.0, 0.0, 1.0),
   new Vector(0.0, 1.0, 0.0, 1.0),
   new Vector(1.0, 0.0, 0.0, 1.0),
   new Vector(1.0, 0.0, 1.0, 1.0),
-  new Vector(0.0, 0.0, 1.0, 1.0)
+  new Vector(0.0, 0.0, 1.0, 1.0) */
 ]
 
 const colorVector = new Vector(0.0, 1.0, 0.0, 1.0)
@@ -53,7 +54,8 @@ const cube = new AABoxNode(
   new Vector(1, 1, 1, 1),
   colorVector,
   new Vector(0.3, 0.6, 1.5, 4),
-  'assets/diamond_ore.png'
+  'assets/diamond_ore.png',
+  'assets/diamond_ore_n.png'
 )
 gn2.add(cube)
 
@@ -61,10 +63,12 @@ const pyramid = new PyramidNode(
   new Vector(1.1, -1.5, 0.5, 0),
   1.5,
   colorsArray,
-  new Vector(0.3, 0.6, 1.5, 4)
+  new Vector(0.3, 0.6, 1.5, 4),
+  'assets/diamond_ore.png',
+  'assets/diamond_ore_n.png'
 )
 
-gn4.add(pyramid)
+gn1.add(pyramid)
 
 const light1 = new LightNode(new Vector(-10, 3, 3, 1), 0.2)
 gn1.add(light1)

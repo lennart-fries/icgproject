@@ -4,6 +4,7 @@
 
 import { Vector } from '../primitives/vector.js'
 import { RasterBody } from './raster-body.js'
+import { Matrix } from '../primitives/matrix.js'
 
 export class RasterSphere extends RasterBody {
   /**
@@ -14,12 +15,15 @@ export class RasterSphere extends RasterBody {
    * @param  {Array.<Vector> | Vector} colors    - Color(s) of the sphere
    * @param  {Array.<Vector> | Vector} materials - Material(s) of the sphere
    *                                               x = ambient, y = diffuse, z = specular, w = shininess
-   * @param  {string | null} texture               Image filename for the texture, optional
+   * @param  {string | null} texture             - Image filename for the texture, optional
+   * @param  {string | null} map                 - Image filename for the mapping texture, optional
    */
-  constructor (gl, center, radius, colors, materials, texture = null) {
+  constructor (gl, center, radius, colors, materials, texture = null, map = null) {
     let vertices = []
     let normals = []
     let uvs = []
+    let tangents = []
+    let m = Matrix.rotation(new Vector(0, Math.PI / 2, 0, 0))
 
     let ringsize = 30
     for (let ring = 0; ring < ringsize; ring++) {
@@ -43,9 +47,12 @@ export class RasterSphere extends RasterBody {
           1
         )
 
+        let tangent = m.mul(new Vector(normal.x, 0, normal.z, 0))
+
         vertices.push(vertex)
         normals.push(normal)
         uvs.push(uv)
+        tangents.push(tangent)
       }
     }
 
@@ -63,6 +70,6 @@ export class RasterSphere extends RasterBody {
       }
     }
 
-    super(gl, vertices, normals, uvs, colors, materials, indices, texture)
+    super(gl, vertices, normals, tangents, uvs, colors, materials, indices, texture, map)
   }
 }

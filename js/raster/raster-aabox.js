@@ -22,9 +22,10 @@ export class RasterAABox extends RasterBody {
    * @param  {Array.<Vector> | Vector} colors    - Color(s) of the box
    * @param  {Array.<Vector> | Vector} materials - Material(s) of the box
    *                                               x = ambient, y = diffuse, z = specular, w = shininess
-   * @param  {string | null} texture               Image filename for the texture, optional
+   * @param  {string | null} texture             - Image filename for the texture, optional
+   * @param  {string | null} map                 - Image filename for the mapping texture, optional
    */
-  constructor (gl, minPoint, maxPoint, colors, materials, texture = null) {
+  constructor (gl, minPoint, maxPoint, colors, materials, texture = null, map = null) {
     const mi = minPoint
     const ma = maxPoint
 
@@ -82,6 +83,21 @@ export class RasterAABox extends RasterBody {
       uvs = uvs.concat(uvsRaw)
       indices = indices.concat(indicesRaw.map(x => x + (i * 4)))
     }
-    super(gl, vertices, normals, uvs, colors, materials, indices, texture)
+
+    const tangents = stretchArray([
+      // front
+      new Vector(1, 0, 0, 0),
+      // back
+      new Vector(-1, 0, 0, 0),
+      // right
+      new Vector(0, 0, 1, 0),
+      // top
+      new Vector(1, 0, 0, 0),
+      // left
+      new Vector(0, 0, -1, 0),
+      // bottom
+      new Vector(1, 0, 0, 0)
+    ], 24)
+    super(gl, vertices, normals, tangents, uvs, colors, materials, indices, texture, map)
   }
 }

@@ -14,9 +14,10 @@ export class RasterPyramid extends RasterBody {
    * @param  {Array.<Vector> | Vector} colors    - Color(s) of the sphere
    * @param  {Array.<Vector> | Vector} materials - Material(s) of the sphere
    *                                               x = ambient, y = diffuse, z = specular, w = shininess
-   * @param  {string | null} texture               Image filename for the texture, optional
+   * @param  {string | null} texture             - Image filename for the texture, optional
+   * @param  {string | null} map                 - Image filename for the mapping texture, optional
    */
-  constructor (gl, center, height, colors, materials, texture = null) {
+  constructor (gl, center, height, colors, materials, texture = null, map = null) {
     // right
     const vertex0 = new Vector((center.x + Math.sqrt(8 / 9)) * height, center.y * height, center.z * height, 1)
     // front left
@@ -30,13 +31,13 @@ export class RasterPyramid extends RasterBody {
 
     const vertices = [ // vertices for each side
       // bottom
-      vertex0, vertex1, vertex2,
+      vertex2, vertex1, vertex0,
       // left
-      vertex3, vertex2, vertex1,
+      vertex2, vertex1, vertex3,
       // right
-      vertex0, vertex3, vertex1,
+      vertex1, vertex0, vertex3,
       // back
-      vertex0, vertex3, vertex2
+      vertex0, vertex2, vertex3
     ]
 
     const normals = stretchArray([ // Normals for each vertex
@@ -64,6 +65,18 @@ export class RasterPyramid extends RasterBody {
       uvs = uvs.concat(uvsRaw)
       indices = indices.concat(indicesRaw.map(x => x + (i * 3)))
     }
-    super(gl, vertices, normals, uvs, colors, materials, indices, texture)
+
+    const tangents = stretchArray([
+      // bottom
+      new Vector(-1, 0, 0, 0),
+      // left
+      vertex1.sub(vertex2),
+      // right
+      vertex0.sub(vertex1),
+      // back
+      vertex2.sub(vertex0)
+    ], 12)
+
+    super(gl, vertices, normals, tangents, uvs, colors, materials, indices, texture, map)
   }
 }

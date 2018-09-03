@@ -3,6 +3,8 @@ precision mediump float;
 
 uniform sampler2D sampler;
 uniform int textured;
+uniform sampler2D mapSampler;
+uniform int mapped;
 
 varying vec4 v_position2;
 varying vec3 v_normal;
@@ -13,14 +15,18 @@ varying float v_ambient;
 varying float v_diffuse;
 varying float v_specular;
 varying float v_shininess;
+varying mat3 v_tbnMatrix;
 
 varying vec3 lightPositionsT[maxPos];
 varying float intensity[maxPos];
 
 void main(void) {
     vec4 raw_color;
+    vec3 normal;
     float diffuseSum;
     float specularSum;
+    vec3 tangentLightDir;
+    vec3 tangentEyeDir;
 
     if (textured == 1) {
         raw_color = texture2D(sampler, v_texCoord);
@@ -33,17 +39,28 @@ void main(void) {
     //ambient
     vec3 color = v_ambient * base_color;
 
-    vec3 normal = normalize(v_normal);
+
+    if(mapped == 1) {
+        normal = normalize(2.0 * (texture2D(mapSampler, v_texCoord).rgb - 0.5));
+    } else {
+        normal = normalize(v_normal);
+    }
+
     vec3 viewDirection = normalize(-v_position2.xyz);
 
     for(int i = 0; i < maxPos; i++) {
         // diffuse
         vec3 lightDirection = normalize(lightPositionsT[i] - v_position2.xyz);
+        if (mapped == 1) {}
+        tangentLightDir = lightDirection * v_tbnMatrix;
+        tangentEyeDir = viewDirection * v_tbnMatrix;
+        vec3 lightDir = normalize(tangentLightDir);
+        vec3 eyeDir = normalize(tangentEyeDir);
         float lj = length(lightPositionsT[i] - v_position2.xyz) * intensity[i];
-        diffuseSum += lj * max(dot(lightDirection, normal), 0.0);
+        diffuseSum += lj * max(dot(lightDir, normal), 0.0);
         // specular
-        vec3 reflectDirection = reflect(-lightDirection,normal);
-        float specAngle = max(dot(reflectDirection, viewDirection),0.0);
+        vec3 reflectDirection = reflect(-lightDir,normal);
+        float specAngle = max(dot(reflectDirection, eyeDir),0.0);
         float specPow = pow(specAngle, v_shininess);
         specularSum += lj * specPow;
     }

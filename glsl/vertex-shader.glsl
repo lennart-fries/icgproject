@@ -2,6 +2,7 @@
 
 attribute vec3 a_position;
 attribute vec3 a_normal;
+attribute vec3 a_tangent;
 attribute vec4 a_color;
 attribute vec2 a_texCoord;
 attribute vec4 a_material;
@@ -23,6 +24,7 @@ varying float v_ambient;
 varying float v_diffuse;
 varying float v_specular;
 varying float v_shininess;
+varying mat3 v_tbnMatrix;
 
 varying vec3 lightPositionsT[maxPos];
 varying float intensity[maxPos];
@@ -31,7 +33,15 @@ void main() {
     // Transform position
     v_position2 = V * M * vec4(a_position, 1.0);
     gl_Position = P * v_position2;
-    v_normal = (N * vec4(a_normal, 0)).xyz;
+    v_normal = (N * vec4(a_normal, 1.0)).xyz;
+    vec3 tangent = vec3(N * vec4(a_tangent,1.0));
+    vec3 bitangent = cross(v_normal,tangent);
+
+    v_tbnMatrix = mat3(
+    tangent.x, bitangent.x, v_normal.x,
+    tangent.y, bitangent.y, v_normal.y,
+    tangent.z, bitangent.z, v_normal.z
+    );
 
     // Transform light positions
     for (int i = 0; i < maxPos; i++) {
@@ -46,4 +56,5 @@ void main() {
     v_diffuse = a_material.y;
     v_specular = a_material.z;
     v_shininess = a_material.w;
+
 }
