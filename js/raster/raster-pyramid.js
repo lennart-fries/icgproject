@@ -65,17 +65,17 @@ export class RasterPyramid extends RasterBody {
       uvs = uvs.concat(uvsRaw)
       indices = indices.concat(indicesRaw.map(x => x + (i * 3)))
     }
-    /*
+
     const tangents = stretchArray([
       // bottom
       new Vector(-1, 0, 0, 0),
       // left
-      new Vector()
+      vertex1.sub(vertex2),
       // right
-      new Vector()
+      vertex0.sub(vertex1),
       // back
-      new Vector()
-    ])*/
-    super(gl, vertices, normals, uvs, colors, materials, indices, texture, map)
+      vertex2.sub(vertex0)
+    ])
+    super(gl, vertices, normals, tangents, uvs, colors, materials, indices, texture, map)
   }
 }

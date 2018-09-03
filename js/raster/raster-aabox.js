@@ -98,6 +98,6 @@ export class RasterAABox extends RasterBody {
       // bottom
       new Vector(1, 0, 0, 0)
     ], 24)
-    super(gl, vertices, normals, uvs, colors, materials, indices, texture, map)
+    super(gl, vertices, normals, tangents, uvs, colors, materials, indices, texture, map)
   }
 }

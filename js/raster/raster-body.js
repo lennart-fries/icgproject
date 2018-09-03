@@ -11,6 +11,7 @@ export class RasterBody {
    * @param  {Array.<Vector>} vertices           - Vertices for the geometry
    * @param  {Array.<Vector>} normals            - Normal vectors, defined per vertex
    * @param  {Array.<Vector>} uvs                - Texture UV coordinates, defined per vertex
+   * @param  {Array.<Vector>} tangents           - Tangent Vectors, defined per vertex
    * @param  {Array.<number>} indices            - Triangles, defined by indices for the vertex array
    * @param  {Array.<Vector> | Vector} colors    - Color(s) of the body
    * @param  {Array.<Vector> | Vector} materials - Material(s) of the body
@@ -18,13 +19,14 @@ export class RasterBody {
    * @param  {string | null} texture             - Image filename for the texture, optional
    * @param  {string | null} map                 - Image filename for the mapping texture, optional
    */
-  constructor (gl, vertices, normals, uvs, colors, materials, indices, texture = null, map = null) {
+  constructor (gl, vertices, normals, tangents, uvs, colors, materials, indices, texture = null, map = null) {
     this.gl = gl
     this.textured = (texture != null)
     this.mapped = (map != null)
 
     let verticesNum = vecArrayToNumArray(vertices, -1, 3)
     let normalsNum = vecArrayToNumArray(normals, vertices.length, 3)
+    let tangentsNum = vecArrayToNumArray(tangents, vertices.length, 3)
     let uvsNum = vecArrayToNumArray(uvs, vertices.length, 2)
     let colorsNum = vecOrVecArrayToNumArrayRepeating(colors, vertices.length)
     let materialsNum = vecOrVecArrayToNumArrayRepeating(materials, vertices.length)
@@ -40,6 +42,11 @@ export class RasterBody {
     gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer)
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normalsNum), gl.STATIC_DRAW)
     this.normalBuffer = normalBuffer
+
+    const tangentBuffer = gl.createBuffer()
+    gl.bindBuffer(gl.ARRAY_BUFFER, tangentBuffer)
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(tangentsNum), gl.STATIC_DRAW)
+    this.tangentBuffer = tangentBuffer
 
     if (this.textured || this.mapped) {
       const uvBuffer = gl.createBuffer()
@@ -114,6 +121,11 @@ export class RasterBody {
     this.gl.vertexAttribPointer(normalLocation, 3, this.gl.FLOAT, false, 0, 0)
     this.gl.enableVertexAttribArray(normalLocation)
 
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.tangentBuffer)
+    const tangentLocation = shader.getAttributeLocation('a_tangent')
+    this.gl.vertexAttribPointer(tangentLocation, 3, this.gl.FLOAT, false, 0, 0)
+    this.gl.enableVertexAttribArray(tangentLocation)
+
     let uvLocation, colorLocation
     if (this.textured || this.mapped) {
       this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.uvBuffer)
@@ -156,6 +168,7 @@ export class RasterBody {
 
     this.gl.disableVertexAttribArray(positionLocation)
     this.gl.disableVertexAttribArray(normalLocation)
+    this.gl.disableVertexAttribArray(tangentLocation)
     if (this.textured || this.mapped) {
       this.gl.disableVertexAttribArray(uvLocation)
     }

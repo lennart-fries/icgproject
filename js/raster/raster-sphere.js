@@ -4,6 +4,7 @@
 
 import { Vector } from '../primitives/vector.js'
 import { RasterBody } from './raster-body.js'
+import { Matrix } from '../primitives/matrix.js'
 
 export class RasterSphere extends RasterBody {
   /**
@@ -21,6 +22,8 @@ export class RasterSphere extends RasterBody {
     let vertices = []
     let normals = []
     let uvs = []
+    let tangents = []
+    let m = Matrix.rotation(new Vector(0, Math.PI / 2, 0, 0))
 
     let ringsize = 30
     for (let ring = 0; ring < ringsize; ring++) {
@@ -44,9 +47,14 @@ export class RasterSphere extends RasterBody {
           1
         )
 
+        let tangenthelper = new Vector(normal.x, 0, normal.z, 0)
+
+        let tangent = m.mul(tangenthelper)
+
         vertices.push(vertex)
         normals.push(normal)
         uvs.push(uv)
+        tangents.push(tangent)
       }
     }
 
@@ -64,6 +72,6 @@ export class RasterSphere extends RasterBody {
       }
     }
 
-    super(gl, vertices, normals, uvs, colors, materials, indices, texture, map)
+    super(gl, vertices, normals, tangents, uvs, colors, materials, indices, texture, map)
   }
 }

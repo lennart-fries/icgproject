@@ -2,6 +2,7 @@
 
 attribute vec3 a_position;
 attribute vec3 a_normal;
+attribute vec3 a_tangent;
 attribute vec4 a_color;
 attribute vec2 a_texCoord;
 attribute vec4 a_material;
@@ -33,7 +34,7 @@ void main() {
     v_position2 = V * M * vec4(a_position, 1.0);
     gl_Position = P * v_position2;
     v_normal = (N * vec4(a_normal, 1.0)).xyz;
-    vec3 tangent = vec3(N * vec4(a_normal,1.0));
+    vec3 tangent = vec3(N * vec4(a_tangent,1.0));
     vec3 bitangent = cross(v_normal,tangent);
 
     v_tbnMatrix = mat3(
