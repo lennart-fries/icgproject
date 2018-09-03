@@ -64,7 +64,7 @@ const pyramid = new PyramidNode(
   new Vector(0.3, 0.6, 1.5, 4)
 )
 
-gn4.add(pyramid)
+gn1.add(pyramid)
 
 const light1 = new LightNode(new Vector(-10, 3, 3, 1), 0.2)
 gn1.add(light1)

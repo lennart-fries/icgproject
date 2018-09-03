@@ -41,30 +41,47 @@ export class RasterBody {
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normalsNum), gl.STATIC_DRAW)
     this.normalBuffer = normalBuffer
 
-    const uvBuffer = gl.createBuffer()
-    gl.bindBuffer(gl.ARRAY_BUFFER, uvBuffer)
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(uvsNum), gl.STATIC_DRAW)
-    this.uvBuffer = uvBuffer
+    if (this.textured || this.mapped) {
+      const uvBuffer = gl.createBuffer()
+      gl.bindBuffer(gl.ARRAY_BUFFER, uvBuffer)
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(uvsNum), gl.STATIC_DRAW)
+      this.uvBuffer = uvBuffer
+    }
 
-    const colorBuffer = gl.createBuffer()
-    gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer)
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colorsNum), gl.STATIC_DRAW)
-    this.colorBuffer = colorBuffer
+    if (!this.textured) {
+      const colorBuffer = gl.createBuffer()
+      gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer)
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colorsNum), gl.STATIC_DRAW)
+      this.colorBuffer = colorBuffer
+    }
 
     if (this.textured) {
-      let cubeTexture = gl.createTexture()
-      let cubeImage = new Image()
-      cubeImage.onload = function () {
-        gl.bindTexture(gl.TEXTURE_2D, cubeTexture)
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, cubeImage)
+      this.texture = gl.createTexture()
+      let texImage = new Image()
+      texImage.onload = function () {
+        gl.bindTexture(gl.TEXTURE_2D, this.texture)
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texImage)
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST)
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
         gl.bindTexture(gl.TEXTURE_2D, null)
       }
-      cubeImage.src = texture
-      this.texture = cubeTexture
+      texImage.src = texture
+    }
+    if (this.mapped) {
+      this.normalmap = gl.createTexture()
+      let mapImage = new Image()
+      mapImage.onload = function () {
+        gl.bindTexture(gl.TEXTURE_2D, this.normalmap)
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, mapImage)
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST)
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
+        gl.bindTexture(gl.TEXTURE_2D, null)
+      }
+      mapImage.src = map
     }
 
     const materialBuffer = gl.createBuffer()
@@ -93,29 +110,19 @@ export class RasterBody {
     this.gl.vertexAttribPointer(normalLocation, 3, this.gl.FLOAT, false, 0, 0)
     this.gl.enableVertexAttribArray(normalLocation)
 
-    let attributeName, counter, surfaceLocation
-    if (this.textured) {
-      attributeName = 'a_texCoord'
-      counter = 2
+    let uvLocation, colorLocation
+    if (this.textured || this.mapped) {
       this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorBuffer)
-      surfaceLocation = shader.getAttributeLocation(attributeName) // color or texture
-      this.gl.vertexAttribPointer(surfaceLocation, counter, this.gl.FLOAT, false, 0, 0)
-      this.gl.enableVertexAttribArray(surfaceLocation)
-    } else {
-      attributeName = 'a_color'
-      counter = 4
+      uvLocation = shader.getAttributeLocation('a_texCoord')
+      this.gl.vertexAttribPointer(uvLocation, 2, this.gl.FLOAT, false, 0, 0)
+      this.gl.enableVertexAttribArray(uvLocation)
+    }
+    if (!this.textured) {
       this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.uvBuffer)
-      surfaceLocation = shader.getAttributeLocation(attributeName) // color or texture
-      this.gl.vertexAttribPointer(surfaceLocation, counter, this.gl.FLOAT, false, 0, 0)
-      this.gl.enableVertexAttribArray(surfaceLocation)
+      colorLocation = shader.getAttributeLocation('a_color')
+      this.gl.vertexAttribPointer(colorLocation, 4, this.gl.FLOAT, false, 0, 0)
+      this.gl.enableVertexAttribArray(colorLocation)
     }
-    /*
-    let mapAttribute, mapCounter
-    if (this.mapped) {
-      mapAttribute = 'a_mapCoords'
-      mapCounter = 2
-    }
-    */
 
     if (this.textured) {
       this.gl.activeTexture(this.gl.TEXTURE0)
@@ -124,6 +131,15 @@ export class RasterBody {
       shader.getUniformInt('textured').set(1)
     } else {
       shader.getUniformInt('textured').set(0)
+    }
+
+    if (this.mapped) {
+      this.gl.activeTexture(this.gl.TEXTURE1)
+      this.gl.bindTexture(this.gl.TEXTURE_2D, this.normalmap)
+      shader.getUniformInt('mapSampler').set(0)
+      shader.getUniformInt('mapped').set(1)
+    } else {
+      shader.getUniformInt('mapped').set(0)
     }
 
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.materialBuffer)
@@ -136,7 +152,12 @@ export class RasterBody {
 
     this.gl.disableVertexAttribArray(positionLocation)
     this.gl.disableVertexAttribArray(normalLocation)
-    this.gl.disableVertexAttribArray(surfaceLocation)
+    if (this.textured || this.mapped) {
+      this.gl.disableVertexAttribArray(uvLocation)
+    }
+    if (!this.textured) {
+      this.gl.disableVertexAttribArray(colorLocation)
+    }
     this.gl.disableVertexAttribArray(materialLocation)
   }
 
@@ -146,11 +167,20 @@ export class RasterBody {
   teardown () {
     this.gl.deleteBuffer(this.vertexBuffer)
     this.gl.deleteBuffer(this.normalBuffer)
-    this.gl.deleteBuffer(this.surfaceBuffer)
+    if (this.textured || this.mapped) {
+      this.gl.deleteBuffer(this.uvBuffer)
+    }
+    if (!this.textured) {
+      this.gl.deleteBuffer(this.colorBuffer)
+    }
     this.gl.deleteBuffer(this.materialBuffer)
     this.gl.deleteBuffer(this.indexBuffer)
+
     if (this.textured) {
       this.gl.deleteTexture(this.texture)
+    }
+    if (this.mapped) {
+      this.gl.deleteTexture(this.normalmap)
     }
   }
 }
