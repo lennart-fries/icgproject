@@ -75,7 +75,8 @@ export class RasterPyramid extends RasterBody {
       vertex0.sub(vertex1),
       // back
       vertex2.sub(vertex0)
-    ])
+    ], 12)
+    
     super(gl, vertices, normals, tangents, uvs, colors, materials, indices, texture, map)
   }
 }
