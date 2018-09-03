@@ -1,3 +1,6 @@
+import { Matrix } from '../primitives/matrix.js'
+import { Vector } from '../primitives/vector.js'
+
 /**
  * Class representing a Node in a scene graph
  */
@@ -19,12 +22,13 @@ class Node {
 export class GroupNode extends Node {
   /**
    * Constructor
-   * @param  {Matrix} mat - A matrix describing the node's transformation
+   * @param {Matrix}        mat - A matrix describing the node's transformation
+   * @param {Array.<Node>}  children - all children nodes
    */
-  constructor (mat) {
+  constructor (mat, children = []) {
     super()
     this.matrix = mat
-    this.children = []
+    this.children = children
   }
 
   /**
@@ -45,15 +49,18 @@ export class GroupNode extends Node {
 
   toJSON () {
     return {
-      GroupNode: {
-        matrix: this.matrix,
-        children: this.children
-      }
+      type: 'GroupNode',
+      matrix: this.matrix,
+      children: this.children
+
     }
   }
 
-  static fromJSON (obj) {
-    return new this(obj)
+  static fromJson (node) {
+    let matrix = new Matrix(node.matrix.data)
+    let children = []
+    node.children.forEach(child => children.push(getType(child)))
+    return new GroupNode(matrix.data, children)
   }
 }
 
@@ -92,15 +99,22 @@ export class SphereNode extends Node {
 
   toJSON () {
     return {
-      SphereNode: {
-        center: this.center,
-        radius: this.radius,
-        colors: this.colors,
-        materials: this.materials,
-        texture: this.texture,
-        children: this.children
-      }
+      type: 'SphereNode',
+      center: this.center,
+      radius: this.radius,
+      colors: this.colors,
+      materials: this.materials,
+      texture: this.texture
     }
+  }
+
+  static fromJson (node) {
+    let center = new Vector(node.center.data)
+    let colors = getColors(node.colors)
+    let materials = getColors(node.materials)
+    let radius = node.radius
+    let texture = node.texture
+    return new SphereNode(center, radius, colors, materials, texture)
   }
 }
 
@@ -139,14 +153,20 @@ export class AABoxNode extends Node {
 
   toJSON () {
     return {
-      AABoxNode: {
-        minPoint: this.minPoint,
-        maxPoint: this.maxPoint,
-        colors: this.colors,
-        materials: this.materials,
-        children: this.children
-      }
+      type: 'AABoxNode',
+      minPoint: this.minPoint,
+      maxPoint: this.maxPoint,
+      colors: this.colors,
+      materials: this.materials
     }
+  }
+
+  static fromJson (node) {
+    let minPoint = new Vector(node.minPoint.data)
+    let maxPoint = new Vector(node.maxPoint.data)
+    let colors = getColors(node.colors)
+    let materials = getColors(node.materials)
+    return new AABoxNode(minPoint, maxPoint, colors, materials)
   }
 }
 
@@ -185,15 +205,22 @@ export class PyramidNode extends Node {
 
   toJSON () {
     return {
-      PyramidNode: {
-        center: this.center,
-        height: this.height,
-        colors: this.colors,
-        materials: this.materials,
-        texture: this.texture,
-        children: this.children
-      }
+      type: 'PyramidNode',
+      center: this.center,
+      height: this.height,
+      colors: this.colors,
+      materials: this.materials,
+      texture: this.texture
     }
+  }
+
+  static fromJson (node) {
+    let center = new Vector(node.center.data)
+    let height = node.height
+    let colors = getColors(node.colors)
+    let materials = getColors(node.materials)
+    let texture = node.texture
+    return new PyramidNode(center, height, colors, materials, texture)
   }
 }
 
@@ -229,16 +256,26 @@ export class CameraNode extends Node {
 
   toJSON () {
     return {
-      CameraNode: {
-        eye: this.eye,
-        center: this.center,
-        up: this.up,
-        fovy: this.fovy,
-        aspect: this.aspect,
-        near: this.near,
-        far: this.far
-      }
+      type: 'CameraNode',
+      eye: this.eye,
+      center: this.center,
+      up: this.up,
+      fovy: this.fovy,
+      aspect: this.aspect,
+      near: this.near,
+      far: this.far
     }
+  }
+
+  static fromJson (node) {
+    let eye = new Vector(node.eye.data)
+    let center = new Vector(node.center.data)
+    let up = new Vector(node.up.data)
+    let fovy = node.fovy
+    let aspect = node.aspect
+    let near = node.near
+    let far = node.far
+    return new CameraNode(eye, center, up, fovy, aspect, near, far)
   }
 }
 
@@ -264,10 +301,40 @@ export class LightNode extends Node {
 
   toJSON () {
     return {
-      LightNode: {
-        position: this.position,
-        intensity: this.intensity
-      }
+      type: 'LightNode',
+      position: this.position,
+      intensity: this.intensity
     }
+  }
+
+  static fromJson (node) {
+    let position = new Vector(node.position.data)
+    let intensity = node.intensity
+    return new LightNode(position, intensity)
+  }
+}
+
+function getType (node) {
+  if (node.GroupNode != null) {
+    return GroupNode.fromJson(node.GroupNode)
+  } else if (node.SphereNode != null) {
+    return SphereNode.fromJson(node.SphereNode)
+  } else if (node.AABoxNode != null) {
+    return AABoxNode.fromJson(node.AABoxNode)
+  } else if (node.PyramidNode != null) {
+    return PyramidNode.fromJson(node.PyramidNode)
+  } else if (node.LightNode != null) {
+    return LightNode.fromJson(node.LightNode)
+  } else if (node.CameraNode != null) {
+    return CameraNode.fromJson(node.CameraNode)
+  }
+}
+
+function getColors (colors) {
+  if (Array.isArray(colors)) {
+    let colorArray = []
+    colors.forEach(color => colorArray.push(new Vector(color.data)))
+  } else {
+    return new Vector(colors.data)
   }
 }

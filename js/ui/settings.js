@@ -79,6 +79,7 @@ export class Settings {
   set settings (newSettings) {
     this.setSettings(newSettings)
     this.setURL()
+    //todo import scenegraph
   }
 
   get settings () {

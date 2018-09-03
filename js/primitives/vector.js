@@ -1,6 +1,7 @@
 /**
  * Class representing a vector in 4D space
  */
+
 export class Vector {
   /**
    * Create a vector
@@ -11,7 +12,11 @@ export class Vector {
    * @return {number}     Resulting vector
    */
   constructor (x, y, z, w) {
-    this.data = [x, y, z, w]
+    if (Array.isArray(x)) {
+      this.data = [x[0], x[1], x[2], x[3]]
+    } else {
+      this.data = [x, y, z, w]
+    }
   }
 
   /**
