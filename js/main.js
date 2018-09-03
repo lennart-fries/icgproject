@@ -19,14 +19,14 @@ const gn1 = new GroupNode(Matrix.translation(new Vector(1, 1, 0, 0.0)))
 sg.add(gn1)
 const gn3 = new GroupNode(Matrix.identity())
 gn1.add(gn3)
-const sphere = new SphereNode(
+/*const sphere = new SphereNode(
   new Vector(0.5, -0.8, 0, 1),
   0.4,
   new Vector(0.8, 0.4, 0.1, 1),
   new Vector(0.3, 0.6, 1.5, 4),
   'assets/diamond_ore.png'
 )
-gn3.add(sphere)
+gn3.add(sphere)*/
 
 const gn2 = new GroupNode(Matrix.translation(new Vector(-0.7, -0.4, 0.1, 0.0)))
 sg.add(gn2)
@@ -57,14 +57,14 @@ const cube = new AABoxNode(
 )
 gn2.add(cube)
 
-const pyramid = new PyramidNode(
+/*const pyramid = new PyramidNode(
   new Vector(1.1, -1.5, 0.5, 0),
   1.5,
   colorsArray,
   new Vector(0.3, 0.6, 1.5, 4)
 )
 
-gn1.add(pyramid)
+gn1.add(pyramid)*/
 
 const light1 = new LightNode(new Vector(-10, 3, 3, 1), 0.2)
 gn1.add(light1)

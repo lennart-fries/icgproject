@@ -112,13 +112,13 @@ export class RasterBody {
 
     let uvLocation, colorLocation
     if (this.textured || this.mapped) {
-      this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorBuffer)
+      this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.uvBuffer)
       uvLocation = shader.getAttributeLocation('a_texCoord')
       this.gl.vertexAttribPointer(uvLocation, 2, this.gl.FLOAT, false, 0, 0)
       this.gl.enableVertexAttribArray(uvLocation)
     }
     if (!this.textured) {
-      this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.uvBuffer)
+      this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorBuffer)
       colorLocation = shader.getAttributeLocation('a_color')
       this.gl.vertexAttribPointer(colorLocation, 4, this.gl.FLOAT, false, 0, 0)
       this.gl.enableVertexAttribArray(colorLocation)
