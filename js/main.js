@@ -24,7 +24,8 @@ const sphere = new SphereNode(
   0.4,
   new Vector(0.8, 0.4, 0.1, 1),
   new Vector(0.3, 0.6, 1.5, 4),
-  'assets/diamond_ore.png'
+  'assets/diamond_ore.png',
+  'assets/diamond_ore_n.png'
 )
 gn3.add(sphere)
 
@@ -62,7 +63,9 @@ const pyramid = new PyramidNode(
   new Vector(1.1, -1.5, 0.5, 0),
   1.5,
   colorsArray,
-  new Vector(0.3, 0.6, 1.5, 4)
+  new Vector(0.3, 0.6, 1.5, 4),
+  'assets/diamond_ore.png',
+  'assets/diamond_ore_n.png'
 )
 
 gn1.add(pyramid)
