@@ -14,9 +14,10 @@ export class RasterSphere extends RasterBody {
    * @param  {Array.<Vector> | Vector} colors    - Color(s) of the sphere
    * @param  {Array.<Vector> | Vector} materials - Material(s) of the sphere
    *                                               x = ambient, y = diffuse, z = specular, w = shininess
-   * @param  {string | null} texture               Image filename for the texture, optional
+   * @param  {string | null} texture             - Image filename for the texture, optional
+   * @param  {string | null} map                 - Image filename for the mapping texture, optional
    */
-  constructor (gl, center, radius, colors, materials, texture = null) {
+  constructor (gl, center, radius, colors, materials, texture = null, map = null) {
     let vertices = []
     let normals = []
     let uvs = []
@@ -63,6 +64,6 @@ export class RasterSphere extends RasterBody {
       }
     }
 
-    super(gl, vertices, normals, uvs, colors, materials, indices, texture)
+    super(gl, vertices, normals, uvs, colors, materials, indices, texture, map)
   }
 }

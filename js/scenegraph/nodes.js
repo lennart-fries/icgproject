@@ -56,15 +56,17 @@ export class SphereNode extends Node {
    * @param  {Array.<Vector> | Vector} colors    - Color(s) of the sphere
    * @param  {Array.<Vector> | Vector} materials - Material(s) of the sphere
    *                                               x = ambient, y = diffuse, z = specular, w = shininess
-   * @param  {string | null} texture               Image filename for the texture, optional
+   * @param  {string | null} texture             - Image filename for the texture, optional
+   * @param  {string | null} map                 - Image filename for the mapping texture, optional
    */
-  constructor (center, radius, colors, materials, texture = null) {
+  constructor (center, radius, colors, materials, texture = null, map = null) {
     super()
     this.center = center
     this.radius = radius
     this.colors = colors
     this.materials = materials
     this.texture = texture
+    this.map = map
   }
 
   /**
@@ -88,15 +90,17 @@ export class AABoxNode extends Node {
    * @param  {Array.<Vector> | Vector} colors    - Color(s) of the box
    * @param  {Array.<Vector> | Vector} materials - Material(s) of the box
    *                                               x = ambient, y = diffuse, z = specular, w = shininess
-   * @param  {string | null} texture               Image filename for the texture, optional
+   * @param  {string | null} texture             - Image filename for the texture, optional
+   * @param  {string | null} map                 - Image filename for the mapping texture, optional
    */
-  constructor (minPoint, maxPoint, colors, materials, texture = null) {
+  constructor (minPoint, maxPoint, colors, materials, texture = null, map = null) {
     super()
     this.minPoint = minPoint
     this.maxPoint = maxPoint
     this.colors = colors
     this.materials = materials
     this.texture = texture
+    this.map = map
   }
 
   /**
@@ -120,15 +124,17 @@ export class PyramidNode extends Node {
    * @param  {Array.<Vector> | Vector} colors    - Color(s) of the pyramid
    * @param  {Array.<Vector> | Vector} materials - Material(s) of the pyramid
    *                                               x = ambient, y = diffuse, z = specular, w = shininess
-   * @param  {string | null} texture               Image filename for the texture, optional
+   * @param  {string | null} texture             - Image filename for the texture, optional
+   * @param  {string | null} map                 - Image filename for the mapping texture, optional
    */
-  constructor (center, height, colors, materials, texture = null) {
+  constructor (center, height, colors, materials, texture = null, map = null) {
     super()
     this.center = center
     this.height = height
     this.colors = colors
     this.materials = materials
     this.texture = texture
+    this.map = map
   }
 
   /**

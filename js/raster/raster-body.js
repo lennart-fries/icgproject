@@ -15,11 +15,13 @@ export class RasterBody {
    * @param  {Array.<Vector> | Vector} colors    - Color(s) of the body
    * @param  {Array.<Vector> | Vector} materials - Material(s) of the body
    *                                               x = ambient, y = diffuse, z = specular, w = shininess
-   * @param  {string | null} texture               Image filename for the texture, optional
+   * @param  {string | null} texture             - Image filename for the texture, optional
+   * @param  {string | null} map                 - Image filename for the mapping texture, optional
    */
-  constructor (gl, vertices, normals, uvs, colors, materials, indices, texture = null) {
+  constructor (gl, vertices, normals, uvs, colors, materials, indices, texture = null, map = null) {
     this.gl = gl
     this.textured = (texture != null)
+    this.mapped = (map != null)
 
     let verticesNum = vecArrayToNumArray(vertices, -1, 3)
     let normalsNum = vecArrayToNumArray(normals, vertices.length, 3)
@@ -39,10 +41,15 @@ export class RasterBody {
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normalsNum), gl.STATIC_DRAW)
     this.normalBuffer = normalBuffer
 
-    const surfaceBuffer = gl.createBuffer()
-    gl.bindBuffer(gl.ARRAY_BUFFER, surfaceBuffer)
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array((this.textured) ? uvsNum : colorsNum), gl.STATIC_DRAW)
-    this.surfaceBuffer = surfaceBuffer
+    const uvBuffer = gl.createBuffer()
+    gl.bindBuffer(gl.ARRAY_BUFFER, uvBuffer)
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(uvsNum), gl.STATIC_DRAW)
+    this.uvBuffer = uvBuffer
+
+    const colorBuffer = gl.createBuffer()
+    gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer)
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colorsNum), gl.STATIC_DRAW)
+    this.colorBuffer = colorBuffer
 
     if (this.textured) {
       let cubeTexture = gl.createTexture()
@@ -86,19 +93,29 @@ export class RasterBody {
     this.gl.vertexAttribPointer(normalLocation, 3, this.gl.FLOAT, false, 0, 0)
     this.gl.enableVertexAttribArray(normalLocation)
 
-    let attributeName, counter
+    let attributeName, counter, surfaceLocation
     if (this.textured) {
       attributeName = 'a_texCoord'
       counter = 2
+      this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorBuffer)
+      surfaceLocation = shader.getAttributeLocation(attributeName) // color or texture
+      this.gl.vertexAttribPointer(surfaceLocation, counter, this.gl.FLOAT, false, 0, 0)
+      this.gl.enableVertexAttribArray(surfaceLocation)
     } else {
       attributeName = 'a_color'
       counter = 4
+      this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.uvBuffer)
+      surfaceLocation = shader.getAttributeLocation(attributeName) // color or texture
+      this.gl.vertexAttribPointer(surfaceLocation, counter, this.gl.FLOAT, false, 0, 0)
+      this.gl.enableVertexAttribArray(surfaceLocation)
     }
-
-    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.surfaceBuffer)
-    const surfaceLocation = shader.getAttributeLocation(attributeName) // color or texture
-    this.gl.vertexAttribPointer(surfaceLocation, counter, this.gl.FLOAT, false, 0, 0)
-    this.gl.enableVertexAttribArray(surfaceLocation)
+    /*
+    let mapAttribute, mapCounter
+    if (this.mapped) {
+      mapAttribute = 'a_mapCoords'
+      mapCounter = 2
+    }
+    */
 
     if (this.textured) {
       this.gl.activeTexture(this.gl.TEXTURE0)
