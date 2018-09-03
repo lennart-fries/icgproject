@@ -47,9 +47,7 @@ export class RasterSphere extends RasterBody {
           1
         )
 
-        let tangenthelper = new Vector(normal.x, 0, normal.z, 0)
-
-        let tangent = m.mul(tangenthelper)
+        let tangent = m.mul(new Vector(normal.x, 0, normal.z, 0))
 
         vertices.push(vertex)
         normals.push(normal)

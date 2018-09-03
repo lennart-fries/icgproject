@@ -39,12 +39,12 @@ sg.add(gn4)
 const colorsArray = [
   new Vector(0.0, 1.0, 0.0, 1.0),
   new Vector(0.0, 0.0, 1.0, 1.0),
-  new Vector(1.0, 0.0, 0.0, 1.0),
-  /*new Vector(0.0, 0.0, 0.0, 1.0),
+  new Vector(1.0, 0.0, 0.0, 1.0)/* ,
+  new Vector(0.0, 0.0, 0.0, 1.0),
   new Vector(0.0, 1.0, 0.0, 1.0),
   new Vector(1.0, 0.0, 0.0, 1.0),
   new Vector(1.0, 0.0, 1.0, 1.0),
-  new Vector(0.0, 0.0, 1.0, 1.0)*/
+  new Vector(0.0, 0.0, 1.0, 1.0) */
 ]
 
 const colorVector = new Vector(0.0, 1.0, 0.0, 1.0)
