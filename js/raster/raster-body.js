@@ -56,10 +56,11 @@ export class RasterBody {
     }
 
     if (this.textured) {
-      this.texture = gl.createTexture()
+      // this.texture = gl.createTexture() doesn't work for some twisted reason
+      let texTexture = gl.createTexture()
       let texImage = new Image()
       texImage.onload = function () {
-        gl.bindTexture(gl.TEXTURE_2D, this.texture)
+        gl.bindTexture(gl.TEXTURE_2D, texTexture)
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texImage)
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST)
@@ -68,12 +69,14 @@ export class RasterBody {
         gl.bindTexture(gl.TEXTURE_2D, null)
       }
       texImage.src = texture
+      this.texture = texTexture
     }
     if (this.mapped) {
-      this.normalmap = gl.createTexture()
+      // same as for this.texture
+      let mapTexture = gl.createTexture()
       let mapImage = new Image()
       mapImage.onload = function () {
-        gl.bindTexture(gl.TEXTURE_2D, this.normalmap)
+        gl.bindTexture(gl.TEXTURE_2D, mapTexture)
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, mapImage)
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST)
@@ -82,6 +85,7 @@ export class RasterBody {
         gl.bindTexture(gl.TEXTURE_2D, null)
       }
       mapImage.src = map
+      this.normalmap = mapTexture
     }
 
     const materialBuffer = gl.createBuffer()
