@@ -3,6 +3,8 @@ precision mediump float;
 
 uniform sampler2D sampler;
 uniform int textured;
+uniform sampler2D mapSampler;
+uniform int mapped;
 
 varying vec4 v_position2;
 varying vec3 v_normal;
@@ -33,7 +35,7 @@ void main(void) {
     //ambient
     vec3 color = v_ambient * base_color;
 
-    vec3 normal = normalize(v_normal);
+    vec3 normal = normalize(2.0 * (texture2D(mapSampler, v_texCoord).rgb - 0.5));
     vec3 viewDirection = normalize(-v_position2.xyz);
 
     for(int i = 0; i < maxPos; i++) {

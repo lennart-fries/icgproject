@@ -140,7 +140,7 @@ export class RasterBody {
     if (this.mapped) {
       this.gl.activeTexture(this.gl.TEXTURE1)
       this.gl.bindTexture(this.gl.TEXTURE_2D, this.normalmap)
-      shader.getUniformInt('mapSampler').set(0)
+      shader.getUniformInt('mapSampler').set(1)
       shader.getUniformInt('mapped').set(1)
     } else {
       shader.getUniformInt('mapped').set(0)
