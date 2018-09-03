@@ -31,13 +31,13 @@ export class RasterPyramid extends RasterBody {
 
     const vertices = [ // vertices for each side
       // bottom
-      vertex0, vertex1, vertex2,
+      vertex2, vertex1, vertex0,
       // left
-      vertex3, vertex2, vertex1,
+      vertex2, vertex1, vertex3,
       // right
-      vertex0, vertex3, vertex1,
+      vertex1, vertex0, vertex3,
       // back
-      vertex0, vertex3, vertex2
+      vertex0, vertex2, vertex3
     ]
 
     const normals = stretchArray([ // Normals for each vertex
@@ -65,6 +65,17 @@ export class RasterPyramid extends RasterBody {
       uvs = uvs.concat(uvsRaw)
       indices = indices.concat(indicesRaw.map(x => x + (i * 3)))
     }
+    /*
+    const tangents = stretchArray([
+      // bottom
+      new Vector(-1, 0, 0, 0),
+      // left
+      new Vector()
+      // right
+      new Vector()
+      // back
+      new Vector()
+    ])*/
     super(gl, vertices, normals, uvs, colors, materials, indices, texture, map)
   }
 }

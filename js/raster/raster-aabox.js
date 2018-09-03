@@ -83,6 +83,21 @@ export class RasterAABox extends RasterBody {
       uvs = uvs.concat(uvsRaw)
       indices = indices.concat(indicesRaw.map(x => x + (i * 4)))
     }
+
+    const tangents = stretchArray([
+      // front
+      new Vector(1, 0, 0, 0),
+      // back
+      new Vector(-1, 0, 0, 0),
+      // right
+      new Vector(0, 0, 1, 0),
+      // top
+      new Vector(1, 0, 0, 0),
+      // left
+      new Vector(0, 0, -1, 0),
+      // bottom
+      new Vector(1, 0, 0, 0)
+    ], 24)
     super(gl, vertices, normals, uvs, colors, materials, indices, texture, map)
   }
 }
