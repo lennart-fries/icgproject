@@ -21,6 +21,7 @@ varying float intensity[maxPos];
 
 void main(void) {
     vec4 raw_color;
+    vec3 normal;
     float diffuseSum;
     float specularSum;
 
@@ -35,7 +36,13 @@ void main(void) {
     //ambient
     vec3 color = v_ambient * base_color;
 
-    vec3 normal = normalize(2.0 * (texture2D(mapSampler, v_texCoord).rgb - 0.5));
+
+    if(mapped == 1) {
+        normal = normalize(2.0 * (texture2D(mapSampler, v_texCoord).rgb - 0.5));
+    } else {
+        normal = normalize(v_normal);
+    }
+
     vec3 viewDirection = normalize(-v_position2.xyz);
 
     for(int i = 0; i < maxPos; i++) {
