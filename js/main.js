@@ -115,7 +115,7 @@ $('#loadScenegraphButton').click(function () {
   settings.loadScenegraph()
 })
 $('#saveScenegraph').click(function () {
-  settings.saveScenegraphToJson(sg)
+  settings.saveScenegraphToJson(sg, animationNodes)
 })
 
 /**

@@ -2,6 +2,9 @@
  * Class representing an Animation
  */
 
+import { Matrix } from '../primitives/matrix'
+import { GroupNode } from '../scenegraph/nodes'
+
 /**
  * Class representing an animation, attaching to a group node and modifying it every frame
  */
@@ -52,6 +55,22 @@ export class AnimationNode {
       )
     }
   }
+
+  toJSON () {
+    return {
+      type: 'AnimationNode',
+      groupNode: this.groupNode,
+      speed: this.speed,
+      active: this.active,
+      axesOrDirections: this.axesOrDirections,
+      applyFunction: this.applyFunction
+    }
+  }
+
+  static fromJson (node) {
+    // todo
+    return new AnimationNode()
+  }
 }
 
 /**
@@ -96,5 +115,24 @@ export class BackAndForthAnimationNode extends AnimationNode {
     let movement = newPosition - this.position
     this.position = newPosition
     return movement
+  }
+
+  toJSON () {
+    return {
+      type: 'BackAndForthAnimationNode',
+      groupNode: this.groupNode,
+      speed: this.speed,
+      active: this.active,
+      axesOrDirections: this.axesOrDirections,
+      applyFunction: this.applyFunction,
+      limit: this.limit,
+      position: this.position,
+      invert: this.invert
+    }
+  }
+
+  static fromJson (node) {
+    // todo
+    return new BackAndForthAnimationNode()
   }
 }

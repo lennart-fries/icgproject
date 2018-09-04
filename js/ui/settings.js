@@ -109,9 +109,10 @@ export class Settings {
     this.sgTemp = fr.readAsText(file)
   }
 
-  saveScenegraphToJson (sg) {
+  saveScenegraphToJson (sg, animationNodes) {
     let sgJson = JSON.stringify(sg, null, 2)
-    let url = URL.createObjectURL(new Blob([sgJson], {type: 'text/plain'}))
+    let animationNodesJson = JSON.stringify(animationNodes, null, 2)
+    let url = URL.createObjectURL(new Blob([sgJson, animationNodesJson], {type: 'text/plain'}))
     let sgDownload = document.createElement('a')
     sgDownload.href = url
     sgDownload.download = 'scenegraph.json'
