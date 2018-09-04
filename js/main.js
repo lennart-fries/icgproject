@@ -1,4 +1,4 @@
-/* global performance */
+/* global $, performance */
 /* eslint new-cap: ['error', { 'newIsCapExceptions': ['renderer'] }] */
 
 import { Matrix } from './primitives/matrix.js'
@@ -111,6 +111,13 @@ let animationNodes = [
   new AnimationNode(gn4, 1.0, true, new Vector(1, 0, 0, 0), Matrix.rotation)
 ]
 
+$('#loadScenegraphButton').click(function () {
+  settings.loadScenegraph()
+})
+$('#saveScenegraph').click(function () {
+  settings.saveScenegraphToJson(sg)
+})
+
 /**
  * Advances the animations described by the animation nodes
  * @param deltaT - Time since last invocation
@@ -148,14 +155,6 @@ function updateRenderer () {
   return false
 }
 
-window.getScenegraph = function () {
-  return sg
-}
-
-window.setScenegraph = function (scenegraph) {
-  r = new settings.settings.renderer(canvas, scenegraph)
-}
-
 /**
  * Makes sure the resolution of the canvas corresponds to the window size and configure camera accordingly
  * @param camera - Camera object to inject the correct aspect ratio into
@@ -182,6 +181,11 @@ function animate (timestamp) {
     return
   }
   // Set background color of scene
+  let sgNew = settings.scenegraph
+  console.log(sgNew)
+  if (!(sgNew == null)) {
+    sg = sgNew
+  }
   document.getElementById('content').style.backgroundColor = '#' + settings.settings.backgroundColor
   simulate(timestamp - lastTimestamp)
   let [camera, lights] = previewVisitor.run(sg)
@@ -189,6 +193,7 @@ function animate (timestamp) {
   // Render new frame
   r.loop(sg, camera, lights)
   lastTimestamp = timestamp
+
   window.requestAnimationFrame(animate)
 }
 

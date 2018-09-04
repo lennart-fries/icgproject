@@ -1,10 +1,14 @@
 /* global history */
+/* global $ */
 
 import { RasterRenderer } from '../rendering/raster-renderer.js'
 import { RayRenderer } from '../rendering/ray-renderer.js'
+import { GroupNode } from '../scenegraph/nodes.js'
 
 const renderersToClasses = {'Raster': RasterRenderer, 'Ray': RayRenderer}
 const renderers = Object.keys(renderersToClasses)
+
+let sgTemp
 
 export class Settings {
   /**
@@ -84,5 +88,33 @@ export class Settings {
 
   get settings () {
     return this.settingsObj
+  }
+
+  get scenegraph () {
+    let sg = this.sgTemp
+    this.sgTemp = null
+    return sg
+  }
+
+  setScenegraph (sg) {
+    this.sgTemp = sg
+  }
+
+  loadScenegraph () {
+    let file = $('#loadScenegraphFile')[0].children[0].files[0]
+    let fr = new FileReader()
+    fr.onload = function (e) {
+      //hier iwi callback auf setScenegraph(GroupNode.fromJson(JSON.parse(e.target.result).GroupNode))
+    }
+    this.sgTemp = fr.readAsText(file)
+  }
+
+  saveScenegraphToJson (sg) {
+    let sgJson = JSON.stringify(sg, null, 2)
+    let url = URL.createObjectURL(new Blob([sgJson], {type: 'text/plain'}))
+    let sgDownload = document.createElement('a')
+    sgDownload.href = url
+    sgDownload.download = 'scenegraph.json'
+    sgDownload.click()
   }
 }
