@@ -3,7 +3,6 @@
 
 import { RasterRenderer } from '../rendering/raster-renderer.js'
 import { RayRenderer } from '../rendering/ray-renderer.js'
-import { GroupNode } from '../scenegraph/nodes.js'
 import { JsonSerializer, JsonDeserializer } from '../scenegraph/JsonSerializer.js'
 
 const renderersToClasses = {'Raster': RasterRenderer, 'Ray': RayRenderer}
@@ -90,20 +89,32 @@ export class Settings {
   }
 
   get scenegraph () {
-    let sg = this.sgTemp
-    this.sgTemp = null
+    let sg = this.sg
+    this.sg = null
     return sg
   }
 
+  get animationNodes () {
+    let animationNodes = this.animationNodesArray
+    this.animationNodesArray = null
+    return animationNodes
+  }
+
   setScenegraph (sg) {
-    this.sgTemp = sg
+    this.sg = sg
+  }
+
+  setAnimationNodes (animationNodes) {
+    this.animationNodesArray = animationNodes
   }
 
   loadScenegraph () {
     let file = $('#loadScenegraphFile')[0].children[0].files[0]
-    let fr = new FileReader
+    let fr = new FileReader()
     fr.onload = function (e) {
-      JsonDeserializer.fromJson(JSON.parse(e.target.result))
+      let s = JsonDeserializer.fromJson(JSON.parse(e.target.result))
+      // hier iwi setScenegraph(s.scenegraph)
+      // und setAnimationNodes(s.animationNodes)
     }
     fr.readAsText(file)
   }

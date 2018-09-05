@@ -24,6 +24,7 @@ export class AnimationNode {
     this.active = active
     this.axesOrDirections = axesOrDirections
     this.applyFunction = applyFunction
+    this.applyFunctionName = applyFunction.name
   }
 
   /**
@@ -64,7 +65,7 @@ export class AnimationNode {
       speed: this.speed,
       active: this.active,
       axesOrDirections: this.axesOrDirections,
-      applyFunction: this.applyFunction // doesnt work properly?
+      applyFunctionName: this.applyFunctionName // doesnt work properly?
     }
   }
 
@@ -73,7 +74,21 @@ export class AnimationNode {
     let speed = node.speed
     let active = node.active
     let axesOrDirections = new Vector(node.axesOrDirections.data)
-    let applyFunction = node.applyFunction
+    let applyFunction
+    switch (node.applyFunctionName) {
+      case 'rotation':
+        applyFunction = Matrix.rotation
+        break
+      case 'translation':
+        applyFunction = Matrix.translation
+        break
+      case 'scaling':
+        applyFunction = Matrix.scaling
+        break
+      case 'shear':
+        applyFunction = Matrix.shear
+        break
+    }
     return new AnimationNode(groupNode, speed, active, axesOrDirections, applyFunction)
   }
 }

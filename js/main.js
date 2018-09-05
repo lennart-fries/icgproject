@@ -182,9 +182,12 @@ function animate (timestamp) {
   }
   // Set background color of scene
   let sgNew = settings.scenegraph
-  //console.log(sgNew)
+  let animationNodesNew = settings.animationNodes
   if (!(sgNew == null)) {
     sg = sgNew
+  }
+  if (!(animationNodesNew == null)) {
+    animationNodes = animationNodesNew
   }
   document.getElementById('content').style.backgroundColor = '#' + settings.settings.backgroundColor
   simulate(timestamp - lastTimestamp)
