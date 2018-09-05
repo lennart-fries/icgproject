@@ -315,18 +315,19 @@ export class LightNode extends Node {
 }
 
 function getType (node) {
-  if (node.GroupNode != null) {
-    return GroupNode.fromJson(node.GroupNode)
-  } else if (node.SphereNode != null) {
-    return SphereNode.fromJson(node.SphereNode)
-  } else if (node.AABoxNode != null) {
-    return AABoxNode.fromJson(node.AABoxNode)
-  } else if (node.PyramidNode != null) {
-    return PyramidNode.fromJson(node.PyramidNode)
-  } else if (node.LightNode != null) {
-    return LightNode.fromJson(node.LightNode)
-  } else if (node.CameraNode != null) {
-    return CameraNode.fromJson(node.CameraNode)
+  switch (node.type) {
+    case 'GroupNode':
+      return GroupNode.fromJson(node)
+    case 'SphereNode':
+      return SphereNode.fromJson(node)
+    case 'AABoxNode':
+      return AABoxNode.fromJson(node)
+    case 'PyramidNode':
+      return PyramidNode.fromJson(node)
+    case 'LightNode':
+      return LightNode.fromJson(node)
+    case 'CameraNode':
+      return CameraNode.fromJson(node)
   }
 }
 

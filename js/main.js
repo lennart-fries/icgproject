@@ -182,7 +182,7 @@ function animate (timestamp) {
   }
   // Set background color of scene
   let sgNew = settings.scenegraph
-  console.log(sgNew)
+  //console.log(sgNew)
   if (!(sgNew == null)) {
     sg = sgNew
   }
