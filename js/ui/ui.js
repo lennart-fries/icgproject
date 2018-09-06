@@ -158,7 +158,7 @@ function setupFileselectors (fileselectors, settingsObj) {
     $('#' + fileselector).change(async (event) => {
       const fileContents = await readUploadedFileAsText(event.target.files[0])
       let newSettings = {}
-      newSettings[this.id] = fileContents
+      newSettings[fileselector] = fileContents
       settingsObj.settings = newSettings
     })
   }
