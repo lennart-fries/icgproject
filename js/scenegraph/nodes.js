@@ -28,6 +28,7 @@ export class GroupNode extends Node {
   constructor (mat, children = []) {
     super()
     this.matrix = mat
+    this.startmatrix = mat
     this.children = children
   }
 
@@ -50,7 +51,7 @@ export class GroupNode extends Node {
   toJSON () {
     return {
       type: 'GroupNode',
-      matrix: this.matrix,
+      matrix: this.startmatrix,
       children: this.children
 
     }
@@ -60,7 +61,7 @@ export class GroupNode extends Node {
     let matrix = new Matrix(node.matrix.data)
     let children = []
     node.children.forEach(child => children.push(getType(child)))
-    return new GroupNode(matrix.data, children)
+    return new GroupNode(matrix, children)
   }
 }
 
@@ -335,6 +336,7 @@ function getColors (colors) {
   if (Array.isArray(colors)) {
     let colorArray = []
     colors.forEach(color => colorArray.push(new Vector(color.data)))
+    return colorArray
   } else {
     return new Vector(colors.data)
   }

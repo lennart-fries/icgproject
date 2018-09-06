@@ -14,7 +14,7 @@ const validSettings = radiobuttons.concat(textfields)
  * @param  {File} inputFile - File to be read into text
  * @return {Promise<String>}  Resolves to the text inside
  */
-function readUploadedFileAsText (inputFile) {
+ function readUploadedFileAsText (inputFile) {
   const temporaryFileReader = new FileReader()
 
   return new Promise((resolve, reject) => {
@@ -34,13 +34,15 @@ function readUploadedFileAsText (inputFile) {
  * @param  scenegraph     - Reference to the scene graph
  * @param  animationNodes - Reference to the animation nodes
  */
-function saveScenegraphToJson (scenegraph, animationNodes) {
+export function saveScenegraphToJson (scenegraph, animationNodes) {
   let json = JSON.stringify(JsonSerializer.serialize(scenegraph, animationNodes), null, 2)
   let url = URL.createObjectURL(new Blob([json], {type: 'application/json'}))
-  let sgDownload = document.createElement('a')
-  sgDownload.href = url
-  sgDownload.download = 'scenegraph.json'
-  sgDownload.click()
+  let pom = document.createElement('a')
+  document.body.appendChild(pom) // required in FF, optional for Chrome
+  pom.href = url
+  pom.download = 'scenegraph.json'
+  pom.target = '_self' // required in FF, optional for Chrome
+  pom.click()
 }
 
 /**

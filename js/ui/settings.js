@@ -83,9 +83,10 @@ export class Settings {
     gn1.add(cameraNode)
 
     let animationNodes = [
+      /*
       new AnimationNode(gn2, 1.0, true, new Vector(0, 0.5, 0.5, 0), Matrix.rotation),
       new BackAndForthAnimationNode(gn3, 1.0, true, new Vector(0, 0, 1, 0), Matrix.translation, 3, 1.5),
-      new AnimationNode(gn4, 1.0, true, new Vector(1, 0, 0, 0), Matrix.rotation)
+      new AnimationNode(gn4, 1.0, true, new Vector(1, 0, 0, 0), Matrix.rotation)*/
     ]
 
     this.settingsObj.scenegraph = scenegraph
@@ -163,18 +164,4 @@ export class Settings {
   get settings () {
     return this.settingsObj
   }
-
-  /*
-  get scenegraph () {
-    let sg = this.sg
-    this.sg = null
-    return sg
-  }
-
-  get animationNodes () {
-    let animationNodes = this.animationNodesArray
-    this.animationNodesArray = null
-    return animationNodes
-  }
-  */
 }

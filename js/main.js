@@ -1,7 +1,7 @@
 /* global performance */
 /* eslint new-cap: ['error', { 'newIsCapExceptions': ['renderer'] }] */
 
-import { settings } from './ui/ui.js'
+import { settings, saveScenegraphToJson} from './ui/ui.js'
 import { PreviewVisitor } from './scenegraph/preview-visitor.js'
 
 let r, previewVisitor, scenegraph, animationNodes
@@ -25,8 +25,8 @@ let lastTimestamp = performance.now()
  * Makes sure the current renderer is the selected one
  * @return {boolean} - True if renderer changed
  */
-function updateRenderer () {
-  if (r == null || !(r instanceof settings.settings.renderer)) {
+function updateRenderer (newSg) {
+  if (r == null || !(r instanceof settings.settings.renderer) || newSg) {
     if (r != null) {
       r.teardown()
 
@@ -45,7 +45,9 @@ function updateRenderer () {
   }
   return false
 }
+
 Date.now()
+
 /**
  * Makes sure the resolution of the canvas corresponds to the window size and configure camera accordingly
  * @param camera - Camera object to inject the correct aspect ratio into
@@ -69,14 +71,15 @@ function updateResolution (camera) {
 function animate (timestamp) {
   // Update scenegraph and animation nodes if changed
   let scenegraphNew = settings.settings.scenegraph
-  if (!(scenegraphNew === scenegraph)) {
-    scenegraph = scenegraphNew
-  }
   let animationNodesNew = settings.settings.animationNodes
-  if (!(animationNodesNew === animationNodes)) {
+  let newSG = false
+  if (!(scenegraphNew === scenegraph) || !(animationNodesNew === animationNodes)) {
+    let sggg = scenegraph
+    scenegraph = scenegraphNew
     animationNodes = animationNodesNew
+    newSG = true
   }
-  if (updateRenderer()) {
+  if (updateRenderer(newSG)) {
     // Changing the renderer already calls requestAnimationFrame, which calls this method, so quit
     return
   }

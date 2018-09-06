@@ -111,6 +111,7 @@ export class BackAndForthAnimationNode extends AnimationNode {
   constructor (groupNode, speed, active, axesOrDirections, applyFunction, limit, startPosition = 0) {
     super(groupNode, speed, active, axesOrDirections, applyFunction)
     this.limit = limit
+    this.startPosition = startPosition
     this.position = startPosition
     this.invert = false
   }
@@ -144,10 +145,9 @@ export class BackAndForthAnimationNode extends AnimationNode {
       speed: this.speed,
       active: this.active,
       axesOrDirections: this.axesOrDirections,
-      applyFunction: this.applyFunction,
+      applyFunctionName: this.applyFunctionName,
       limit: this.limit,
-      position: this.position,
-      invert: this.invert
+      position: this.startPosition
     }
   }
 
@@ -156,10 +156,23 @@ export class BackAndForthAnimationNode extends AnimationNode {
     let speed = node.speed
     let active = node.active
     let axesOrDirections = new Vector(node.axesOrDirections.data)
-    let applyFunction = node.applyFunction
+    let applyFunction
+    switch (node.applyFunctionName) {
+      case 'rotation':
+        applyFunction = Matrix.rotation
+        break
+      case 'translation':
+        applyFunction = Matrix.translation
+        break
+      case 'scaling':
+        applyFunction = Matrix.scaling
+        break
+      case 'shear':
+        applyFunction = Matrix.shear
+        break
+    }
     let limit = node.limit
     let position = node.position
-    // invert?
     return new BackAndForthAnimationNode(groupNode, speed, active, axesOrDirections, applyFunction, limit, position)
   }
 }
