@@ -1,11 +1,47 @@
-/* global $, window */
+/* global $, window, FileReader, Blob */
 
 import { Settings } from './settings.js'
+import { JsonSerializer } from '../scenegraph/JsonSerializer.js'
 
 export let settings = new Settings()
 const radiobuttons = ['renderer', 'renderResolution']
 const textfields = ['backgroundColor']
-const validSettings = radiobuttons.concat(textfields) // todo scenegraph and animation-nodes from url
+const fileselectors = ['scenegraph']
+const validSettings = radiobuttons.concat(textfields)
+
+/**
+ * Helper function to wrap FileReader into Promise
+ * @param  {File} inputFile - File to be read into text
+ * @return {Promise<String>}  Resolves to the text inside
+ */
+function readUploadedFileAsText (inputFile) {
+  const temporaryFileReader = new FileReader()
+
+  return new Promise((resolve, reject) => {
+    temporaryFileReader.onload = () => {
+      resolve(temporaryFileReader.result)
+    }
+    temporaryFileReader.onerror = () => {
+      temporaryFileReader.abort()
+      reject(temporaryFileReader.error)
+    }
+    temporaryFileReader.readAsText(inputFile)
+  })
+}
+
+/**
+ * Helper function to download the scene graph as a JSON file
+ * @param  scenegraph     - Reference to the scene graph
+ * @param  animationNodes - Reference to the animation nodes
+ */
+function saveScenegraphToJson (scenegraph, animationNodes) {
+  let json = JSON.stringify(JsonSerializer.serialize(scenegraph, animationNodes), null, 2)
+  let url = URL.createObjectURL(new Blob([json], {type: 'application/json'}))
+  let sgDownload = document.createElement('a')
+  sgDownload.href = url
+  sgDownload.download = 'scenegraph.json'
+  sgDownload.click()
+}
 
 /**
  * Reads the URL and sets valid given search parameters in the settings object
@@ -100,7 +136,7 @@ function setupRadiobuttons (radiobuttons, settingsObj) {
 /**
  * Sets up the text fields to set the settings object when changed
  * @param {Array.string} textfields - Array of names of text fields
- * @param {Object} settingsObj        - Settings object, has a child object "settings" which holds the real settings
+ * @param {Object} settingsObj      - Settings object, has a child object "settings" which holds the real settings
  */
 function setupTextfields (textfields, settingsObj) {
   for (let textfield of textfields) {
@@ -112,6 +148,28 @@ function setupTextfields (textfields, settingsObj) {
   }
 }
 
+/**
+ * Sets up the file selectors to set the settings object when changed
+ * @param {Array.string} fileselectors - Array of names of file selectors
+ * @param {Object} settingsObj         - Settings object, has a child object "settings" which holds the real settings
+ */
+function setupFileselectors (fileselectors, settingsObj) {
+  for (let fileselector of fileselectors) {
+    $('#' + fileselector).change(async (event) => {
+      const fileContents = await readUploadedFileAsText(event.target.files[0])
+      let newSettings = {}
+      newSettings[this.id] = fileContents
+      settingsObj.settings = newSettings
+    })
+  }
+}
+
+function setupDownloadButton () {
+  $('#saveScenegraph').click(function () {
+    saveScenegraphToJson(settings.settings.scenegraph, settings.settings.animationNodes)
+  })
+}
+
 $(document).ready(function () {
   setFromURL()
   setInputElementValues()
@@ -120,4 +178,6 @@ $(document).ready(function () {
   setupColorpickers()
   setupRadiobuttons(radiobuttons, settings)
   setupTextfields(textfields, settings)
+  setupFileselectors(fileselectors, settings)
+  setupDownloadButton()
 })
