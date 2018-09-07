@@ -162,7 +162,14 @@ updateRenderer()
 window.addEventListener('keydown', function (event) {
   switch (event.key) {
     case 'ArrowUp':
-      animationNodes[0].toggleActive()
+      activateNode(0)
+      break
+    case 'ArrowDown':
+      activateNode(1)
       break
   }
 })
+
+function activateNode (number) {
+  animationNodes[number].toggleActive()
+}
