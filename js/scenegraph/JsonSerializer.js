@@ -15,16 +15,16 @@ export class JsonDeserializer {
     let deserializer = new JsonDeserializer()
     deserializer.scenegraph = GroupNode.fromJson(json.scenegraph)
     deserializer.animationNodes = []
-    json.animationNodes.forEach(node => deserializer.animationNodes.push(getAnimationNodeType(node)))
+    json.animationNodes.forEach(node => deserializer.animationNodes.push(getAnimationNodeType(node, deserializer.scenegraph)))
     return deserializer
   }
 }
 
-function getAnimationNodeType (node) {
+function getAnimationNodeType (node, sg) {
   switch (node.type) {
     case 'AnimationNode':
-      return AnimationNode.fromJson(node)
+      return AnimationNode.fromJson(node, sg)
     case 'BackAndForthAnimationNode':
-      return BackAndForthAnimationNode.fromJson(node)
+      return BackAndForthAnimationNode.fromJson(node, sg)
   }
 }

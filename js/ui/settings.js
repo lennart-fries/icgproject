@@ -19,7 +19,6 @@ export class Settings {
     this.settingsStr = {renderer: 'Raster', renderResolution: '1', backgroundColor: '000000'}
     this.settingsObj = {}
     this.setSettings(this.settingsStr)
-    // console.log(this)
 
     // construct scene graph
     let scenegraph = new GroupNode(Matrix.identity())
@@ -83,10 +82,9 @@ export class Settings {
     gn1.add(cameraNode)
 
     let animationNodes = [
-      /*
       new AnimationNode(gn2, 1.0, true, new Vector(0, 0.5, 0.5, 0), Matrix.rotation),
       new BackAndForthAnimationNode(gn3, 1.0, true, new Vector(0, 0, 1, 0), Matrix.translation, 3, 1.5),
-      new AnimationNode(gn4, 1.0, true, new Vector(1, 0, 0, 0), Matrix.rotation)*/
+      new AnimationNode(gn4, 1.0, true, new Vector(1, 0, 0, 0), Matrix.rotation)
     ]
 
     this.settingsObj.scenegraph = scenegraph

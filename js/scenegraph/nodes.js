@@ -24,9 +24,11 @@ export class GroupNode extends Node {
    * Constructor
    * @param {Matrix}        mat - A matrix describing the node's transformation
    * @param {Array.<Node>}  children - all children nodes
+   * @param {int}       id - id of the node, used if the node is imported from a json
    */
-  constructor (mat, children = []) {
+  constructor (mat, children = [], id = null) {
     super()
+    this.id = id
     this.matrix = mat
     this.startmatrix = mat
     this.children = children
@@ -50,18 +52,19 @@ export class GroupNode extends Node {
 
   toJSON () {
     return {
+      id: this.id,
       type: 'GroupNode',
-      matrix: this.startmatrix,
+      matrix: this.matrix.transpose(),
       children: this.children
-
     }
   }
 
   static fromJson (node) {
+    let id = node.id
     let matrix = new Matrix(node.matrix.data)
     let children = []
     node.children.forEach(child => children.push(getType(child)))
-    return new GroupNode(matrix, children)
+    return new GroupNode(matrix, children, id)
   }
 }
 
@@ -79,9 +82,11 @@ export class SphereNode extends Node {
    *                                               x = ambient, y = diffuse, z = specular, w = shininess
    * @param  {string | null} texture             - Image filename for the texture, optional
    * @param  {string | null} map                 - Image filename for the mapping texture, optional
+   * @param  {int}       id                      - id of the node, used if the node is imported from a json
    */
-  constructor (center, radius, colors, materials, texture = null, map = null) {
+  constructor (center, radius, colors, materials, texture = null, map = null, id = null) {
     super()
+    this.id = id
     this.center = center
     this.radius = radius
     this.colors = colors
@@ -100,22 +105,26 @@ export class SphereNode extends Node {
 
   toJSON () {
     return {
+      id: this.id,
       type: 'SphereNode',
       center: this.center,
       radius: this.radius,
       colors: this.colors,
       materials: this.materials,
+      map: this.map,
       texture: this.texture
     }
   }
 
   static fromJson (node) {
+    let id = node.id
     let center = new Vector(node.center.data)
     let colors = getColors(node.colors)
     let materials = getColors(node.materials)
     let radius = node.radius
     let texture = node.texture
-    return new SphereNode(center, radius, colors, materials, texture)
+    let map = node.map
+    return new SphereNode(center, radius, colors, materials, texture, map, id)
   }
 }
 
@@ -133,9 +142,11 @@ export class AABoxNode extends Node {
    *                                               x = ambient, y = diffuse, z = specular, w = shininess
    * @param  {string | null} texture             - Image filename for the texture, optional
    * @param  {string | null} map                 - Image filename for the mapping texture, optional
+   * @param  {int}           id                  - id of the node, used if the node is imported from a json
    */
-  constructor (minPoint, maxPoint, colors, materials, texture = null, map = null) {
+  constructor (minPoint, maxPoint, colors, materials, texture = null, map = null, id = null) {
     super()
+    this.id = id
     this.minPoint = minPoint
     this.maxPoint = maxPoint
     this.colors = colors
@@ -154,20 +165,26 @@ export class AABoxNode extends Node {
 
   toJSON () {
     return {
+      id: this.id,
       type: 'AABoxNode',
       minPoint: this.minPoint,
       maxPoint: this.maxPoint,
       colors: this.colors,
-      materials: this.materials
+      materials: this.materials,
+      map: this.map,
+      texture: this.texture
     }
   }
 
   static fromJson (node) {
+    let id = node.id
     let minPoint = new Vector(node.minPoint.data)
     let maxPoint = new Vector(node.maxPoint.data)
     let colors = getColors(node.colors)
     let materials = getColors(node.materials)
-    return new AABoxNode(minPoint, maxPoint, colors, materials)
+    let map = node.map
+    let texture = node.texture
+    return new AABoxNode(minPoint, maxPoint, colors, materials, texture, map, id)
   }
 }
 
@@ -185,9 +202,11 @@ export class PyramidNode extends Node {
    *                                               x = ambient, y = diffuse, z = specular, w = shininess
    * @param  {string | null} texture             - Image filename for the texture, optional
    * @param  {string | null} map                 - Image filename for the mapping texture, optional
+   * @param  {int}           id                  - id of the node, used if the node is imported from a json
    */
-  constructor (center, height, colors, materials, texture = null, map = null) {
+  constructor (center, height, colors, materials, texture = null, map = null, id = null) {
     super()
+    this.id = id
     this.center = center
     this.height = height
     this.colors = colors
@@ -206,22 +225,26 @@ export class PyramidNode extends Node {
 
   toJSON () {
     return {
+      id: this.id,
       type: 'PyramidNode',
       center: this.center,
       height: this.height,
       colors: this.colors,
       materials: this.materials,
+      map: this.map,
       texture: this.texture
     }
   }
 
   static fromJson (node) {
+    let id = node.id
     let center = new Vector(node.center.data)
     let height = node.height
     let colors = getColors(node.colors)
     let materials = getColors(node.materials)
     let texture = node.texture
-    return new PyramidNode(center, height, colors, materials, texture)
+    let map = node.map
+    return new PyramidNode(center, height, colors, materials, texture, map,  id)
   }
 }
 
@@ -235,9 +258,11 @@ export class CameraNode extends Node {
    * @param  {number} aspect - aspect ratio of the camera (width/height)
    * @param  {number} near   - nearest distance of the rendered view
    * @param  {number} far    - furthest distance of the rendered view
+   * @param  {int}    id     - id of the node, used if the node is imported from a json
    */
-  constructor (eye, center, up, fovy, aspect, near, far) {
+  constructor (eye, center, up, fovy, aspect, near, far, id = null) {
     super()
+    this.id = id
     this.eye = eye
     this.center = center
     this.up = up
@@ -257,6 +282,7 @@ export class CameraNode extends Node {
 
   toJSON () {
     return {
+      id: this.id,
       type: 'CameraNode',
       eye: this.eye,
       center: this.center,
@@ -269,6 +295,7 @@ export class CameraNode extends Node {
   }
 
   static fromJson (node) {
+    let id = node.id
     let eye = new Vector(node.eye.data)
     let center = new Vector(node.center.data)
     let up = new Vector(node.up.data)
@@ -276,7 +303,7 @@ export class CameraNode extends Node {
     let aspect = node.aspect
     let near = node.near
     let far = node.far
-    return new CameraNode(eye, center, up, fovy, aspect, near, far)
+    return new CameraNode(eye, center, up, fovy, aspect, near, far, id)
   }
 }
 
@@ -285,9 +312,11 @@ export class LightNode extends Node {
    * Creates a point light.
    * @param  {Vector} position  - position of the light
    * @param  {number} intensity - how strong the light is, from 0 to 1
+   * @param  {int}    id        - id of the node, used if the node is imported from a json
    */
-  constructor (position, intensity) {
+  constructor (position, intensity, id = null) {
     super()
+    this.id = id
     this.position = position
     this.intensity = intensity
   }
@@ -302,6 +331,7 @@ export class LightNode extends Node {
 
   toJSON () {
     return {
+      id: this.id,
       type: 'LightNode',
       position: this.position,
       intensity: this.intensity
@@ -309,9 +339,10 @@ export class LightNode extends Node {
   }
 
   static fromJson (node) {
+    let id = node.id
     let position = new Vector(node.position.data)
     let intensity = node.intensity
-    return new LightNode(position, intensity)
+    return new LightNode(position, intensity, id)
   }
 }
 

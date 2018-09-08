@@ -61,7 +61,7 @@ export class AnimationNode {
   toJSON () {
     return {
       type: 'AnimationNode',
-      groupNode: this.groupNode,
+      groupNodeID: this.groupNode.id,
       speed: this.speed,
       active: this.active,
       axesOrDirections: this.axesOrDirections,
@@ -69,8 +69,8 @@ export class AnimationNode {
     }
   }
 
-  static fromJson (node) {
-    let groupNode = GroupNode.fromJson(node.groupNode)
+  static fromJson (node, sg) {
+    let groupNode = getNodeByID(node.groupNodeID, sg)
     let speed = node.speed
     let active = node.active
     let axesOrDirections = new Vector(node.axesOrDirections.data)
@@ -141,7 +141,7 @@ export class BackAndForthAnimationNode extends AnimationNode {
   toJSON () {
     return {
       type: 'BackAndForthAnimationNode',
-      groupNode: this.groupNode,
+      groupNodeID: this.groupNode.id,
       speed: this.speed,
       active: this.active,
       axesOrDirections: this.axesOrDirections,
@@ -151,8 +151,8 @@ export class BackAndForthAnimationNode extends AnimationNode {
     }
   }
 
-  static fromJson (node) {
-    let groupNode = GroupNode.fromJson(node.groupNode)
+  static fromJson (node, sg) {
+    let groupNode = getNodeByID(node.groupNodeID, sg)
     let speed = node.speed
     let active = node.active
     let axesOrDirections = new Vector(node.axesOrDirections.data)
@@ -175,4 +175,18 @@ export class BackAndForthAnimationNode extends AnimationNode {
     let position = node.position
     return new BackAndForthAnimationNode(groupNode, speed, active, axesOrDirections, applyFunction, limit, position)
   }
+
+}
+
+function getNodeByID (id, node) {
+  if (node.id === id) {
+    return node
+  } else if (Array.isArray(node.children)) {
+    let result = null
+    for (let i = 0; result === null && i < node.children.length; i++) {
+      result = getNodeByID(id, node.children[i])
+    }
+    return result
+  }
+  return null
 }

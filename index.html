@@ -41,7 +41,7 @@
         <ul class="settings-list list-group rounded-0">
             <li class="list-group-item list-group-item-primary rounded-0">
                 <button type="button" class="btn btn-primary" data-toggle="modal"
-                        data-target="#openLoadScenegraphDialog">
+                        onclick="$('#scenegraph').click()">
                     <i class="fas fa-folder-open"></i>
                 </button>
                 <button id="saveScenegraph" type="button" class="btn btn-primary">
@@ -136,8 +136,9 @@
         </ul>
     </nav>
 </div>
+<input id="scenegraph" type="file" style="display:none" accept="application/json"/>
 
-<!-- loaddingens dialog -->
+<!-- loaddingens dialog does nothing anymore atm-->
 <div class="modal fade" id="openLoadScenegraphDialog" tabindex="-1" role="dialog" aria-labelledby="loadScenegraph"
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -146,7 +147,7 @@
                 <h5 class="modal-title" id="openLoadScenegraphDialogTitle">Load Scenegraph</h5>
             </div>
             <div class="modal-body">
-                <input id="scenegraph" type="file" accept="application/json"/>
+                <input id="scenegraphf" type="file" accept="application/json"/>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
