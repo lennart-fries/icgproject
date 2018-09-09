@@ -7,6 +7,7 @@ import { GroupNode, SphereNode, AABoxNode, PyramidNode, CameraNode, LightNode } 
 import { AnimationNode, BackAndForthAnimationNode } from './animation/animation-nodes.js'
 import { settings } from './ui/ui.js'
 import { PreviewVisitor } from './scenegraph/preview-visitor.js'
+import { ToggleKeybind, PushKeybind } from './keybinds.js'
 
 let r, previewVisitor
 
@@ -79,9 +80,33 @@ const cameraNode = new CameraNode(new Vector(0, 0, 10, 1), new Vector(0, 0, 0, 1
 gn1.add(cameraNode)
 
 let animationNodes = [
-  new AnimationNode(gn2, 1.0, true, new Vector(0, 0.5, 0.5, 0), Matrix.rotation),
+  new AnimationNode(gn2, 1.0, false, new Vector(0, 0.5, 0.5, 0), Matrix.rotation),
   new BackAndForthAnimationNode(gn3, 1.0, true, new Vector(0, 0, 1, 0), Matrix.translation, 3, 1.5),
-  new AnimationNode(gn4, 1.0, true, new Vector(1, 0, 0, 0), Matrix.rotation)
+  new AnimationNode(gn4, 1.0, true, new Vector(1, 0, 0, 0), Matrix.rotation),
+  // Free Flight Forward
+  new AnimationNode(gn1, 1.0, false, new Vector(0, 0, -1, 0), Matrix.translation),
+  // Free Flight Backwards
+  new AnimationNode(gn1, 1.0, false, new Vector(0, 0, 1, 0), Matrix.translation),
+  // Free Flight Left
+  new AnimationNode(gn1, 1.0, false, new Vector(-1, 0, 0, 0), Matrix.translation),
+  // Free Flight Right
+  new AnimationNode(gn1, 1.0, false, new Vector(1, 0, 0, 0), Matrix.translation),
+  // Free Flight Ascend
+  new AnimationNode(gn1, 1.0, false, new Vector(0, 1, 0, 0), Matrix.translation),
+  // Free Flight Descend
+  new AnimationNode(gn1, 1.0, false, new Vector(0, -1, 0, 0), Matrix.translation),
+  // Free Flight Turn Upwards
+  new AnimationNode(gn1, 1.0, false, new Vector(-1, 0, 0, 0), Matrix.rotation),
+  // Free Flight Turn Downwards
+  new AnimationNode(gn1, 1.0, false, new Vector(1, 0, 0, 0), Matrix.rotation),
+  // Free Flight Turn Left
+  new AnimationNode(gn1, 1.0, false, new Vector(0, -1, 0, 0), Matrix.rotation),
+  // Free Flight Turn Right
+  new AnimationNode(gn1, 1.0, false, new Vector(0, 1, 0, 0), Matrix.rotation),
+  // Free Flight Left Roll?
+  new AnimationNode(gn1, 1.0, false, new Vector(0, -1, 1, 0), Matrix.rotation),
+  // Free Flight Right Roll?
+  new AnimationNode(gn1, 1.0, false, new Vector(0, -1, -1, 0), Matrix.rotation)
 ]
 
 /**
@@ -159,17 +184,51 @@ function animate (timestamp) {
 
 updateRenderer()
 
+let keybinds = [
+  // Toggle Animation 1
+  new ToggleKeybind(animationNodes[0], 'Digit1'),
+  // Toggle Animation 2
+  new ToggleKeybind(animationNodes[0], 'Digit2'),
+  // Toggle Animation 3
+  new ToggleKeybind(animationNodes[0], 'Digit3'),
+  // Free Flight Forward
+  new PushKeybind(animationNodes[3], 'KeyW'),
+  // Free Flight Backward
+  new PushKeybind(animationNodes[4], 'KeyS'),
+  // Free Flight Left
+  new PushKeybind(animationNodes[5], 'KeyA'),
+  // Free Flight Right
+  new PushKeybind(animationNodes[6], 'KeyD'),
+  // Free Flight Ascend - Space don't work D:?
+  new PushKeybind(animationNodes[7], 'Space'),
+  // Free Flight Descend
+  new PushKeybind(animationNodes[8], 'ShiftLeft'),
+  // Free Flight Turn Upwards
+  new PushKeybind(animationNodes[9], 'ArrowUp'),
+  // Free Flight Turn Downwards
+  new PushKeybind(animationNodes[10], 'ArrowDown'),
+  // Free Flight Turn Left
+  new PushKeybind(animationNodes[11], 'ArrowLeft'),
+  // Free Flight Turn Right
+  new PushKeybind(animationNodes[12], 'ArrowRight'),
+  // Free Flight Left Roll?
+  new PushKeybind(animationNodes[13], 'KeyQ'),
+  // Free Flight Right Roll
+  new PushKeybind(animationNodes[14], 'KeyE')
+]
+
 window.addEventListener('keydown', function (event) {
-  switch (event.key) {
-    case 'ArrowUp':
-      activateNode(0)
-      break
-    case 'ArrowDown':
-      activateNode(1)
-      break
+  for (let i = 0; i < keybinds.length; i++) {
+    if (event.code === keybinds[i].key) {
+      keybinds[i].activate()
+    }
   }
 })
 
-function activateNode (number) {
-  animationNodes[number].toggleActive()
-}
+window.addEventListener('keyup', function (event) {
+  for (let i = 0; i < keybinds.length; i++) {
+    if (event.code === keybinds[i].key) {
+      keybinds[i].stop()
+    }
+  }
+})
