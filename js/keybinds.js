@@ -2,7 +2,6 @@
  * Class representing a Keybind to invoke actions on the scenegraph
  */
 import { settings } from './ui/ui.js'
-import { Ray } from './ray/ray.js'
 
 class Keybind {
   /**
@@ -74,10 +73,10 @@ export function setupKeybinds (keybinds) {
       if (event.code === keybinds[i].key) {
         keybinds[i].activate()
       } else if (event.code === 'KeyR') {
-        if (settings.settings.renderer === Ray) {
-          settings.settings.renderer = 'Raster'
+        if (settings.settingsStr.renderer === 'Ray') {
+          settings.settings = {renderer: 'Raster'}
         } else {
-          settings.settings.renderer = 'Ray'
+          settings.settings = {renderer: 'Ray'}
         }
       }
     }
