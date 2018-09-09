@@ -7,7 +7,7 @@ import { GroupNode, SphereNode, AABoxNode, PyramidNode, CameraNode, LightNode } 
 import { AnimationNode, BackAndForthAnimationNode } from './animation/animation-nodes.js'
 import { settings } from './ui/ui.js'
 import { PreviewVisitor } from './scenegraph/preview-visitor.js'
-import { ToggleKeybind, PushKeybind } from './keybinds.js'
+import { ToggleKeybind, PushKeybind, setupKeybinds } from './keybinds.js'
 
 let r, previewVisitor
 
@@ -187,12 +187,6 @@ function animate (timestamp) {
 updateRenderer()
 
 let keybinds = [
-  // Toggle Animation 1
-  new ToggleKeybind(animationNodes[0], 'Digit1'),
-  // Toggle Animation 2
-  new ToggleKeybind(animationNodes[0], 'Digit2'),
-  // Toggle Animation 3
-  new ToggleKeybind(animationNodes[0], 'Digit3'),
   // Free Flight Forward
   new PushKeybind(animationNodes[0], 'KeyW'),
   // Free Flight Backward
@@ -216,21 +210,13 @@ let keybinds = [
   // Free Flight Left Roll
   new PushKeybind(animationNodes[10], 'KeyQ'),
   // Free Flight Right Roll
-  new PushKeybind(animationNodes[11], 'KeyE')
+  new PushKeybind(animationNodes[11], 'KeyE'),
+  // Toggle Animation 1
+  new ToggleKeybind(animationNodes[12], 'Digit1'),
+  // Toggle Animation 2
+  new ToggleKeybind(animationNodes[12], 'Digit2'),
+  // Toggle Animation 3
+  new ToggleKeybind(animationNodes[12], 'Digit3')
 ]
 
-window.addEventListener('keydown', function (event) {
-  for (let i = 0; i < keybinds.length; i++) {
-    if (event.code === keybinds[i].key) {
-      keybinds[i].activate()
-    }
-  }
-})
-
-window.addEventListener('keyup', function (event) {
-  for (let i = 0; i < keybinds.length; i++) {
-    if (event.code === keybinds[i].key) {
-      keybinds[i].stop()
-    }
-  }
-})
+setupKeybinds(keybinds)

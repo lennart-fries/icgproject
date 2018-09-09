@@ -64,3 +64,21 @@ export class PushKeybind extends Keybind {
     this.animationNode.active = false
   }
 }
+
+export function setupKeybinds (keybinds) {
+  window.addEventListener('keydown', function (event) {
+    for (let i = 0; i < keybinds.length; i++) {
+      if (event.code === keybinds[i].key) {
+        keybinds[i].activate()
+      }
+    }
+  })
+
+  window.addEventListener('keyup', function (event) {
+    for (let i = 0; i < keybinds.length; i++) {
+      if (event.code === keybinds[i].key) {
+        keybinds[i].stop()
+      }
+    }
+  })
+}
