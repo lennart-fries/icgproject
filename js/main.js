@@ -7,6 +7,7 @@ import { GroupNode, SphereNode, AABoxNode, PyramidNode, CameraNode, LightNode } 
 import { AnimationNode, BackAndForthAnimationNode } from './animation/animation-nodes.js'
 import { settings } from './ui/ui.js'
 import { PreviewVisitor } from './scenegraph/preview-visitor.js'
+import { ToggleKeybind, PushKeybind, setupKeybinds } from './keybinds.js'
 
 let r, previewVisitor
 
@@ -15,6 +16,8 @@ let canvas = document.getElementById(canvasID)
 
 // construct scene graph
 const sg = new GroupNode(Matrix.identity())
+const gn0 = new GroupNode(Matrix.identity())
+sg.add(gn0)
 const gn1 = new GroupNode(Matrix.translation(new Vector(1, 1, 0, 0.0)))
 sg.add(gn1)
 const gn3 = new GroupNode(Matrix.identity())
@@ -76,10 +79,34 @@ const light2 = new LightNode(new Vector(10, 3, 3, 1), 0.2)
 gn1.add(light2)
 
 const cameraNode = new CameraNode(new Vector(0, 0, 10, 1), new Vector(0, 0, 0, 1), new Vector(0, 1, 0, 0), 60, 1, 0.1, 100)
-gn1.add(cameraNode)
+gn0.add(cameraNode)
 
 let animationNodes = [
-  new AnimationNode(gn2, 1.0, true, new Vector(0, 0.5, 0.5, 0), Matrix.rotation),
+  // Free Flight Forward
+  new AnimationNode(gn0, 1.0, false, new Vector(0, 0, -1, 0), Matrix.translation),
+  // Free Flight Backwards
+  new AnimationNode(gn0, 1.0, false, new Vector(0, 0, 1, 0), Matrix.translation),
+  // Free Flight Left
+  new AnimationNode(gn0, 1.0, false, new Vector(-1, 0, 0, 0), Matrix.translation),
+  // Free Flight Right
+  new AnimationNode(gn0, 1.0, false, new Vector(1, 0, 0, 0), Matrix.translation),
+  // Free Flight Ascend
+  new AnimationNode(gn0, 1.0, false, new Vector(0, 1, 0, 0), Matrix.translation),
+  // Free Flight Descend
+  new AnimationNode(gn0, 1.0, false, new Vector(0, -1, 0, 0), Matrix.translation),
+  // Free Flight Turn Upwards
+  new AnimationNode(gn0, 1.0, false, new Vector(-1, 0, 0, 0), Matrix.rotation),
+  // Free Flight Turn Downwards
+  new AnimationNode(gn0, 1.0, false, new Vector(1, 0, 0, 0), Matrix.rotation),
+  // Free Flight Turn Left
+  new AnimationNode(gn0, 1.0, false, new Vector(0, 1, 0, 0), Matrix.rotation),
+  // Free Flight Turn Right
+  new AnimationNode(gn0, 1.0, false, new Vector(0, -1, 0, 0), Matrix.rotation),
+  // Free Flight Left Roll?
+  new AnimationNode(gn0, 1.0, false, new Vector(0, 0, 1, 0), Matrix.rotation),
+  // Free Flight Right Roll?
+  new AnimationNode(gn0, 1.0, false, new Vector(0, 0, -1, 0), Matrix.rotation),
+  new AnimationNode(gn2, 1.0, false, new Vector(0, 0.5, 0.5, 0), Matrix.rotation),
   new BackAndForthAnimationNode(gn3, 1.0, true, new Vector(0, 0, 1, 0), Matrix.translation, 3, 1.5),
   new AnimationNode(gn4, 1.0, true, new Vector(1, 0, 0, 0), Matrix.rotation)
 ]
@@ -159,10 +186,37 @@ function animate (timestamp) {
 
 updateRenderer()
 
-window.addEventListener('keydown', function (event) {
-  switch (event.key) {
-    case 'ArrowUp':
-      animationNodes[0].toggleActive()
-      break
-  }
-})
+let keybinds = [
+  // Free Flight Forward
+  new PushKeybind(animationNodes[0], 'KeyW'),
+  // Free Flight Backward
+  new PushKeybind(animationNodes[1], 'KeyS'),
+  // Free Flight Left
+  new PushKeybind(animationNodes[2], 'KeyA'),
+  // Free Flight Right
+  new PushKeybind(animationNodes[3], 'KeyD'),
+  // Free Flight Ascend - Space don't work D:?
+  new PushKeybind(animationNodes[4], 'Space'),
+  // Free Flight Descend
+  new PushKeybind(animationNodes[5], 'ShiftLeft'),
+  // Free Flight Turn Upwards
+  new PushKeybind(animationNodes[6], 'ArrowUp'),
+  // Free Flight Turn Downwards
+  new PushKeybind(animationNodes[7], 'ArrowDown'),
+  // Free Flight Turn Left
+  new PushKeybind(animationNodes[8], 'ArrowLeft'),
+  // Free Flight Turn Right
+  new PushKeybind(animationNodes[9], 'ArrowRight'),
+  // Free Flight Left Roll
+  new PushKeybind(animationNodes[10], 'KeyQ'),
+  // Free Flight Right Roll
+  new PushKeybind(animationNodes[11], 'KeyE'),
+  // Toggle Animation 1
+  new ToggleKeybind(animationNodes[12], 'Digit1'),
+  // Toggle Animation 2
+  new ToggleKeybind(animationNodes[12], 'Digit2'),
+  // Toggle Animation 3
+  new ToggleKeybind(animationNodes[12], 'Digit3')
+]
+
+setupKeybinds(keybinds)
