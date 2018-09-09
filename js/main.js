@@ -195,7 +195,7 @@ let keybinds = [
   new PushKeybind(animationNodes[2], 'KeyA'),
   // Free Flight Right
   new PushKeybind(animationNodes[3], 'KeyD'),
-  // Free Flight Ascend - Space don't work D:?
+  // Free Flight Ascend
   new PushKeybind(animationNodes[4], 'Space'),
   // Free Flight Descend
   new PushKeybind(animationNodes[5], 'ShiftLeft'),

@@ -1,6 +1,8 @@
 /**
  * Class representing a Keybind to invoke actions on the scenegraph
  */
+import { settings } from './ui/ui.js'
+
 class Keybind {
   /**
    * Activates the specified Animation Node
@@ -70,6 +72,12 @@ export function setupKeybinds (keybinds) {
     for (let i = 0; i < keybinds.length; i++) {
       if (event.code === keybinds[i].key) {
         keybinds[i].activate()
+      } else if (event.code === 'KeyR') {
+        if (settings.settingsStr.renderer === 'Ray') {
+          settings.settings = {renderer: 'Raster'}
+        } else {
+          settings.settings = {renderer: 'Ray'}
+        }
       }
     }
   })
