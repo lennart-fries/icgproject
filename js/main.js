@@ -82,9 +82,6 @@ const cameraNode = new CameraNode(new Vector(0, 0, 10, 1), new Vector(0, 0, 0, 1
 gn0.add(cameraNode)
 
 let animationNodes = [
-  new AnimationNode(gn2, 1.0, false, new Vector(0, 0.5, 0.5, 0), Matrix.rotation),
-  new BackAndForthAnimationNode(gn3, 1.0, true, new Vector(0, 0, 1, 0), Matrix.translation, 3, 1.5),
-  new AnimationNode(gn4, 1.0, true, new Vector(1, 0, 0, 0), Matrix.rotation),
   // Free Flight Forward
   new AnimationNode(gn0, 1.0, false, new Vector(0, 0, -1, 0), Matrix.translation),
   // Free Flight Backwards
@@ -102,13 +99,16 @@ let animationNodes = [
   // Free Flight Turn Downwards
   new AnimationNode(gn0, 1.0, false, new Vector(1, 0, 0, 0), Matrix.rotation),
   // Free Flight Turn Left
-  new AnimationNode(gn0, 1.0, false, new Vector(0, -1, 0, 0), Matrix.rotation),
-  // Free Flight Turn Right
   new AnimationNode(gn0, 1.0, false, new Vector(0, 1, 0, 0), Matrix.rotation),
+  // Free Flight Turn Right
+  new AnimationNode(gn0, 1.0, false, new Vector(0, -1, 0, 0), Matrix.rotation),
   // Free Flight Left Roll?
-  new AnimationNode(gn0, 1.0, false, new Vector(0, -1, 1, 0), Matrix.rotation),
+  new AnimationNode(gn0, 1.0, false, new Vector(0, 0, 1, 0), Matrix.rotation),
   // Free Flight Right Roll?
-  new AnimationNode(gn0, 1.0, false, new Vector(0, -1, -1, 0), Matrix.rotation)
+  new AnimationNode(gn0, 1.0, false, new Vector(0, 0, -1, 0), Matrix.rotation),
+  new AnimationNode(gn2, 1.0, false, new Vector(0, 0.5, 0.5, 0), Matrix.rotation),
+  new BackAndForthAnimationNode(gn3, 1.0, true, new Vector(0, 0, 1, 0), Matrix.translation, 3, 1.5),
+  new AnimationNode(gn4, 1.0, true, new Vector(1, 0, 0, 0), Matrix.rotation)
 ]
 
 /**
@@ -194,29 +194,29 @@ let keybinds = [
   // Toggle Animation 3
   new ToggleKeybind(animationNodes[0], 'Digit3'),
   // Free Flight Forward
-  new PushKeybind(animationNodes[3], 'KeyW'),
+  new PushKeybind(animationNodes[0], 'KeyW'),
   // Free Flight Backward
-  new PushKeybind(animationNodes[4], 'KeyS'),
+  new PushKeybind(animationNodes[1], 'KeyS'),
   // Free Flight Left
-  new PushKeybind(animationNodes[5], 'KeyA'),
+  new PushKeybind(animationNodes[2], 'KeyA'),
   // Free Flight Right
-  new PushKeybind(animationNodes[6], 'KeyD'),
+  new PushKeybind(animationNodes[3], 'KeyD'),
   // Free Flight Ascend - Space don't work D:?
-  new PushKeybind(animationNodes[7], 'Space'),
+  new PushKeybind(animationNodes[4], 'Space'),
   // Free Flight Descend
-  new PushKeybind(animationNodes[8], 'ShiftLeft'),
+  new PushKeybind(animationNodes[5], 'ShiftLeft'),
   // Free Flight Turn Upwards
-  new PushKeybind(animationNodes[9], 'ArrowUp'),
+  new PushKeybind(animationNodes[6], 'ArrowUp'),
   // Free Flight Turn Downwards
-  new PushKeybind(animationNodes[10], 'ArrowDown'),
+  new PushKeybind(animationNodes[7], 'ArrowDown'),
   // Free Flight Turn Left
-  new PushKeybind(animationNodes[11], 'ArrowLeft'),
+  new PushKeybind(animationNodes[8], 'ArrowLeft'),
   // Free Flight Turn Right
-  new PushKeybind(animationNodes[12], 'ArrowRight'),
-  // Free Flight Left Roll?
-  new PushKeybind(animationNodes[13], 'KeyQ'),
+  new PushKeybind(animationNodes[9], 'ArrowRight'),
+  // Free Flight Left Roll
+  new PushKeybind(animationNodes[10], 'KeyQ'),
   // Free Flight Right Roll
-  new PushKeybind(animationNodes[14], 'KeyE')
+  new PushKeybind(animationNodes[11], 'KeyE')
 ]
 
 window.addEventListener('keydown', function (event) {
