@@ -22,8 +22,10 @@ export class Settings {
 
     // construct scene graph
     const sg = new GroupNode(Matrix.identity())
-    const gn0 = new GroupNode(Matrix.identity())
-    sg.add(gn0)
+    const cameraTranslate = new GroupNode(Matrix.identity())
+    const cameraRotate = new GroupNode(Matrix.identity())
+    sg.add(cameraTranslate)
+    cameraTranslate.add(cameraRotate)
     const gn1 = new GroupNode(Matrix.translation(new Vector(1, 1, 0, 0.0)))
     sg.add(gn1)
     const gn3 = new GroupNode(Matrix.identity())
@@ -63,8 +65,8 @@ export class Settings {
       new Vector(1, 1, 1, 1),
       colorVector,
       new Vector(0.3, 0.6, 1.5, 4),
-      'assets/diamond_ore.png',
-      'assets/diamond_ore_n.png'
+      'assets/diamond_ore.png' /*,
+      'assets/diamond_ore_n.png'*/
     )
     gn2.add(cube)
 
@@ -85,33 +87,33 @@ export class Settings {
     gn1.add(light2)
 
     const cameraNode = new CameraNode(new Vector(0, 0, 10, 1), new Vector(0, 0, 0, 1), new Vector(0, 1, 0, 0), 60, 1, 0.1, 100)
-    gn0.add(cameraNode)
+    cameraRotate.add(cameraNode)
 
     let animationNodes = [
       // Free Flight Forward
-      new AnimationNode(gn0, 2.0, false, new Vector(0, 0, -1, 0), Matrix.translation),
+      new AnimationNode(cameraTranslate, 2.0, false, new Vector(0, 0, -1, 0), Matrix.translation),
       // Free Flight Backwards
-      new AnimationNode(gn0, 2.0, false, new Vector(0, 0, 1, 0), Matrix.translation),
+      new AnimationNode(cameraTranslate, 2.0, false, new Vector(0, 0, 1, 0), Matrix.translation),
       // Free Flight Left
-      new AnimationNode(gn0, 2.0, false, new Vector(-1, 0, 0, 0), Matrix.translation),
+      new AnimationNode(cameraTranslate, 2.0, false, new Vector(-1, 0, 0, 0), Matrix.translation),
       // Free Flight Right
-      new AnimationNode(gn0, 2.0, false, new Vector(1, 0, 0, 0), Matrix.translation),
+      new AnimationNode(cameraTranslate, 2.0, false, new Vector(1, 0, 0, 0), Matrix.translation),
       // Free Flight Ascend
-      new AnimationNode(gn0, 2.0, false, new Vector(0, 1, 0, 0), Matrix.translation),
+      new AnimationNode(cameraTranslate, 2.0, false, new Vector(0, 1, 0, 0), Matrix.translation),
       // Free Flight Descend
-      new AnimationNode(gn0, 2.0, false, new Vector(0, -1, 0, 0), Matrix.translation),
+      new AnimationNode(cameraTranslate, 2.0, false, new Vector(0, -1, 0, 0), Matrix.translation),
       // Free Flight Turn Upwards
-      new AnimationNode(gn0, 2.0, false, new Vector(-1, 0, 0, 0), Matrix.rotation),
+      new AnimationNode(cameraTranslate, 2.0, false, new Vector(-1, 0, 0, 0), Matrix.rotation),
       // Free Flight Turn Downwards
-      new AnimationNode(gn0, 2.0, false, new Vector(1, 0, 0, 0), Matrix.rotation),
+      new AnimationNode(cameraRotate, 2.0, false, new Vector(1, 0, 0, 0), Matrix.rotation),
       // Free Flight Turn Left
-      new AnimationNode(gn0, 2.0, false, new Vector(0, 1, 0, 0), Matrix.rotation),
+      new AnimationNode(cameraRotate, 2.0, false, new Vector(0, 1, 0, 0), Matrix.rotation),
       // Free Flight Turn Right
-      new AnimationNode(gn0, 2.0, false, new Vector(0, -1, 0, 0), Matrix.rotation),
+      new AnimationNode(cameraRotate, 2.0, false, new Vector(0, -1, 0, 0), Matrix.rotation),
       // Free Flight Left Roll?
-      new AnimationNode(gn0, 2.0, false, new Vector(0, 0, 1, 0), Matrix.rotation),
+      new AnimationNode(cameraRotate, 2.0, false, new Vector(0, 0, 1, 0), Matrix.rotation),
       // Free Flight Right Roll?
-      new AnimationNode(gn0, 2.0, false, new Vector(0, 0, -1, 0), Matrix.rotation),
+      new AnimationNode(cameraRotate, 2.0, false, new Vector(0, 0, -1, 0), Matrix.rotation),
       new AnimationNode(gn2, 1.0, false, new Vector(0, 0.5, 0.5, 0), Matrix.rotation),
       new BackAndForthAnimationNode(gn3, 1.0, true, new Vector(0, 0, 1, 0), Matrix.translation, 3, 1.5),
       new AnimationNode(gn4, 1.0, true, new Vector(1, 0, 0, 0), Matrix.rotation)
