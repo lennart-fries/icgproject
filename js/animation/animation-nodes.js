@@ -88,6 +88,9 @@ export class AnimationNode {
       case 'shear':
         applyFunction = Matrix.shear
         break
+      case 'shearLower':
+        applyFunction = Matrix.shearLower
+        break
     }
     return new AnimationNode(groupNode, speed, active, axesOrDirections, applyFunction)
   }
