@@ -21,36 +21,39 @@ export class Settings {
     this.setSettings(this.settingsStr)
 
     // construct scene graph
-    let scenegraph = new GroupNode(Matrix.identity())
+    const sg = new GroupNode(Matrix.identity())
+    const gn0 = new GroupNode(Matrix.identity())
+    sg.add(gn0)
     const gn1 = new GroupNode(Matrix.translation(new Vector(1, 1, 0, 0.0)))
-    scenegraph.add(gn1)
+    sg.add(gn1)
     const gn3 = new GroupNode(Matrix.identity())
     gn1.add(gn3)
     const sphere = new SphereNode(
       new Vector(0.5, -0.8, 0, 1),
       0.4,
       new Vector(0.8, 0.4, 0.1, 1),
-      new Vector(0.3, 0.6, 1.5, 4)
-      // 'assets/diamond_ore.png'
+      new Vector(0.3, 0.6, 1.5, 4),
+      'assets/diamond_ore.png',
+      'assets/diamond_ore_n.png'
     )
     gn3.add(sphere)
 
     const gn2 = new GroupNode(Matrix.translation(new Vector(-0.7, -0.4, 0.1, 0.0)))
-    scenegraph.add(gn2)
+    sg.add(gn2)
 
     const gn4 = new GroupNode(Matrix.identity())
 
-    scenegraph.add(gn4)
+    sg.add(gn4)
 
     const colorsArray = [
       new Vector(0.0, 1.0, 0.0, 1.0),
       new Vector(0.0, 0.0, 1.0, 1.0),
-      new Vector(1.0, 0.0, 0.0, 1.0),
-      new Vector(0.0, 0.0, 0.0, 1.0),
-      new Vector(0.0, 1.0, 0.0, 1.0),
-      new Vector(1.0, 0.0, 0.0, 1.0),
-      new Vector(1.0, 0.0, 1.0, 1.0),
-      new Vector(0.0, 0.0, 1.0, 1.0)
+      new Vector(1.0, 0.0, 0.0, 1.0)/* ,
+  new Vector(0.0, 0.0, 0.0, 1.0),
+  new Vector(0.0, 1.0, 0.0, 1.0),
+  new Vector(1.0, 0.0, 0.0, 1.0),
+  new Vector(1.0, 0.0, 1.0, 1.0),
+  new Vector(0.0, 0.0, 1.0, 1.0) */
     ]
 
     const colorVector = new Vector(0.0, 1.0, 0.0, 1.0)
@@ -60,7 +63,8 @@ export class Settings {
       new Vector(1, 1, 1, 1),
       colorVector,
       new Vector(0.3, 0.6, 1.5, 4),
-      'assets/diamond_ore.png'
+      'assets/diamond_ore.png',
+      'assets/diamond_ore_n.png'
     )
     gn2.add(cube)
 
@@ -68,10 +72,12 @@ export class Settings {
       new Vector(1.1, -1.5, 0.5, 0),
       1.5,
       colorsArray,
-      new Vector(0.3, 0.6, 1.5, 4)
+      new Vector(0.3, 0.6, 1.5, 4),
+      'assets/diamond_ore.png',
+      'assets/diamond_ore_n.png'
     )
 
-    gn4.add(pyramid)
+    gn1.add(pyramid)
 
     const light1 = new LightNode(new Vector(-10, 3, 3, 1), 0.2)
     gn1.add(light1)
@@ -79,15 +85,39 @@ export class Settings {
     gn1.add(light2)
 
     const cameraNode = new CameraNode(new Vector(0, 0, 10, 1), new Vector(0, 0, 0, 1), new Vector(0, 1, 0, 0), 60, 1, 0.1, 100)
-    gn1.add(cameraNode)
+    gn0.add(cameraNode)
 
     let animationNodes = [
-      new AnimationNode(gn2, 1.0, true, new Vector(0, 0.5, 0.5, 0), Matrix.rotation),
+      // Free Flight Forward
+      new AnimationNode(gn0, 2.0, false, new Vector(0, 0, -1, 0), Matrix.translation),
+      // Free Flight Backwards
+      new AnimationNode(gn0, 2.0, false, new Vector(0, 0, 1, 0), Matrix.translation),
+      // Free Flight Left
+      new AnimationNode(gn0, 2.0, false, new Vector(-1, 0, 0, 0), Matrix.translation),
+      // Free Flight Right
+      new AnimationNode(gn0, 2.0, false, new Vector(1, 0, 0, 0), Matrix.translation),
+      // Free Flight Ascend
+      new AnimationNode(gn0, 2.0, false, new Vector(0, 1, 0, 0), Matrix.translation),
+      // Free Flight Descend
+      new AnimationNode(gn0, 2.0, false, new Vector(0, -1, 0, 0), Matrix.translation),
+      // Free Flight Turn Upwards
+      new AnimationNode(gn0, 2.0, false, new Vector(-1, 0, 0, 0), Matrix.rotation),
+      // Free Flight Turn Downwards
+      new AnimationNode(gn0, 2.0, false, new Vector(1, 0, 0, 0), Matrix.rotation),
+      // Free Flight Turn Left
+      new AnimationNode(gn0, 2.0, false, new Vector(0, 1, 0, 0), Matrix.rotation),
+      // Free Flight Turn Right
+      new AnimationNode(gn0, 2.0, false, new Vector(0, -1, 0, 0), Matrix.rotation),
+      // Free Flight Left Roll?
+      new AnimationNode(gn0, 2.0, false, new Vector(0, 0, 1, 0), Matrix.rotation),
+      // Free Flight Right Roll?
+      new AnimationNode(gn0, 2.0, false, new Vector(0, 0, -1, 0), Matrix.rotation),
+      new AnimationNode(gn2, 1.0, false, new Vector(0, 0.5, 0.5, 0), Matrix.rotation),
       new BackAndForthAnimationNode(gn3, 1.0, true, new Vector(0, 0, 1, 0), Matrix.translation, 3, 1.5),
       new AnimationNode(gn4, 1.0, true, new Vector(1, 0, 0, 0), Matrix.rotation)
     ]
 
-    this.settingsObj.scenegraph = scenegraph
+    this.settingsObj.scenegraph = sg
     this.settingsObj.animationNodes = animationNodes
   }
 
