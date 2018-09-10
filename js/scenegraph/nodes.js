@@ -244,7 +244,7 @@ export class PyramidNode extends Node {
     let materials = getColors(node.materials)
     let texture = node.texture
     let map = node.map
-    return new PyramidNode(center, height, colors, materials, texture, map,  id)
+    return new PyramidNode(center, height, colors, materials, texture, map, id)
   }
 }
 
@@ -252,7 +252,7 @@ export class CameraNode extends Node {
   /**
    * Creates a camera
    * @param  {Vector} eye    - position of the camera
-   * @param  {Vector} center - center of the camera
+   * @param  {Vector} towards - view direction
    * @param  {Vector} up     - vector pointing up on the y-axis
    * @param  {number} fovy   - vertical field of view in degrees
    * @param  {number} aspect - aspect ratio of the camera (width/height)
@@ -260,11 +260,11 @@ export class CameraNode extends Node {
    * @param  {number} far    - furthest distance of the rendered view
    * @param  {int}    id     - id of the node, used if the node is imported from a json
    */
-  constructor (eye, center, up, fovy, aspect, near, far, id = null) {
+  constructor (eye, towards, up, fovy, aspect, near, far, id = null) {
     super()
     this.id = id
     this.eye = eye
-    this.center = center
+    this.towards = towards
     this.up = up
     this.fovy = fovy
     this.aspect = aspect
@@ -285,7 +285,7 @@ export class CameraNode extends Node {
       id: this.id,
       type: 'CameraNode',
       eye: this.eye,
-      center: this.center,
+      towards: this.towards,
       up: this.up,
       fovy: this.fovy,
       aspect: this.aspect,
@@ -297,13 +297,13 @@ export class CameraNode extends Node {
   static fromJson (node) {
     let id = node.id
     let eye = new Vector(node.eye.data)
-    let center = new Vector(node.center.data)
+    let towards = new Vector(node.towards.data)
     let up = new Vector(node.up.data)
     let fovy = node.fovy
     let aspect = node.aspect
     let near = node.near
     let far = node.far
-    return new CameraNode(eye, center, up, fovy, aspect, near, far, id)
+    return new CameraNode(eye, towards, up, fovy, aspect, near, far, id)
   }
 }
 

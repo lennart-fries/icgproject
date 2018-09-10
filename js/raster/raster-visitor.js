@@ -33,9 +33,9 @@ export class RasterVisitor extends MatrixVisitor {
    */
   setupCamera (camera) {
     if (camera) {
-      this.lookat = Matrix.lookat(
+      this.lookto = Matrix.lookto(
         camera.eye,
-        camera.center,
+        camera.towards,
         camera.up)
 
       this.perspective = Matrix.perspective(
@@ -64,7 +64,7 @@ export class RasterVisitor extends MatrixVisitor {
 
     // view matrix
     let V = shader.getUniformMatrix('V')
-    V.set(this.lookat)
+    V.set(this.lookto)
 
     // projection matrix
     let P = shader.getUniformMatrix('P')
@@ -72,7 +72,7 @@ export class RasterVisitor extends MatrixVisitor {
     P.set(this.perspective)
 
     // normal matrix
-    let normal = this.lookat.mul(mat).invert().transpose()
+    let normal = this.lookto.mul(mat).invert().transpose()
     shader.getUniformMatrix('N').set(normal)
 
     shader.getUniformArray('lightPositions').set(this.lightPositions)

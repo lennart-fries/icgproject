@@ -6,7 +6,7 @@ import { JsonDeserializer } from '../scenegraph/JsonSerializer.js'
 import { AABoxNode, CameraNode, GroupNode, LightNode, PyramidNode, SphereNode } from '../scenegraph/nodes.js'
 import { Matrix } from '../primitives/matrix.js'
 import { Vector } from '../primitives/vector.js'
-import { AnimationNode, BackAndForthAnimationNode } from '../animation/animation-nodes.js'
+import { AnimationNode, BackAndForthAnimationNode, RelativeMovementAnimationNode } from '../animation/animation-nodes.js'
 
 const renderersToClasses = {'Raster': RasterRenderer, 'Ray': RayRenderer}
 const renderers = Object.keys(renderersToClasses)
@@ -22,7 +22,7 @@ export class Settings {
 
     // construct scene graph
     const sg = new GroupNode(Matrix.identity())
-    const cameraTranslate = new GroupNode(Matrix.identity())
+    const cameraTranslate = new GroupNode(Matrix.translation(new Vector(0, 0, 10, 0)))
     const cameraRotate = new GroupNode(Matrix.identity())
     sg.add(cameraTranslate)
     cameraTranslate.add(cameraRotate)
@@ -66,7 +66,7 @@ export class Settings {
       colorVector,
       new Vector(0.3, 0.6, 1.5, 4),
       'assets/diamond_ore.png' /*,
-      'assets/diamond_ore_n.png'*/
+      'assets/diamond_ore_n.png' */
     )
     gn2.add(cube)
 
@@ -86,24 +86,24 @@ export class Settings {
     const light2 = new LightNode(new Vector(10, 3, 3, 1), 0.2)
     gn1.add(light2)
 
-    const cameraNode = new CameraNode(new Vector(0, 0, 10, 1), new Vector(0, 0, 0, 1), new Vector(0, 1, 0, 0), 60, 1, 0.1, 100)
+    const cameraNode = new CameraNode(new Vector(0, 0, 0, 1), new Vector(0, 0, -1, 0), new Vector(0, 1, 0, 0), 60, 1, 0.1, 100)
     cameraRotate.add(cameraNode)
 
     let animationNodes = [
       // Free Flight Forward
-      new AnimationNode(cameraTranslate, 2.0, false, new Vector(0, 0, -1, 0), Matrix.translation),
+      new RelativeMovementAnimationNode(cameraTranslate, 2.0, false, new Vector(0, 0, -1, 0), Matrix.translation, cameraRotate),
       // Free Flight Backwards
-      new AnimationNode(cameraTranslate, 2.0, false, new Vector(0, 0, 1, 0), Matrix.translation),
+      new RelativeMovementAnimationNode(cameraTranslate, 2.0, false, new Vector(0, 0, 1, 0), Matrix.translation, cameraRotate),
       // Free Flight Left
-      new AnimationNode(cameraTranslate, 2.0, false, new Vector(-1, 0, 0, 0), Matrix.translation),
+      new RelativeMovementAnimationNode(cameraTranslate, 2.0, false, new Vector(-1, 0, 0, 0), Matrix.translation, cameraRotate),
       // Free Flight Right
-      new AnimationNode(cameraTranslate, 2.0, false, new Vector(1, 0, 0, 0), Matrix.translation),
+      new RelativeMovementAnimationNode(cameraTranslate, 2.0, false, new Vector(1, 0, 0, 0), Matrix.translation, cameraRotate),
       // Free Flight Ascend
-      new AnimationNode(cameraTranslate, 2.0, false, new Vector(0, 1, 0, 0), Matrix.translation),
+      new RelativeMovementAnimationNode(cameraTranslate, 2.0, false, new Vector(0, 1, 0, 0), Matrix.translation, cameraRotate),
       // Free Flight Descend
-      new AnimationNode(cameraTranslate, 2.0, false, new Vector(0, -1, 0, 0), Matrix.translation),
+      new RelativeMovementAnimationNode(cameraTranslate, 2.0, false, new Vector(0, -1, 0, 0), Matrix.translation, cameraRotate),
       // Free Flight Turn Upwards
-      new AnimationNode(cameraTranslate, 2.0, false, new Vector(-1, 0, 0, 0), Matrix.rotation),
+      new AnimationNode(cameraRotate, 2.0, false, new Vector(-1, 0, 0, 0), Matrix.rotation),
       // Free Flight Turn Downwards
       new AnimationNode(cameraRotate, 2.0, false, new Vector(1, 0, 0, 0), Matrix.rotation),
       // Free Flight Turn Left

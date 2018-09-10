@@ -21,7 +21,7 @@ export class PreviewVisitor extends MatrixVisitor {
     let mat = this.currentMatrix
     this.camera = {
       eye: mat.mul(node.eye),
-      center: mat.mul(node.center),
+      towards: mat.mul(node.towards),
       up: mat.mul(node.up),
       fovy: node.fovy,
       aspect: node.aspect,
