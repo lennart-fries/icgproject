@@ -24,8 +24,8 @@ export class Settings {
     const sg = new GroupNode(Matrix.identity())
     const cameraTranslate = new GroupNode(Matrix.translation(new Vector(0, 0, 10, 0)))
     const cameraRotate = new GroupNode(Matrix.identity())
-    sg.add(cameraRotate)
-    cameraRotate.add(cameraTranslate)
+    sg.add(cameraTranslate)
+    cameraTranslate.add(cameraRotate)
     const gn1 = new GroupNode(Matrix.translation(new Vector(1, 1, 0, 0.0)))
     sg.add(gn1)
     const gn3 = new GroupNode(Matrix.identity())
@@ -87,7 +87,7 @@ export class Settings {
     gn1.add(light2)
 
     const cameraNode = new CameraNode(new Vector(0, 0, 0, 1), new Vector(0, 0, -1, 0), new Vector(0, 1, 0, 0), 60, 1, 0.1, 100)
-    cameraTranslate.add(cameraNode)
+    cameraRotate.add(cameraNode)
 
     let animationNodes = [
       // Free Flight Forward
