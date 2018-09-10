@@ -2,6 +2,11 @@
 
 import { RasterRenderer } from '../rendering/raster-renderer.js'
 import { RayRenderer } from '../rendering/ray-renderer.js'
+import { JsonDeserializer } from '../scenegraph/JsonSerializer.js'
+import { AABoxNode, CameraNode, GroupNode, LightNode, PyramidNode, SphereNode } from '../scenegraph/nodes.js'
+import { Matrix } from '../primitives/matrix.js'
+import { Vector } from '../primitives/vector.js'
+import { AnimationNode, BackAndForthAnimationNode } from '../animation/animation-nodes.js'
 
 const renderersToClasses = {'Raster': RasterRenderer, 'Ray': RayRenderer}
 const renderers = Object.keys(renderersToClasses)
@@ -14,7 +19,106 @@ export class Settings {
     this.settingsStr = {renderer: 'Raster', renderResolution: '1', backgroundColor: '000000'}
     this.settingsObj = {}
     this.setSettings(this.settingsStr)
-    // console.log(this)
+
+    // construct scene graph
+    const sg = new GroupNode(Matrix.identity())
+    const gn0 = new GroupNode(Matrix.identity())
+    sg.add(gn0)
+    const gn1 = new GroupNode(Matrix.translation(new Vector(1, 1, 0, 0.0)))
+    sg.add(gn1)
+    const gn3 = new GroupNode(Matrix.identity())
+    gn1.add(gn3)
+    const sphere = new SphereNode(
+      new Vector(0.5, -0.8, 0, 1),
+      0.4,
+      new Vector(0.8, 0.4, 0.1, 1),
+      new Vector(0.3, 0.6, 1.5, 4),
+      'assets/diamond_ore.png',
+      'assets/diamond_ore_n.png'
+    )
+    gn3.add(sphere)
+
+    const gn2 = new GroupNode(Matrix.translation(new Vector(-0.7, -0.4, 0.1, 0.0)))
+    sg.add(gn2)
+
+    const gn4 = new GroupNode(Matrix.identity())
+
+    sg.add(gn4)
+
+    const colorsArray = [
+      new Vector(0.0, 1.0, 0.0, 1.0),
+      new Vector(0.0, 0.0, 1.0, 1.0),
+      new Vector(1.0, 0.0, 0.0, 1.0)/* ,
+  new Vector(0.0, 0.0, 0.0, 1.0),
+  new Vector(0.0, 1.0, 0.0, 1.0),
+  new Vector(1.0, 0.0, 0.0, 1.0),
+  new Vector(1.0, 0.0, 1.0, 1.0),
+  new Vector(0.0, 0.0, 1.0, 1.0) */
+    ]
+
+    const colorVector = new Vector(0.0, 1.0, 0.0, 1.0)
+
+    const cube = new AABoxNode(
+      new Vector(-1, -1, -1, 1),
+      new Vector(1, 1, 1, 1),
+      colorVector,
+      new Vector(0.3, 0.6, 1.5, 4),
+      'assets/diamond_ore.png',
+      'assets/diamond_ore_n.png'
+    )
+    gn2.add(cube)
+
+    const pyramid = new PyramidNode(
+      new Vector(1.1, -1.5, 0.5, 0),
+      1.5,
+      colorsArray,
+      new Vector(0.3, 0.6, 1.5, 4),
+      'assets/diamond_ore.png',
+      'assets/diamond_ore_n.png'
+    )
+
+    gn1.add(pyramid)
+
+    const light1 = new LightNode(new Vector(-10, 3, 3, 1), 0.2)
+    gn1.add(light1)
+    const light2 = new LightNode(new Vector(10, 3, 3, 1), 0.2)
+    gn1.add(light2)
+
+    const cameraNode = new CameraNode(new Vector(0, 0, 10, 1), new Vector(0, 0, 0, 1), new Vector(0, 1, 0, 0), 60, 1, 0.1, 100)
+    gn0.add(cameraNode)
+
+    let animationNodes = [
+      // Free Flight Forward
+      new AnimationNode(gn0, 2.0, false, new Vector(0, 0, -1, 0), Matrix.translation),
+      // Free Flight Backwards
+      new AnimationNode(gn0, 2.0, false, new Vector(0, 0, 1, 0), Matrix.translation),
+      // Free Flight Left
+      new AnimationNode(gn0, 2.0, false, new Vector(-1, 0, 0, 0), Matrix.translation),
+      // Free Flight Right
+      new AnimationNode(gn0, 2.0, false, new Vector(1, 0, 0, 0), Matrix.translation),
+      // Free Flight Ascend
+      new AnimationNode(gn0, 2.0, false, new Vector(0, 1, 0, 0), Matrix.translation),
+      // Free Flight Descend
+      new AnimationNode(gn0, 2.0, false, new Vector(0, -1, 0, 0), Matrix.translation),
+      // Free Flight Turn Upwards
+      new AnimationNode(gn0, 2.0, false, new Vector(-1, 0, 0, 0), Matrix.rotation),
+      // Free Flight Turn Downwards
+      new AnimationNode(gn0, 2.0, false, new Vector(1, 0, 0, 0), Matrix.rotation),
+      // Free Flight Turn Left
+      new AnimationNode(gn0, 2.0, false, new Vector(0, 1, 0, 0), Matrix.rotation),
+      // Free Flight Turn Right
+      new AnimationNode(gn0, 2.0, false, new Vector(0, -1, 0, 0), Matrix.rotation),
+      // Free Flight Left Roll?
+      new AnimationNode(gn0, 2.0, false, new Vector(0, 0, 1, 0), Matrix.rotation),
+      // Free Flight Right Roll?
+      new AnimationNode(gn0, 2.0, false, new Vector(0, 0, -1, 0), Matrix.rotation),
+      new AnimationNode(gn2, 1.0, false, new Vector(0, 0.5, 0.5, 0), Matrix.rotation),
+      new BackAndForthAnimationNode(gn3, 1.0, true, new Vector(0, 0, 1, 0), Matrix.translation, 3, 1.5),
+      new AnimationNode(gn4, 1.0, true, new Vector(1, 0, 0, 0), Matrix.rotation)
+    ]
+
+    this.settingsObj.scenegraph = sg
+    this.settingsObj.animationNodes = animationNodes
   }
 
   /**
@@ -67,6 +171,10 @@ export class Settings {
               this.settingsObj.backgroundColor = newColor
             }
             break
+          case 'scenegraph':
+            let newSG = JsonDeserializer.fromJson(JSON.parse(newSettings.scenegraph))
+            this.settingsObj.scenegraph = newSG.scenegraph
+            this.settingsObj.animationNodes = newSG.animationNodes
         }
       }
     }

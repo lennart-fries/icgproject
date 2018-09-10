@@ -1,7 +1,7 @@
 /**
  * Class representing a Keybind to invoke actions on the scenegraph
  */
-import { settings } from './ui/ui.js'
+import { settings } from './ui.js'
 
 class Keybind {
   /**

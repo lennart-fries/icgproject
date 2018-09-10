@@ -85,6 +85,6 @@ export class RayVisitor extends MatrixVisitor {
     let mat = this.currentMatrix
     let center = node.center
     center.y += node.height / 2
-    this.objects.push(new RaySphere(mat.mul(center), node.radius / 2.0, node.colors, node.materials))
+    this.objects.push(new RaySphere(mat.mul(center), node.height / 2.0, node.colors, node.materials))
   }
 }

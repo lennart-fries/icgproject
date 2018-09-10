@@ -30,6 +30,7 @@
 
     <!-- Local files -->
     <link rel="stylesheet" href="css/style.css">
+    <script type="module" src="js/ui/settings.js"></script>
     <script type="module" src="js/main.js"></script>
 
     <title>ICG Final Project</title>
@@ -39,20 +40,32 @@
     <nav id="sidebar-left" class="sidebar border-right">
         <ul class="settings-list list-group rounded-0">
             <li class="list-group-item list-group-item-primary rounded-0">
+                <button type="button" class="btn btn-primary" data-toggle="modal"
+                        onclick="$('#scenegraph').click()">
+                    <i class="fas fa-folder-open"></i>
+                </button>
+                <button id="saveScenegraph" type="button" class="btn btn-primary">
+                    <i class="fas fa-save"></i>
+                </button>
+            </li>
+            <li class="list-group-item list-group-item-primary rounded-0">
                 <i class="fas fa-project-diagram pr-2"></i>Scene Graph
                 <ul class="sortable list-group list-group-compact scene-graph-root">
                     <li class="list-group-item list-group-item-action"><i class="fas fa-shapes pr-2"></i>gn1
                         <ul class="sortable list-group list-group-compact">
                             <li class="list-group-item list-group-item-action"><i class="fas fa-shapes pr-2"></i>gn3
                                 <ul class="sortable list-group list-group-compact">
-                                    <li class="list-group-item list-group-item-action"><i class="fas fa-circle pr-2"></i>sphere</li>
+                                    <li class="list-group-item list-group-item-action"><i
+                                            class="fas fa-circle pr-2"></i>sphere
+                                    </li>
                                 </ul>
                             </li>
                         </ul>
                     </li>
                     <li class="list-group-item list-group-item-action"><i class="fas fa-shapes pr-2"></i>gn2
                         <ul class="sortable list-group list-group-compact">
-                            <li class="list-group-item list-group-item-action"><i class="fas fa-square pr-2"></i>cube</li>
+                            <li class="list-group-item list-group-item-action"><i class="fas fa-square pr-2"></i>cube
+                            </li>
                         </ul>
                     </li>
                     <li class="list-group-item list-group-item-action"><i class="fas fa-star pr-2"></i>model</li>
@@ -122,6 +135,28 @@
             </li>
         </ul>
     </nav>
+</div>
+<input id="scenegraph" type="file" style="display:none" accept="application/json"/>
+
+<!-- loaddingens dialog does nothing anymore atm-->
+<div class="modal fade" id="openLoadScenegraphDialog" tabindex="-1" role="dialog" aria-labelledby="loadScenegraph"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="openLoadScenegraphDialogTitle">Load Scenegraph</h5>
+            </div>
+            <div class="modal-body">
+                <input id="scenegraphf" type="file" accept="application/json"/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button id="loadScenegraphButton" type="button" class="btn btn-primary" data-dismiss="modal">
+                    Load
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

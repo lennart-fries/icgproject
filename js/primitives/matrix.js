@@ -257,7 +257,7 @@ export class Matrix {
     /* determinant */
     /*
      * transpose matrix
- */
+  */
     for (let i = 0; i < 4; i++) {
       src[i] = mat[i * 4]
       src[i + 4] = mat[i * 4 + 1]

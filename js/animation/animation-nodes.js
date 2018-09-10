@@ -2,6 +2,10 @@
  * Class representing an Animation
  */
 
+import { Matrix } from '../primitives/matrix.js'
+import { GroupNode } from '../scenegraph/nodes.js'
+import { Vector } from '../primitives/vector.js'
+
 /**
  * Class representing an animation, attaching to a group node and modifying it every frame
  */
@@ -20,6 +24,7 @@ export class AnimationNode {
     this.active = active
     this.axesOrDirections = axesOrDirections
     this.applyFunction = applyFunction
+    this.applyFunctionName = applyFunction.name
   }
 
   /**
@@ -52,6 +57,40 @@ export class AnimationNode {
       )
     }
   }
+
+  toJSON () {
+    return {
+      type: 'AnimationNode',
+      groupNodeID: this.groupNode.id,
+      speed: this.speed,
+      active: this.active,
+      axesOrDirections: this.axesOrDirections,
+      applyFunctionName: this.applyFunctionName // doesnt work properly?
+    }
+  }
+
+  static fromJson (node, sg) {
+    let groupNode = getNodeByID(node.groupNodeID, sg)
+    let speed = node.speed
+    let active = node.active
+    let axesOrDirections = new Vector(node.axesOrDirections.data)
+    let applyFunction
+    switch (node.applyFunctionName) {
+      case 'rotation':
+        applyFunction = Matrix.rotation
+        break
+      case 'translation':
+        applyFunction = Matrix.translation
+        break
+      case 'scaling':
+        applyFunction = Matrix.scaling
+        break
+      case 'shear':
+        applyFunction = Matrix.shear
+        break
+    }
+    return new AnimationNode(groupNode, speed, active, axesOrDirections, applyFunction)
+  }
 }
 
 /**
@@ -72,6 +111,7 @@ export class BackAndForthAnimationNode extends AnimationNode {
   constructor (groupNode, speed, active, axesOrDirections, applyFunction, limit, startPosition = 0) {
     super(groupNode, speed, active, axesOrDirections, applyFunction)
     this.limit = limit
+    this.startPosition = startPosition
     this.position = startPosition
     this.invert = false
   }
@@ -97,4 +137,56 @@ export class BackAndForthAnimationNode extends AnimationNode {
     this.position = newPosition
     return movement
   }
+
+  toJSON () {
+    return {
+      type: 'BackAndForthAnimationNode',
+      groupNodeID: this.groupNode.id,
+      speed: this.speed,
+      active: this.active,
+      axesOrDirections: this.axesOrDirections,
+      applyFunctionName: this.applyFunctionName,
+      limit: this.limit,
+      position: this.startPosition
+    }
+  }
+
+  static fromJson (node, sg) {
+    let groupNode = getNodeByID(node.groupNodeID, sg)
+    let speed = node.speed
+    let active = node.active
+    let axesOrDirections = new Vector(node.axesOrDirections.data)
+    let applyFunction
+    switch (node.applyFunctionName) {
+      case 'rotation':
+        applyFunction = Matrix.rotation
+        break
+      case 'translation':
+        applyFunction = Matrix.translation
+        break
+      case 'scaling':
+        applyFunction = Matrix.scaling
+        break
+      case 'shear':
+        applyFunction = Matrix.shear
+        break
+    }
+    let limit = node.limit
+    let position = node.position
+    return new BackAndForthAnimationNode(groupNode, speed, active, axesOrDirections, applyFunction, limit, position)
+  }
+
+}
+
+function getNodeByID (id, node) {
+  if (node.id === id) {
+    return node
+  } else if (Array.isArray(node.children)) {
+    let result = null
+    for (let i = 0; result === null && i < node.children.length; i++) {
+      result = getNodeByID(id, node.children[i])
+    }
+    return result
+  }
+  return null
 }

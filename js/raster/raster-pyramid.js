@@ -7,7 +7,7 @@ import { RasterBody } from './raster-body.js'
  */
 export class RasterPyramid extends RasterBody {
   /**
-   * Creates all WebGL buffers for the sphere
+   * Creates all WebGL buffers for the pyramid
    * @param  {WebGLRenderingContext} gl          - Canvas' context
    * @param  {Vector} center                     - Center of the tetrahedron
    * @param  {number} height                     - Height of the tetrahedron
