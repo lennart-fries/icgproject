@@ -175,7 +175,29 @@ export class BackAndForthAnimationNode extends AnimationNode {
     let position = node.position
     return new BackAndForthAnimationNode(groupNode, speed, active, axesOrDirections, applyFunction, limit, position)
   }
+}
 
+export class RelativeMovementAnimationNode extends AnimationNode {
+  constructor (groupNode, speed, active, axesOrDirections, applyFunction, referenceNode) {
+    super(groupNode, speed, active, axesOrDirections, applyFunction)
+    this.groupNode = groupNode
+    this.speed = speed
+    this.active = active
+    this.axesOrDirections = axesOrDirections
+    this.applyFunction = applyFunction
+    this.referenceNode = referenceNode
+  }
+
+  simulate (deltaT) {
+    // change the matrix of the attached group node to reflect the animation
+    if (this.active) {
+      this.groupNode.matrix = this.groupNode.matrix.mul(
+        this.applyFunction(
+          this.referenceNode.matrix.mul(this.axesOrDirections.mul(this.calculateMovement((deltaT / 1000) * this.speed)))
+        )
+      )
+    }
+  }
 }
 
 function getNodeByID (id, node) {
