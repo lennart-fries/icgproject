@@ -23,7 +23,7 @@ export class Ray {
    */
   static makeRay (width, height, xpos, ypos, camera) {
     const fovyRadian = camera.fovy * Math.PI / 180
-    const viewDir = camera.center.sub(camera.eye).normalised()
+    const viewDir = camera.towards.normalised()
     const rightDir = viewDir.cross(camera.up)
 
     const h = ((ypos / (height - 1)) * 2 - 1) * camera.near * Math.tan(fovyRadian / 2)
