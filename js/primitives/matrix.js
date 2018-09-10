@@ -118,6 +118,18 @@ export class Matrix {
     return M2.mul(Matrix.translation(eye.mul(-1)))
   }
 
+  static lookto (eye, towards, up) {
+    let s = towards.cross(up).normalised()
+    let u = s.cross(towards)
+    let M2 = new Matrix([
+      s.x, s.y, s.z, 0,
+      u.x, u.y, u.z, 0,
+      -towards.x, -towards.y, -towards.z, 0,
+      0, 0, 0, 1
+    ])
+    return M2.mul(Matrix.translation(eye.mul(-1)))
+  }
+
   /**
    * Constructs a new matrix that represents a projection normalisation transformation
    * @param  {number} left   - Camera-space left value of lower near point

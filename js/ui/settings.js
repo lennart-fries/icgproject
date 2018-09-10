@@ -8,7 +8,6 @@ import { Matrix } from '../primitives/matrix.js'
 import { Vector } from '../primitives/vector.js'
 import { AnimationNode, BackAndForthAnimationNode, RelativeMovementAnimationNode } from '../animation/animation-nodes.js'
 
-
 const renderersToClasses = {'Raster': RasterRenderer, 'Ray': RayRenderer}
 const renderers = Object.keys(renderersToClasses)
 
@@ -23,7 +22,7 @@ export class Settings {
 
     // construct scene graph
     const sg = new GroupNode(Matrix.identity())
-    const cameraTranslate = new GroupNode(Matrix.identity())
+    const cameraTranslate = new GroupNode(Matrix.translation(new Vector(0, 0, 10, 0)))
     const cameraRotate = new GroupNode(Matrix.identity())
     sg.add(cameraRotate)
     cameraRotate.add(cameraTranslate)
@@ -67,7 +66,7 @@ export class Settings {
       colorVector,
       new Vector(0.3, 0.6, 1.5, 4),
       'assets/diamond_ore.png' /*,
-      'assets/diamond_ore_n.png'*/
+      'assets/diamond_ore_n.png' */
     )
     gn2.add(cube)
 
@@ -87,7 +86,7 @@ export class Settings {
     const light2 = new LightNode(new Vector(10, 3, 3, 1), 0.2)
     gn1.add(light2)
 
-    const cameraNode = new CameraNode(new Vector(0, 0, 10, 1), new Vector(0, 0, 0, 1), new Vector(0, 1, 0, 0), 60, 1, 0.1, 100)
+    const cameraNode = new CameraNode(new Vector(0, 0, 0, 1), new Vector(0, 0, -1, 0), new Vector(0, 1, 0, 0), 60, 1, 0.1, 100)
     cameraTranslate.add(cameraNode)
 
     let animationNodes = [
