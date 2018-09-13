@@ -3,7 +3,6 @@
  */
 
 import { Matrix } from '../primitives/matrix.js'
-import { GroupNode } from '../scenegraph/nodes.js'
 import { Vector } from '../primitives/vector.js'
 
 /**
@@ -181,6 +180,15 @@ export class BackAndForthAnimationNode extends AnimationNode {
 }
 
 export class RelativeMovementAnimationNode extends AnimationNode {
+  /**
+   * Creates a new Relative Movement Node
+   * @param {GroupNode} groupNode     - Group node to attach to
+   * @param {number} speed            - Speed multiplier for the animation
+   * @param {Boolean} active          - Whether the animation is active by default
+   * @param {Vector} axesOrDirections - Axes or directions to animate
+   * @param {Function} applyFunction  - Function to transform the axis/direction vector into a matrix (e.g. rotation)
+   * @param referenceNode             - The Point of reference for this Node
+   */
   constructor (groupNode, speed, active, axesOrDirections, applyFunction, referenceNode) {
     super(groupNode, speed, active, axesOrDirections, applyFunction)
     this.groupNode = groupNode
@@ -191,6 +199,10 @@ export class RelativeMovementAnimationNode extends AnimationNode {
     this.referenceNode = referenceNode
   }
 
+  /**
+   * Advances the animation by deltaT
+   * @param {number} deltaT - Time difference the animation is advanced by
+   */
   simulate (deltaT) {
     // change the matrix of the attached group node to reflect the animation
     if (this.active) {
@@ -200,6 +212,42 @@ export class RelativeMovementAnimationNode extends AnimationNode {
         )
       )
     }
+  }
+
+  toJSON () {
+    return {
+      type: 'RelativeMovementAnimationNode',
+      groupNodeID: this.groupNode.id,
+      speed: this.speed,
+      active: this.active,
+      axesOrDirections: this.axesOrDirections,
+      applyFunctionName: this.applyFunctionName,
+      referenceNode: this.referenceNode
+    }
+  }
+
+  static fromJson (node, sg) {
+    let groupNode = getNodeByID(node.groupNodeID, sg)
+    let speed = node.speed
+    let active = node.active
+    let axesOrDirections = new Vector(node.axesOrDirections.data)
+    let applyFunction
+    switch (node.applyFunctionName) {
+      case 'rotation':
+        applyFunction = Matrix.rotation
+        break
+      case 'translation':
+        applyFunction = Matrix.translation
+        break
+      case 'scaling':
+        applyFunction = Matrix.scaling
+        break
+      case 'shear':
+        applyFunction = Matrix.shear
+        break
+    }
+    let referenceNode = node.referenceNode
+    return new RelativeMovementAnimationNode(groupNode, speed, active, axesOrDirections, applyFunction, referenceNode)
   }
 }
 

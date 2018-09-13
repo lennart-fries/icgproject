@@ -1,5 +1,5 @@
 import { GroupNode } from './nodes.js'
-import { AnimationNode, BackAndForthAnimationNode } from '../animation/animation-nodes.js'
+import { AnimationNode, BackAndForthAnimationNode, RelativeMovementAnimationNode } from '../animation/animation-nodes.js'
 
 export class JsonSerializer {
   static serialize (sg, animationNodes) {
@@ -26,5 +26,7 @@ function getAnimationNodeType (node, sg) {
       return AnimationNode.fromJson(node, sg)
     case 'BackAndForthAnimationNode':
       return BackAndForthAnimationNode.fromJson(node, sg)
+    case 'RelativeMovementAnimationNode':
+      return RelativeMovementAnimationNode.fromJson(node, sg)
   }
 }
