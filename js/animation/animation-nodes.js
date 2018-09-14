@@ -191,11 +191,6 @@ export class RelativeMovementAnimationNode extends AnimationNode {
    */
   constructor (groupNode, speed, active, axesOrDirections, applyFunction, referenceNode) {
     super(groupNode, speed, active, axesOrDirections, applyFunction)
-    this.groupNode = groupNode
-    this.speed = speed
-    this.active = active
-    this.axesOrDirections = axesOrDirections
-    this.applyFunction = applyFunction
     this.referenceNode = referenceNode
   }
 
@@ -222,7 +217,7 @@ export class RelativeMovementAnimationNode extends AnimationNode {
       active: this.active,
       axesOrDirections: this.axesOrDirections,
       applyFunctionName: this.applyFunctionName,
-      referenceNode: this.referenceNode
+      referenceNodeID: this.referenceNode.id
     }
   }
 
@@ -246,7 +241,7 @@ export class RelativeMovementAnimationNode extends AnimationNode {
         applyFunction = Matrix.shear
         break
     }
-    let referenceNode = node.referenceNode
+    let referenceNode = getNodeByID(node.referenceNodeID,sg)
     return new RelativeMovementAnimationNode(groupNode, speed, active, axesOrDirections, applyFunction, referenceNode)
   }
 }

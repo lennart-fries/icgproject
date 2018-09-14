@@ -103,18 +103,18 @@ export class Settings {
       // Free Flight Descend
       new RelativeMovementAnimationNode(cameraTranslate, 2.0, false, new Vector(0, -1, 0, 0), Matrix.translation, cameraRotate),
       // Free Flight Turn Upwards
-      new AnimationNode(cameraRotate, 2.0, false, new Vector(-1, 0, 0, 0), Matrix.rotation),
+      new AnimationNode(cameraRotate, 1.0, false, new Vector(-1, 0, 0, 0), Matrix.rotation),
       // Free Flight Turn Downwards
-      new AnimationNode(cameraRotate, 2.0, false, new Vector(1, 0, 0, 0), Matrix.rotation),
+      new AnimationNode(cameraRotate, 1.0, false, new Vector(1, 0, 0, 0), Matrix.rotation),
       // Free Flight Turn Left
-      new AnimationNode(cameraRotate, 2.0, false, new Vector(0, 1, 0, 0), Matrix.rotation),
+      new AnimationNode(cameraRotate, 1.0, false, new Vector(0, 1, 0, 0), Matrix.rotation),
       // Free Flight Turn Right
-      new AnimationNode(cameraRotate, 2.0, false, new Vector(0, -1, 0, 0), Matrix.rotation),
+      new AnimationNode(cameraRotate, 1.0, false, new Vector(0, -1, 0, 0), Matrix.rotation),
       // Free Flight Left Roll?
-      new AnimationNode(cameraRotate, 2.0, false, new Vector(0, 0, 1, 0), Matrix.rotation),
+      new AnimationNode(cameraRotate, 1.0, false, new Vector(0, 0, 1, 0), Matrix.rotation),
       // Free Flight Right Roll?
       new AnimationNode(cameraRotate, 2.0, false, new Vector(0, 0, -1, 0), Matrix.rotation),
-      new AnimationNode(gn2, 1.0, false, new Vector(0, 0.5, 0.5, 0), Matrix.rotation),
+      new RelativeMovementAnimationNode(gn2, 1.0, false, new Vector(0, 0.5, 0.5, 0), Matrix.rotation, cameraRotate),
       new BackAndForthAnimationNode(gn3, 1.0, true, new Vector(0, 0, 1, 0), Matrix.translation, 3, 1.5),
       new AnimationNode(gn4, 1.0, true, new Vector(1, 0, 0, 0), Matrix.rotation)
     ]
