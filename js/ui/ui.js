@@ -82,14 +82,25 @@ function setFromURL () {
 /**
  * Sets the input elements on the site to their current values
  */
-export function setInputElementValues () {
+function setInputElementValues () {
   for (let radiobutton of radiobuttons) {
     let radioelement = $('input[name=' + radiobutton + '][value=' + settings.settingsStr[radiobutton] + ']')
     radioelement.prop('checked', true)
     radioelement.parent().addClass('active')
   }
+
   for (let textfield of textfields) {
     $('#' + textfield).prop('value', settings.settingsStr[textfield])
+  }
+}
+
+export function changeInputElementValues (val) {
+  if (val === 'raster') {
+    $('#raster').addClass('active')
+    $('#ray').removeClass('active')
+  } else {
+    $('#ray').addClass('active')
+    $('#raster').removeClass('active')
   }
 }
 
