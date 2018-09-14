@@ -1,7 +1,7 @@
 /**
  * Class representing a Keybind to invoke actions on the scenegraph
  */
-import { settings } from './ui.js'
+import { settings, setInputElementValues } from './ui.js'
 
 class Keybind {
   /**
@@ -67,6 +67,10 @@ export class PushKeybind extends Keybind {
   }
 }
 
+/**
+ * Sets up all keybinds for usage and checks for render changing keybind
+ * @param keybinds
+ */
 export function setupKeybinds (keybinds) {
   window.addEventListener('keydown', function (event) {
     for (let i = 0; i < keybinds.length; i++) {
@@ -78,6 +82,7 @@ export function setupKeybinds (keybinds) {
         } else {
           settings.settings = {renderer: 'Ray'}
         }
+        setInputElementValues()
       }
     }
   })

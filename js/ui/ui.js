@@ -82,7 +82,7 @@ function setFromURL () {
 /**
  * Sets the input elements on the site to their current values
  */
-function setInputElementValues () {
+export function setInputElementValues () {
   for (let radiobutton of radiobuttons) {
     let radioelement = $('input[name=' + radiobutton + '][value=' + settings.settingsStr[radiobutton] + ']')
     radioelement.prop('checked', true)
