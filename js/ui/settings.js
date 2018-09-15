@@ -37,15 +37,36 @@ export class Settings {
     // construct scene graph
 
     // construct scene graph
-    const colorsArray = [
+    const colorsCube = [
       new Vector(0.0, 1.0, 0.0, 1.0),
       new Vector(0.0, 0.0, 1.0, 1.0),
       new Vector(1.0, 0.0, 0.0, 1.0),
       new Vector(0.0, 0.0, 0.0, 1.0),
       new Vector(0.0, 1.0, 0.0, 1.0),
       new Vector(1.0, 0.0, 0.0, 1.0),
-      new Vector(1.0, 0.0, 1.0, 1.0),
+      new Vector(0.0, 1.0, 0.0, 1.0),
+      new Vector(0.0, 0.0, 1.0, 1.0),
+      new Vector(1.0, 0.0, 0.0, 1.0),
+      new Vector(0.0, 0.0, 0.0, 1.0),
+      new Vector(0.0, 1.0, 0.0, 1.0),
+      new Vector(1.0, 0.0, 0.0, 1.0)
+    ]
+
+    const colorsPyramid = [
+      new Vector(0.0, 1.0, 0.0, 1.0),
+      new Vector(0.0, 0.0, 1.0, 1.0),
+      new Vector(1.0, 0.0, 0.0, 1.0),
+      new Vector(0.0, 0.0, 0.0, 1.0),
+      new Vector(0.0, 1.0, 0.0, 1.0),
+      new Vector(1.0, 0.0, 0.0, 1.0),
+      new Vector(0.0, 1.0, 0.0, 1.0),
       new Vector(0.0, 0.0, 1.0, 1.0)
+    ]
+
+    const colorsSphere = [
+      new Vector(0.0, 1.0, 0.0, 1.0),
+      new Vector(0.0, 0.0, 1.0, 1.0),
+      new Vector(1.0, 0.0, 0.0, 1.0)
     ]
 
     const desktopCube = new AABoxNode(
@@ -62,7 +83,7 @@ export class Settings {
       'mappedCubeL',
       new Vector(-1.5, 2, 0.25, 1),
       new Vector(1.5, 5, 3.25, 1),
-      colorsArray,
+      colorsCube,
       new Vector(0.3, 0.6, 1.5, 4),
       'assets/diamond_ore.png',
       'assets/diamond_ore_n.png'
@@ -74,7 +95,7 @@ export class Settings {
       'texturedCubeL',
       new Vector(-1.5, 2, 0.25, 1),
       new Vector(1.5, 5, 3.25, 1),
-      colorsArray,
+      colorsCube,
       new Vector(0.3, 0.6, 1.5, 4),
       'assets/diamond_ore.png'
     )
@@ -85,7 +106,7 @@ export class Settings {
       'coloredCubeL',
       new Vector(-1.5, 2, 0.25, 1),
       new Vector(1.5, 5, 3.25, 1),
-      colorsArray,
+      colorsCube,
       new Vector(0.3, 0.6, 1.5, 4)
     )
     nodes.set(coloredCubeL.name, coloredCubeL)
@@ -96,7 +117,7 @@ export class Settings {
       new Vector(2, -1.5, 2, 1),
       new Vector(3, -0.5, 3, 1),
       new Vector(0.3, 0.6, 1.5, 4),
-      colorsArray,
+      colorsCube,
       'assets/diamond_ore.png'
     )
     nodes.set(texturedCubeS.name, texturedCubeS)
@@ -106,7 +127,7 @@ export class Settings {
       'mappedSphereL',
       new Vector(-4, -3, 2.15, 0),
       2.0,
-      colorsArray,
+      colorsSphere,
       new Vector(0.3, 0.6, 1.5, 4),
       'assets/diamond_ore.png',
       'assets/diamond_ore_n.png'
@@ -118,7 +139,7 @@ export class Settings {
       'texturedSphereL',
       new Vector(-4, -3, 2.15, 0),
       2.0,
-      colorsArray,
+      colorsSphere,
       new Vector(0.3, 0.6, 1.5, 4),
       'assets/diamond_ore.png'
     )
@@ -129,7 +150,7 @@ export class Settings {
       'coloredSphereL',
       new Vector(-4, -3, 2.15, 0),
       2.0,
-      colorsArray,
+      colorsSphere,
       new Vector(0.3, 0.6, 1.5, 4)
     )
     nodes.set(coloredSphereL.name, coloredSphereL)
@@ -139,7 +160,7 @@ export class Settings {
       'coloredSphereS',
       new Vector(2.5, 5.5, 1.75, 0),
       0.6,
-      colorsArray,
+      colorsSphere,
       new Vector(0.3, 0.6, 1.5, 4)
     )
     nodes.set(coloredSphereS.name, coloredSphereS)
@@ -149,7 +170,7 @@ export class Settings {
       'mappedPyramidL',
       new Vector(1.5, -1.5, 1, 1),
       2.5,
-      colorsArray,
+      colorsPyramid,
       new Vector(0.3, 0.6, 1.5, 4),
       'assets/diamond_ore.png',
       'assets/diamond_ore_n.png'
@@ -161,7 +182,7 @@ export class Settings {
       'texturedPyramidL',
       new Vector(1.5, -1.5, 1, 1),
       2.5,
-      colorsArray,
+      colorsPyramid,
       new Vector(0.3, 0.6, 1.5, 4),
       'assets/diamond_ore.png'
     )
@@ -172,7 +193,7 @@ export class Settings {
       'coloredPyramidL',
       new Vector(1.5, -1.5, 1, 1),
       2.5,
-      colorsArray,
+      colorsPyramid,
       new Vector(0.3, 0.6, 1.5, 4)
     )
     nodes.set(coloredPyramidL.name, coloredPyramidL)
@@ -182,7 +203,7 @@ export class Settings {
       'mappedPyramidS',
       new Vector(-4, -0.5, 2.15, 4),
       1,
-      colorsArray,
+      colorsPyramid,
       new Vector(0.3, 0.6, 1.5, 4),
       'assets/diamond_ore.png',
       'assets/diamond_ore_n.png'
@@ -300,31 +321,41 @@ export class Settings {
 
 
     const pyramid = new PyramidNode('pyramid', new Vector(1.1, -1.5, 0.5, 0), 1.5,
-      colorsArray, new Vector(0.3, 0.6, 1.5, 4),
+      colorsPyramid, new Vector(0.3, 0.6, 1.5, 4),
       'assets/diamond_ore.png', 'assets/diamond_ore_n.png')
     nodes.set(pyramid.name, pyramid)
     const sPyramid = new NodePlacement(pyramid.name)
     // sGn1.add(sPyramid)
 
-    const light1 = new LightNode('light1', new Vector(0, 20, 20, 1.0), 0.2)
+    const light1 = new LightNode('light1', new Vector(20, 0, 0, 1), 0.1)
     nodes.set(light1.name, light1)
     const sLight1 = new NodePlacement(light1.name)
     sGn1.add(sLight1)
 
-    const light2 = new LightNode('light2', new Vector(0, 20, -20, 1), 0.2)
+    const light2 = new LightNode('light2', new Vector(-20, 0, 0, 1), 0.1)
     nodes.set(light2.name, light2)
     const sLight2 = new NodePlacement(light2.name)
     sGn1.add(sLight2)
 
-    const light3 = new LightNode('light3', new Vector(20, 20, 0, 1), 0.2)
+    const light3 = new LightNode('light3', new Vector(0, 20, 0, 1), 0.1)
     nodes.set(light3.name, light3)
     const sLight3 = new NodePlacement(light3.name)
     sGn1.add(sLight3)
 
-    const light4 = new LightNode('light4', new Vector(-20, 20, 0, 1), 0.2)
+    const light4 = new LightNode('light4', new Vector(0, -20, 0, 1), 0.1)
     nodes.set(light4.name, light4)
     const sLight4 = new NodePlacement(light4.name)
     sGn1.add(sLight4)
+
+    const light5 = new LightNode('light5', new Vector(0, 0, 20, 1), 0.1)
+    nodes.set(light5.name, light5)
+    const sLight5 = new NodePlacement(light5.name)
+    sGn1.add(sLight5)
+
+    const light6 = new LightNode('light6', new Vector(0, 0, -20, 1), 0.1)
+    nodes.set(light6.name, light6)
+    const sLight6 = new NodePlacement(light6.name)
+    sGn1.add(sLight6)
 
     const cameraNode = new CameraNode('cameraNode', new Vector(0, 0, 15, 1), new Vector(0, 0, -1, 0), new Vector(0, 1, 0, 0), 60, 1, 0.1, 100)
     nodes.set(cameraNode.name, cameraNode)
@@ -333,16 +364,16 @@ export class Settings {
 
     let animationNodes = new Map()
     // Free Flight Forward
-    let ffForward = new RelativeMovementAnimationNode('Free Flight Forward', cameraTranslate, 2.0, false, new Vector(0, 0, -1, 0), Matrix.translation, cameraRotate)
+    let ffForward = new RelativeMovementAnimationNode('Free Flight Forward', cameraTranslate, 8.0, false, new Vector(0, 0, -1, 0), Matrix.translation, cameraRotate)
     animationNodes.set(ffForward.name, ffForward)
     // Free Flight Backwards
-    let ffBackwards = new RelativeMovementAnimationNode('Free Flight Backwards', cameraTranslate, 2.0, false, new Vector(0, 0, 1, 0), Matrix.translation, cameraRotate)
+    let ffBackwards = new RelativeMovementAnimationNode('Free Flight Backwards', cameraTranslate, 8.0, false, new Vector(0, 0, 1, 0), Matrix.translation, cameraRotate)
     animationNodes.set(ffBackwards.name, ffBackwards)
     // Free Flight Left
-    let ffLeft = new RelativeMovementAnimationNode('Free Flight Left', cameraTranslate, 2.0, false, new Vector(-1, 0, 0, 0), Matrix.translation, cameraRotate)
+    let ffLeft = new RelativeMovementAnimationNode('Free Flight Left', cameraTranslate, 8.0, false, new Vector(-1, 0, 0, 0), Matrix.translation, cameraRotate)
     animationNodes.set(ffLeft.name, ffLeft)
     // Free Flight Right
-    let ffRight = new RelativeMovementAnimationNode('Free Flight Right', cameraTranslate, 2.0, false, new Vector(1, 0, 0, 0), Matrix.translation, cameraRotate)
+    let ffRight = new RelativeMovementAnimationNode('Free Flight Right', cameraTranslate, 8.0, false, new Vector(1, 0, 0, 0), Matrix.translation, cameraRotate)
     animationNodes.set(ffRight.name, ffRight)
     // Free Flight Ascend
     let ffAscend = new RelativeMovementAnimationNode('Free Flight Ascend', cameraTranslate, 2.0, false, new Vector(0, 1, 0, 0), Matrix.translation, cameraRotate)
