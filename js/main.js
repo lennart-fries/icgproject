@@ -99,7 +99,7 @@ function animate (timestamp) {
     keybinds = keybindsNew
     nodes = nodesNew
     newSG = true
-    setupKeybinds(keybinds.values(), settings)
+    setupKeybinds(keybinds, settings)
     scenegraph = buildScenegraph(scenegraphStructure)
   }
   if (updateRenderer(newSG)) {

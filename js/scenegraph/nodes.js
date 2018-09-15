@@ -391,23 +391,6 @@ export class LightNode extends Node {
   }
 }
 
-function getType (node) {
-  switch (node.type) {
-    case 'GroupNode':
-      return GroupNode.fromJson(node)
-    case 'SphereNode':
-      return SphereNode.fromJson(node)
-    case 'AABoxNode':
-      return AABoxNode.fromJson(node)
-    case 'PyramidNode':
-      return PyramidNode.fromJson(node)
-    case 'LightNode':
-      return LightNode.fromJson(node)
-    case 'CameraNode':
-      return CameraNode.fromJson(node)
-  }
-}
-
 function getColors (colors) {
   if (Array.isArray(colors)) {
     let colorArray = []

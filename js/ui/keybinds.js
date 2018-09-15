@@ -104,29 +104,32 @@ export class PushKeybind extends Keybind {
  * @param settings
  */
 export function setupKeybinds (keybinds, settings) {
+  let keys = new Map()
+  keybinds.forEach(keybind => keys.set(keybind.key, keybind))
+
   window.addEventListener('keydown', function (event) {
-    for (let i = 0; i < keybinds.length; i++) {
-      if (event.code === keybinds[i].key) {
-        keybinds[i].activate()
-      } else if (event.code === 'KeyR') {
-        if (settings.settingsStr.renderer === 'Ray') {
-          settings.settings = {renderer: 'Raster'}
-          $('#raster').addClass('active')
-          $('#ray').removeClass('active')
-        } else {
-          settings.settings = {renderer: 'Ray'}
-          $('#ray').addClass('active')
-          $('#raster').removeClass('active')
-        }
+    if (event.code === 'KeyR') {
+      if (settings.settingsStr.renderer === 'Ray') {
+        settings.settings = {renderer: 'Raster'}
+        $('#raster').addClass('active')
+        $('#ray').removeClass('active')
+      } else {
+        settings.settings = {renderer: 'Ray'}
+        $('#ray').addClass('active')
+        $('#raster').removeClass('active')
+      }
+    } else {
+      let keybind = keys.get(event.code)
+      if (keybind != null) {
+        keybind.activate()
       }
     }
   })
 
   window.addEventListener('keyup', function (event) {
-    for (let i = 0; i < keybinds.length; i++) {
-      if (event.code === keybinds[i].key) {
-        keybinds[i].stop()
-      }
+    let keybind = keys.get(event.code)
+    if (keybind != null) {
+      keybind.stop()
     }
   })
 }

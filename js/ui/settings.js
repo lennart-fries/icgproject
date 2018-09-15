@@ -118,22 +118,22 @@ export class Settings {
 
     let animationNodes = new Map()
     // Free Flight Forward
-    let ffForward = new RelativeMovementAnimationNode('Free Flight Forward', cameraTranslate, 2.0, false, new Vector(0, 0, -1, 0), Matrix.translation, cameraRotate)
+    let ffForward = new RelativeMovementAnimationNode('Free Flight Forward', cameraTranslate, 5.0, false, new Vector(0, 0, -1, 0), Matrix.translation, cameraRotate)
     animationNodes.set(ffForward.name, ffForward)
     // Free Flight Backwards
-    let ffBackwards = new RelativeMovementAnimationNode('Free Flight Backwards', cameraTranslate, 2.0, false, new Vector(0, 0, 1, 0), Matrix.translation, cameraRotate)
+    let ffBackwards = new RelativeMovementAnimationNode('Free Flight Backwards', cameraTranslate, 5.0, false, new Vector(0, 0, 1, 0), Matrix.translation, cameraRotate)
     animationNodes.set(ffBackwards.name, ffBackwards)
     // Free Flight Left
-    let ffLeft = new RelativeMovementAnimationNode('Free Flight Left', cameraTranslate, 2.0, false, new Vector(-1, 0, 0, 0), Matrix.translation, cameraRotate)
+    let ffLeft = new RelativeMovementAnimationNode('Free Flight Left', cameraTranslate, 5.0, false, new Vector(-1, 0, 0, 0), Matrix.translation, cameraRotate)
     animationNodes.set(ffLeft.name, ffLeft)
     // Free Flight Right
-    let ffRight = new RelativeMovementAnimationNode('Free Flight Right', cameraTranslate, 2.0, false, new Vector(1, 0, 0, 0), Matrix.translation, cameraRotate)
+    let ffRight = new RelativeMovementAnimationNode('Free Flight Right', cameraTranslate, 5.0, false, new Vector(1, 0, 0, 0), Matrix.translation, cameraRotate)
     animationNodes.set(ffRight.name, ffRight)
     // Free Flight Ascend
-    let ffAscend = new RelativeMovementAnimationNode('Free Flight Ascend', cameraTranslate, 2.0, false, new Vector(0, 1, 0, 0), Matrix.translation, cameraRotate)
+    let ffAscend = new RelativeMovementAnimationNode('Free Flight Ascend', cameraTranslate, 5.0, false, new Vector(0, 1, 0, 0), Matrix.translation, cameraRotate)
     animationNodes.set(ffAscend.name, ffAscend)
     // Free Flight Descend
-    let ffDescend = new RelativeMovementAnimationNode('Free Flight Descend', cameraTranslate, 2.0, false, new Vector(0, -1, 0, 0), Matrix.translation, cameraRotate)
+    let ffDescend = new RelativeMovementAnimationNode('Free Flight Descend', cameraTranslate, 5.0, false, new Vector(0, -1, 0, 0), Matrix.translation, cameraRotate)
     animationNodes.set(ffDescend.name, ffDescend)
     // Free Flight Turn Upwards
     let ffTurnUpwards = new AnimationNode('Free Flight Turn Upwards', cameraRotate, 1.0, false, new Vector(-1, 0, 0, 0), Matrix.rotation)
