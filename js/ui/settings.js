@@ -90,7 +90,7 @@ export class Settings {
       'desktopCube',
       new Vector(-8, -8, -8, 1),
       new Vector(8, 8, 8, 1),
-      new Vector(0.5, 0.4, 0.4, 1),
+      new Vector(0.4, 0.25, 0.6, 1.0),
       new Vector(0.3, 0.6, 1.5, 4)
     )
     nodes.set(desktopCube.name, desktopCube)
@@ -164,7 +164,7 @@ export class Settings {
 
     const coloredSphereL = new SphereNode(
       'coloredSphereL',
-      new Vector(-4, -3, 3.65, 0),
+      new Vector(-3, -1, 0, 0),
       2.0,
       new Vector(0.6, 0, 0.2, 1),
       new Vector(0.3, 0.6, 1.5, 4)
@@ -245,7 +245,7 @@ export class Settings {
     nodes.set(rotator.name, rotator)
     const sRotator = new NodePlacement(rotator.name)
 
-    const driver = new GroupNode('driver', Matrix.identity())
+    const driver = new GroupNode('driver', Matrix.translation(new Vector(-3, -1, 0, 1)))
     nodes.set(driver.name, driver)
     const sDriver = new NodePlacement(driver.name)
 
@@ -396,21 +396,21 @@ export class Settings {
     sDesktopCubeNode.add(sRotateEast)
     sDesktopCubeNode.add(sRotateNorth)
 
-    const lightSouth = new LightNode('lightSouth', new Vector(20, 0, 0, 1), 0.01)
+    const lightSouth = new LightNode('lightSouth', new Vector(20, 0, 0, 1), 4)
     nodes.set(lightSouth.name, lightSouth)
     const sLightSouth = new NodePlacement(lightSouth.name)
     sGn0.add(sLightSouth)
 
-    const lightNorth = new LightNode('lightNorth', new Vector(-20, 0, 0, 1), 0.01)
+    const lightNorth = new LightNode('lightNorth', new Vector(-20, 0, 0, 1), 4)
     nodes.set(lightNorth.name, lightNorth)
     const sLightNorth = new NodePlacement(lightNorth.name)
     sGn0.add(sLightNorth)
 
-    const lightUp = new LightNode('lightUp', new Vector(0, 20, 0, 1), 0.01)
+    const lightUp = new LightNode('lightUp', new Vector(0, 20, 0, 1), 4)
     nodes.set(lightUp.name, lightUp)
     const sLightUp = new NodePlacement(lightUp.name)
 
-    const lightDown = new LightNode('lightDown', new Vector(0, -20, 0, 1), 0.01)
+    const lightDown = new LightNode('lightDown', new Vector(0, -20, 0, 1), 4)
     nodes.set(lightDown.name, lightDown)
     const sLightDown = new NodePlacement(lightDown.name)
 
@@ -421,21 +421,21 @@ export class Settings {
     sWanderingLight.add(sLightUp)
     sWanderingLight.add(sLightDown)
 
-    const lightWest = new LightNode('lightWest', new Vector(0, 0, 20, 1), 0.01)
+    const lightWest = new LightNode('lightWest', new Vector(0, 0, 20, 1), 4)
     nodes.set(lightWest.name, lightWest)
     const sLightWest = new NodePlacement(lightWest.name)
     sGn0.add(sLightWest)
 
-    const lightEast = new LightNode('lightEast', new Vector(0, 0, -20, 1), 0.01)
+    const lightEast = new LightNode('lightEast', new Vector(0, 0, -20, 1), 4)
     nodes.set(lightEast.name, lightEast)
     const sLightEast = new NodePlacement(lightEast.name)
     sGn0.add(sLightEast)
 
-    const lightCamera = new LightNode('lightCamera', new Vector(0, 0, 5, 1), 0.01)
+    const lightCamera = new LightNode('lightCamera', new Vector(0, 0, 5, 1), 4)
     nodes.set(lightCamera.name, lightCamera)
-    //const sLightCamera = new NodePlacement(lightCamera.name)
+    const sLightCamera = new NodePlacement(lightCamera.name)
 
-    const lightDriver = new LightNode('lightDriver', new Vector(0, 0, 0, 1), 0.1)
+    const lightDriver = new LightNode('lightDriver', new Vector(0, 0, 0, 1), 4)
     nodes.set(lightDriver.name, lightDriver)
     const sLightDriver = new NodePlacement(lightDriver.name)
     sDriver.add(sLightDriver)
@@ -444,7 +444,7 @@ export class Settings {
     nodes.set(cameraNode.name, cameraNode)
     const sCameraNode = new NodePlacement(cameraNode.name)
     sCameraRotate.add(sCameraNode)
-    //sCameraRotate.add(sLightCamera)
+    sCameraRotate.add(sLightCamera)
 
     // Free Flight Forward
     let ffForward = new RelativeMovementAnimationNode('Free Flight Forward', cameraTranslate, 8.0, false, new Vector(0, 0, -1, 0), Matrix.translation, cameraRotate)
