@@ -142,8 +142,8 @@ export class Settings {
 
     const texturedCubeS = new AABoxNode(
       'texturedCubeS',
-      new Vector(2, -1.5, 2.5, 1),
-      new Vector(3, -0.5, 3, 1),
+      new Vector(2, -1.5, 3.5, 1),
+      new Vector(3, -0.5, 4, 1),
       new Vector(0.3, 0.6, 1.5, 4),
       colorsCube,
       'assets/diamond_ore.png'
@@ -389,7 +389,7 @@ export class Settings {
     nodes.set(lightCamera.name, lightCamera)
     const sLightCamera = new NodePlacement(lightCamera.name)
 
-    const lightDriver = new LightNode('lightDriver', new Vector(0, 0, -1, 1), 0.025)
+    const lightDriver = new LightNode('lightDriver', new Vector(0, 0, -5, 1), 0.05)
     nodes.set(lightDriver.name, lightDriver)
     const sLightDriver = new NodePlacement(lightDriver.name)
     sDriver.add(sLightDriver)
@@ -445,7 +445,7 @@ export class Settings {
     animationNodes.set(aGn4.name, aGn4)
     let aJumper = new BackAndForthAnimationNode('jumper', jumper, 1.0, true, new Vector(0, 4, 0, 0), Matrix.translation, 1)
     animationNodes.set(aJumper.name, aJumper)
-    let aDriver = new BackAndForthAnimationNode('driver', driver, 1.0, true, new Vector(0.5, 0, 4, 0), Matrix.translation, 3)
+    let aDriver = new BackAndForthAnimationNode('driver', driver, 1.0, true, new Vector(2, 0, 4, 0), Matrix.translation, 3)
     animationNodes.set(aDriver.name, aDriver)
     let aRotator = new AnimationNode('rotator', rotator, 1.0, true, new Vector(0, 0.5, 0.5, 0), Matrix.rotation)
     animationNodes.set(aRotator.name, aRotator)
