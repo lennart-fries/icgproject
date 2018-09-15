@@ -100,7 +100,7 @@ export class Settings {
       new Vector(-1.5, 2, 2, 1),
       new Vector(1.5, 5, 5, 1),
       colorsCube,
-      new Vector(0.3, 0.6, 1.5, 4),
+      new Vector(0.2, 0.2, 0.5, 4),
       'assets/diamond_ore.png',
       'assets/diamond_ore_n.png'
     )
@@ -113,7 +113,7 @@ export class Settings {
       new Vector(-1.5, 2, 0.25, 1),
       new Vector(1.5, 5, 3.25, 1),
       colorsCube,
-      new Vector(0.3, 0.6, 1.5, 4),
+      new Vector(0.2, 0.2, 0.5, 4),
       'assets/diamond_ore.png'
     )
     nodes.set(texturedCubeL.name, texturedCubeL)
@@ -144,7 +144,7 @@ export class Settings {
       'texturedCubeS',
       new Vector(2, -1.5, 4.5, 1),
       new Vector(3, -0.5, 5.5, 1),
-      new Vector(0.3, 0.6, 1.5, 4),
+      new Vector(0.2, 0.2, 0.5, 4),
       colorsCube,
       'assets/diamond_ore.png'
     )
@@ -156,7 +156,7 @@ export class Settings {
       new Vector(-4, -3, 3.65, 0),
       2.0,
       colorsSphere,
-      new Vector(0.3, 0.6, 1.5, 4),
+      new Vector(0.2, 0.2, 0.5, 4),
       'assets/diamond_ore.png',
       'assets/diamond_ore_n.png'
     )
@@ -168,7 +168,7 @@ export class Settings {
       new Vector(-4, -3, 3.65, 0),
       2.0,
       colorsSphere,
-      new Vector(0.3, 0.6, 1.5, 4),
+      new Vector(0.2, 0.2, 0.5, 4),
       'assets/diamond_ore.png'
     )
     nodes.set(texturedSphereL.name, texturedSphereL)
@@ -199,7 +199,7 @@ export class Settings {
       new Vector(1.5, -1.5, 2, 1),
       2.5,
       colorsPyramid,
-      new Vector(0.3, 0.6, 1.5, 4),
+      new Vector(0.2, 0.2, 0.5, 4),
       'assets/diamond_ore.png',
       'assets/diamond_ore_n.png'
     )
@@ -211,7 +211,7 @@ export class Settings {
       new Vector(1.5, -1.5, 2, 1),
       2.5,
       colorsPyramid,
-      new Vector(0.3, 0.6, 1.5, 4),
+      new Vector(0.2, 0.2, 0.5, 4),
       'assets/diamond_ore.png'
     )
     nodes.set(texturedPyramidL.name, texturedPyramidL)
@@ -242,7 +242,7 @@ export class Settings {
       new Vector(-4, -0.5, 3.7, 4),
       1,
       colorsPyramid,
-      new Vector(0.3, 0.6, 1.5, 4),
+      new Vector(0.2, 0.2, 0.5, 4),
       'assets/diamond_ore.png',
       'assets/diamond_ore_n.png'
     )
