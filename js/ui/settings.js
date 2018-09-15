@@ -89,7 +89,7 @@ export class Settings {
       'desktopCube',
       new Vector(-8, -8, -8, 1),
       new Vector(8, 8, 8, 1),
-      new Vector(0.3, 0.3, 0.3, 1),
+      new Vector(0.5, 0.4, 0.4, 1),
       new Vector(0.3, 0.6, 1.5, 4)
     )
     nodes.set(desktopCube.name, desktopCube)
@@ -97,8 +97,8 @@ export class Settings {
 
     const mappedCubeL = new AABoxNode(
       'mappedCubeL',
-      new Vector(-1.5, 2, 0.25, 1),
-      new Vector(1.5, 5, 3.25, 1),
+      new Vector(-1.5, 2, 1, 1),
+      new Vector(1.5, 5, 3.5, 1),
       colorsCube,
       new Vector(0.3, 0.6, 1.5, 4),
       'assets/diamond_ore.png',
@@ -122,8 +122,8 @@ export class Settings {
 
     const coloredCubeL = new AABoxNode(
       'coloredCubeL',
-      new Vector(-1.5, 2, 0.25, 1),
-      new Vector(1.5, 5, 3.25, 1),
+      new Vector(-1.5, 2, 1, 1),
+      new Vector(1.5, 5, 4, 1),
       colorsCube,
       new Vector(0.3, 0.6, 1.5, 4)
     )
@@ -132,8 +132,8 @@ export class Settings {
 
     const oneColoredCubeL = new AABoxNode(
       'oneColoredCubeL',
-      new Vector(-1.5, 2, 0.25, 1),
-      new Vector(1.5, 5, 3.25, 1),
+      new Vector(-1.5, 2, 1, 1),
+      new Vector(1.5, 5, 4, 1),
       colorsCubeHalf,
       new Vector(0.3, 0.6, 1.5, 4)
     )
@@ -142,7 +142,7 @@ export class Settings {
 
     const texturedCubeS = new AABoxNode(
       'texturedCubeS',
-      new Vector(2, -1.5, 2, 1),
+      new Vector(2, -1.5, 2.5, 1),
       new Vector(3, -0.5, 3, 1),
       new Vector(0.3, 0.6, 1.5, 4),
       colorsCube,
@@ -153,7 +153,7 @@ export class Settings {
 
     const mappedSphereL = new SphereNode(
       'mappedSphereL',
-      new Vector(-4, -3, 2.15, 0),
+      new Vector(-4, -3, 2.65, 0),
       2.0,
       colorsSphere,
       new Vector(0.3, 0.6, 1.5, 4),
@@ -165,7 +165,7 @@ export class Settings {
 
     const texturedSphereL = new SphereNode(
       'texturedSphereL',
-      new Vector(-4, -3, 2.15, 0),
+      new Vector(-4, -3, 2.65, 0),
       2.0,
       colorsSphere,
       new Vector(0.3, 0.6, 1.5, 4),
@@ -176,7 +176,7 @@ export class Settings {
 
     const coloredSphereL = new SphereNode(
       'coloredSphereL',
-      new Vector(-4, -3, 2.15, 0),
+      new Vector(-4, -3, 2.65, 0),
       2.0,
       new Vector(0.6, 0, 0.2, 1),
       new Vector(0.3, 0.6, 1.5, 4)
@@ -186,7 +186,7 @@ export class Settings {
 
     const coloredSphereS = new SphereNode(
       'coloredSphereS',
-      new Vector(2.5, 5.5, 1.75, 0),
+      new Vector(2.5, 5.5, 2.25, 0),
       0.6,
       new Vector(0.2, 0.0, 0.6, 1.0),
       new Vector(0.3, 0.6, 1.5, 4)
@@ -196,7 +196,7 @@ export class Settings {
 
     const mappedPyramidL = new PyramidNode(
       'mappedPyramidL',
-      new Vector(1.5, -1.5, 1, 1),
+      new Vector(1.5, -1.5, 1.5, 1),
       2.5,
       colorsPyramid,
       new Vector(0.3, 0.6, 1.5, 4),
@@ -208,7 +208,7 @@ export class Settings {
 
     const texturedPyramidL = new PyramidNode(
       'texturedPyramidL',
-      new Vector(1.5, -1.5, 1, 1),
+      new Vector(1.5, -1.5, 1.5, 1),
       2.5,
       colorsPyramid,
       new Vector(0.3, 0.6, 1.5, 4),
@@ -219,7 +219,7 @@ export class Settings {
 
     const coloredPyramidL = new PyramidNode(
       'coloredPyramidL',
-      new Vector(1.5, -1.5, 1, 1),
+      new Vector(1.5, -1.5, 1.5, 1),
       2.5,
       colorsPyramid,
       new Vector(0.3, 0.6, 1.5, 4)
@@ -229,7 +229,7 @@ export class Settings {
 
     const oneColoredPyramidL = new PyramidNode(
       'oneColoredPyramidL',
-      new Vector(1.5, -1.5, 1, 1),
+      new Vector(1.5, -1.5, 1.5, 1),
       2.5,
       colorsPyramidHalf,
       new Vector(0.3, 0.6, 1.5, 4)
@@ -239,7 +239,7 @@ export class Settings {
 
     const mappedPyramidS = new PyramidNode(
       'mappedPyramidS',
-      new Vector(-4, -0.5, 2.15, 4),
+      new Vector(-4, -0.5, 2.65, 4),
       1,
       colorsPyramid,
       new Vector(0.3, 0.6, 1.5, 4),
@@ -350,39 +350,49 @@ export class Settings {
     sDesktopCubeNode.add(sRotateEast)
     sDesktopCubeNode.add(sRotateNorth)
 
-    const lightSouth = new LightNode('lightSouth', new Vector(20, 0, 0, 1), 0.1)
+    const lightSouth = new LightNode('lightSouth', new Vector(20, 0, 0, 1), 0.05)
     nodes.set(lightSouth.name, lightSouth)
     const sLightSouth = new NodePlacement(lightSouth.name)
-    //sGn1.add(sLightSouth)
+    // sGn1.add(sLightSouth)
 
-    const lightNorth = new LightNode('lightNorth', new Vector(-20, 0, 0, 1), 0.1)
+    const lightNorth = new LightNode('lightNorth', new Vector(-20, 0, 0, 1), 0.05)
     nodes.set(lightNorth.name, lightNorth)
     const sLightNorth = new NodePlacement(lightNorth.name)
-    //sGn1.add(sLightNorth)
+    // sGn1.add(sLightNorth)
 
-    const lightUp = new LightNode('lightUp', new Vector(0, 20, 0, 1), 0.1)
+    const lightUp = new LightNode('lightUp', new Vector(0, 20, 0, 1), 0.05)
     nodes.set(lightUp.name, lightUp)
     const sLightUp = new NodePlacement(lightUp.name)
-    //sGn1.add(sLightUp)
 
-    const lightDown = new LightNode('lightDown', new Vector(0, -20, 0, 1), 0.1)
+    const lightDown = new LightNode('lightDown', new Vector(0, -20, 0, 1), 0.05)
     nodes.set(lightDown.name, lightDown)
     const sLightDown = new NodePlacement(lightDown.name)
-    //sGn1.add(sLightDown)
 
-    const lightWest = new LightNode('lightWest', new Vector(0, 0, 20, 1), 0.1)
+    const wanderingLight = new GroupNode('wanderingLight', Matrix.identity())
+    nodes.set(wanderingLight.name, wanderingLight)
+    const sWanderingLight = new NodePlacement(wanderingLight.name)
+    sGn1.add(sWanderingLight)
+    sWanderingLight.add(sLightUp)
+    sWanderingLight.add(sLightDown)
+
+    const lightWest = new LightNode('lightWest', new Vector(0, 0, 20, 1), 0.05)
     nodes.set(lightWest.name, lightWest)
     const sLightWest = new NodePlacement(lightWest.name)
     sGn1.add(sLightWest)
 
-    const lightEast = new LightNode('lightEast', new Vector(0, 0, -20, 1), 0.1)
+    const lightEast = new LightNode('lightEast', new Vector(0, 0, -20, 1), 0.05)
     nodes.set(lightEast.name, lightEast)
     const sLightEast = new NodePlacement(lightEast.name)
-    //sGn1.add(sLightEast)
+    sGn1.add(sLightEast)
 
-    const lightCamera = new LightNode('lightCamera', new Vector(0, 0, 5, 1), 0.1)
+    const lightCamera = new LightNode('lightCamera', new Vector(0, 0, 5, 1), 0.025)
     nodes.set(lightCamera.name, lightCamera)
     const sLightCamera = new NodePlacement(lightCamera.name)
+
+    const lightDriver = new LightNode('lightDriver', new Vector(0, 0, -1, 1), 0.025)
+    nodes.set(lightDriver.name, lightDriver)
+    const sLightDriver = new NodePlacement(lightDriver.name)
+    sDriver.add(sLightDriver)
 
     const cameraNode = new CameraNode('cameraNode', new Vector(0, 0, 15, 1), new Vector(0, 0, -1, 0), new Vector(0, 1, 0, 0), 60, 1, 0.1, 100)
     nodes.set(cameraNode.name, cameraNode)
@@ -439,14 +449,20 @@ export class Settings {
     animationNodes.set(aDriver.name, aDriver)
     let aRotator = new AnimationNode('rotator', rotator, 1.0, true, new Vector(0, 0.5, 0.5, 0), Matrix.rotation)
     animationNodes.set(aRotator.name, aRotator)
-    let cLeft = new AnimationNode('Cube Left', desktopCubeNode, 1.0, false, new Vector(0, 1, 0, 0), Matrix.rotation)
+    let cLeft = new AnimationNode('Cube Left', desktopCubeNode, 1.0, false, new Vector(0, -1, 0, 0), Matrix.rotation)
     animationNodes.set(cLeft.name, cLeft)
-    let cRight = new AnimationNode('Cube Right', desktopCubeNode, 1.0, false, new Vector(0, -1, 0, 0), Matrix.rotation)
+    let cRight = new AnimationNode('Cube Right', desktopCubeNode, 1.0, false, new Vector(0, 1, 0, 0), Matrix.rotation)
     animationNodes.set(cRight.name, cRight)
-    let cUp = new AnimationNode('Cube Up', desktopCubeNode, 1.0, false, new Vector(-1, 0, 0, 0), Matrix.rotation)
+    let cUp = new AnimationNode('Cube Up', desktopCubeNode, 1.0, false, new Vector(1, 0, 0, 0), Matrix.rotation)
     animationNodes.set(cUp.name, cUp)
-    let cDown = new AnimationNode('Cube Down', desktopCubeNode, 1.0, false, new Vector(1, 0, 0, 0), Matrix.rotation)
+    let cDown = new AnimationNode('Cube Down', desktopCubeNode, 1.0, false, new Vector(-1, 0, 0, 0), Matrix.rotation)
     animationNodes.set(cDown.name, cDown)
+    let cClock = new AnimationNode('Cube Clock', desktopCubeNode, 1.0, false, new Vector(0, 0, -1, 0), Matrix.rotation)
+    animationNodes.set(cClock.name, cClock)
+    let cCounterclock = new AnimationNode('Cube Counterclock', desktopCubeNode, 1.0, false, new Vector(0, 0, 1, 0), Matrix.rotation)
+    animationNodes.set(cCounterclock.name, cCounterclock)
+    let wanderingSun = new BackAndForthAnimationNode('wanderingSun', wanderingLight, 0.5, true, new Vector(0, 0, 7, 1), Matrix.translation, 3, 0)
+    animationNodes.set(wanderingSun.name, wanderingSun)
 
     let keybinds = new Map()
     // Free Flight Forward
@@ -494,14 +510,24 @@ export class Settings {
     // Toggle Animation 3
     let KeyM = new ToggleKeybind(animationNodes.get('rotator'), 'KeyM')
     keybinds.set(KeyM.name, KeyM)
+    // Cube Up
     let KeyI = new PushKeybind(animationNodes.get('Cube Up'), 'KeyI')
     keybinds.set(KeyI.name, KeyI)
+    // Cube Down
     let KeyK = new PushKeybind(animationNodes.get('Cube Down'), 'KeyK')
     keybinds.set(KeyK.name, KeyK)
+    // Cube Left
     let KeyJ = new PushKeybind(animationNodes.get('Cube Left'), 'KeyJ')
     keybinds.set(KeyJ.name, KeyJ)
+    // Cube Right
     let KeyL = new PushKeybind(animationNodes.get('Cube Right'), 'KeyL')
     keybinds.set(KeyL.name, KeyL)
+    // Cube Clockwise Rotation
+    let KeyO = new PushKeybind(animationNodes.get('Cube Clock'), 'KeyO')
+    keybinds.set(KeyO.name, KeyO)
+    // Cube Counterclockwise Rotation
+    let KeyU = new PushKeybind(animationNodes.get('Cube Counterclock'), 'KeyU')
+    keybinds.set(KeyU.name, KeyU)
 
     this.settingsObj.nodes = nodes
     this.settingsObj.animationNodes = animationNodes
