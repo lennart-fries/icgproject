@@ -55,7 +55,7 @@ void main(void) {
         tangentEyeDir = viewDirection * v_tbnMatrix;
         vec3 lightDir = normalize(tangentLightDir);
         vec3 eyeDir = normalize(tangentEyeDir);
-        float lj = length(lightPositionsT[i] - v_position2.xyz) * intensity[i];
+        float lj = intensity[i] / length(lightPositionsT[i] - v_position2.xyz);
         diffuseSum += lj * max(dot(lightDir, normal), 0.0);
         // specular
         vec3 reflectDirection = reflect(-lightDir,normal);

@@ -100,8 +100,8 @@ export class PushKeybind extends Keybind {
 
 /**
  * Sets up all keybinds for usage and checks for render changing keybind
- * @param keybinds
- * @param settings
+ * @param keybinds  - an array containing all keybinds
+ * @param settings  - the settings context
  */
 export function setupKeybinds (keybinds, settings) {
   let keys = new Map()
