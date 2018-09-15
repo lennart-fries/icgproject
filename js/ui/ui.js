@@ -36,20 +36,24 @@ function readUploadedFileAsText (inputFile) {
  * @param  keybinds       - Array of all keybinds for navigation
  */
 export function saveScenegraphToJson (scenegraphStructure, nodes, animationNodes, keybinds) {
+  let scenegraphStructureString = '{ "scenegraphStructure": ' + JSON.stringify(scenegraphStructure.children, ['name', 'children'], 2)
+
   nodes = Array.from(nodes.entries())
   let nodesArray = []
   nodes.forEach(array => nodesArray.push(array[1]))
+  let nodesString = ', "nodes": ' + JSON.stringify(nodesArray, replacer, 2)
+
   animationNodes = Array.from(animationNodes.entries())
   let animationNodesArray = []
   animationNodes.forEach(array => animationNodesArray.push(array[1]))
+  let animationNodesString = ', "animationNodes":' + JSON.stringify(animationNodesArray, null, 2)
+
   keybinds = Array.from(keybinds.entries())
   let keybindsArray = []
   keybinds.forEach(array => keybindsArray.push(array[1]))
-  let nodesString = '{ "nodes": ' + JSON.stringify(nodesArray, replacer, 2)
-  let scenegraphStructureString = ', "scenegraphStructure": ' + JSON.stringify(scenegraphStructure, ['name', 'children'], 2)
-  let animationNodesString = ', "animationNodes":' + JSON.stringify(animationNodesArray, null, 2)
   let keybindsString = ', "keybinds": ' + JSON.stringify(keybindsArray, null, 2) + '}'
-  let url = URL.createObjectURL(new Blob([nodesString + scenegraphStructureString + animationNodesString + keybindsString], {type: 'application/json'}))
+
+  let url = URL.createObjectURL(new Blob([scenegraphStructureString + nodesString + animationNodesString + keybindsString], {type: 'application/json'}))
   let pom = document.createElement('a')
   document.body.appendChild(pom) // required in FF, optional for Chrome
   pom.href = url

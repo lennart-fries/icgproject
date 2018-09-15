@@ -11,7 +11,8 @@ export class JsonDeserializer {
     let deserializer = new JsonDeserializer()
     deserializer.nodes = new Map()
     json.nodes.forEach(node => deserializer.nodes.set(node.name, getNodeType(node)))
-    deserializer.scenegraphStructure = NodePlacement.fromJson(json.scenegraphStructure, deserializer.nodes)
+    deserializer.scenegraphStructure = []
+    json.scenegraphStructure.forEach(child => deserializer.scenegraphStructure.push(NodePlacement.fromJson(child, deserializer.nodes)))
     deserializer.animationNodes = new Map()
     json.animationNodes.forEach(node => deserializer.animationNodes.set(node.name, getNodeType(node, deserializer.nodes)))
     deserializer.keybinds = new Map()

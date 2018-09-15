@@ -4,6 +4,8 @@
 import { settings } from './ui/ui.js'
 import { PreviewVisitor } from './scenegraph/preview-visitor.js'
 import { setupKeybinds } from './ui/keybinds.js'
+import { GroupNode } from './scenegraph/nodes.js'
+import { Matrix } from './primitives/matrix.js'
 
 let r, previewVisitor, scenegraph, scenegraphStructure, nodes, animationNodes, keybinds
 
@@ -26,9 +28,15 @@ let lastTimestamp = performance.now()
  * Builds the scenegraph from the scenegraph structure and the nodes
  */
 function buildScenegraph (currentNode) {
-  let node = nodes.get(currentNode.name)
-  currentNode.children.forEach(child => node.add(buildScenegraph(child)))
-  return node
+  if (Array.isArray(currentNode)) {
+    let node = new GroupNode('rootNode', Matrix.identity())
+    currentNode.forEach(child => node.add(buildScenegraph(child)))
+    return node
+  } else {
+    let node = nodes.get(currentNode.name)
+    currentNode.children.forEach(child => node.add(buildScenegraph(child)))
+    return node
+  }
 }
 
 /**
