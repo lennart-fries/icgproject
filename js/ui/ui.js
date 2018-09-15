@@ -123,6 +123,40 @@ export function changeInputElementValues (val) {
   }
 }
 
+export function updateActive (selected) {
+  if (selected !== settings.settingsObj.selected) {
+    settings.settingsObj.selected = selected
+    let node = settings.settingsObj.nodes.get(selected)
+    if (node.hasOwnProperty('materials')) {
+      $('#ambient').change(function (e) {
+        let newVal = parseInt($(e.target).val())
+        if (!Number.isNaN(newVal)) {
+          settings.settingsObj.nodes.get(selected).materials.x = newVal
+          console.log(settings.settingsObj.nodes.get(selected))
+        }
+      })
+      $('#diffuse').change(function (e) {
+        let newVal = parseInt($(e.target).val())
+        if (!Number.isNaN(newVal)) {
+          settings.settingsObj.nodes.get(selected).materials.y = newVal
+        }
+      })
+      $('#specular').change(function (e) {
+        let newVal = parseInt($(e.target).val())
+        if (!Number.isNaN(newVal)) {
+          settings.settingsObj.nodes.get(selected).materials.z = newVal
+        }
+      })
+      $('#shininess').change(function (e) {
+        let newVal = parseInt($(e.target).val())
+        if (!Number.isNaN(newVal)) {
+          settings.settingsObj.nodes.get(selected).materials.w = newVal
+        }
+      })
+    }
+  }
+}
+
 /**
  * Sets the scene graph sortable on the site to the current structure of the scene graph
  */
@@ -156,6 +190,9 @@ export function setScenegraphStructure () {
       }
       children.appendTo(itemEl)
     }
+    itemEl.click(function (event) {
+      updateActive($(event.target).attr('data-name'))
+    })
     return itemEl
   }
   let sceneGraphRoot = $('ul.scene-graph-root')
