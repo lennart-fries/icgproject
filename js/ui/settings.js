@@ -38,27 +38,27 @@ export class Settings {
 
     // construct scene graph
     const colorsCube = [
-      new Vector(0.0, 1.0, 0.0, 1.0),
-      new Vector(0.0, 0.0, 1.0, 1.0),
-      new Vector(1.0, 0.0, 0.0, 1.0),
-      new Vector(0.0, 0.0, 0.0, 1.0),
-      new Vector(0.0, 1.0, 0.0, 1.0),
-      new Vector(1.0, 0.0, 0.0, 1.0),
-      new Vector(0.0, 1.0, 0.0, 1.0),
-      new Vector(0.0, 0.0, 1.0, 1.0),
-      new Vector(1.0, 0.0, 0.0, 1.0),
-      new Vector(0.0, 0.0, 0.0, 1.0),
-      new Vector(0.0, 1.0, 0.0, 1.0),
-      new Vector(1.0, 0.0, 0.0, 1.0)
+      new Vector(0.5, 0.1, 0.1, 1.0),
+      new Vector(0.1, 0.1, 0.5, 1.0),
+      new Vector(0.5, 0.5, 0.1, 1.0),
+      new Vector(0.5, 0.1, 0.5, 1.0),
+      new Vector(0.1, 0.5, 0.5, 1.0),
+      new Vector(0.1, 0.5, 0.1, 1.0),
+      new Vector(0.5, 0.1, 0.1, 1.0),
+      new Vector(0.1, 0.1, 0.5, 1.0),
+      new Vector(0.5, 0.5, 0.1, 1.0),
+      new Vector(0.5, 0.1, 0.5, 1.0),
+      new Vector(0.1, 0.5, 0.5, 1.0),
+      new Vector(0.1, 0.5, 0.1, 1.0)
     ]
 
     const colorsCubeHalf = [
-      new Vector(0.0, 1.0, 0.0, 1.0),
-      new Vector(0.0, 0.0, 1.0, 1.0),
-      new Vector(1.0, 0.0, 0.0, 1.0),
-      new Vector(0.0, 0.0, 0.0, 1.0),
-      new Vector(0.0, 1.0, 0.0, 1.0),
-      new Vector(1.0, 0.0, 0.0, 1.0)
+      new Vector(0.5, 0.1, 0.1, 1.0),
+      new Vector(0.1, 0.1, 0.5, 1.0),
+      new Vector(0.5, 0.5, 0.1, 1.0),
+      new Vector(0.5, 0.1, 0.5, 1.0),
+      new Vector(0.1, 0.5, 0.5, 1.0),
+      new Vector(0.1, 0.5, 0.1, 1.0)
     ]
 
     const colorsPyramid = [
@@ -107,6 +107,7 @@ export class Settings {
     nodes.set(mappedCubeL.name, mappedCubeL)
     const sMappedCubeL = new NodePlacement(mappedCubeL.name)
 
+    /*
     const texturedCubeL = new AABoxNode(
       'texturedCubeL',
       new Vector(-1.5, 2, 0.25, 1),
@@ -117,6 +118,7 @@ export class Settings {
     )
     nodes.set(texturedCubeL.name, texturedCubeL)
     const sTexturedCubeL = new NodePlacement(texturedCubeL.name)
+    */
 
     const coloredCubeL = new AABoxNode(
       'coloredCubeL',
@@ -176,7 +178,7 @@ export class Settings {
       'coloredSphereL',
       new Vector(-4, -3, 2.15, 0),
       2.0,
-      new Vector(0.5, 0, 0.5, 1),
+      new Vector(0.6, 0, 0.2, 1),
       new Vector(0.3, 0.6, 1.5, 4)
     )
     nodes.set(coloredSphereL.name, coloredSphereL)
@@ -186,7 +188,7 @@ export class Settings {
       'coloredSphereS',
       new Vector(2.5, 5.5, 1.75, 0),
       0.6,
-      colorsSphere,
+      new Vector(0.2, 0.0, 0.6, 1.0),
       new Vector(0.3, 0.6, 1.5, 4)
     )
     nodes.set(coloredSphereS.name, coloredSphereS)
@@ -251,6 +253,18 @@ export class Settings {
     nodes.set(gn0.name, gn0)
     const sGn0 = new NodePlacement(gn0.name)
 
+    const rotator = new GroupNode('rotator', Matrix.identity())
+    nodes.set(rotator.name, rotator)
+    const sRotator = new NodePlacement(rotator.name)
+
+    const driver = new GroupNode('driver', Matrix.identity())
+    nodes.set(driver.name, driver)
+    const sDriver = new NodePlacement(driver.name)
+
+    const jumper = new GroupNode('jumper', Matrix.identity())
+    nodes.set(jumper.name, jumper)
+    const sJumper = new NodePlacement(jumper.name)
+
     const cameraTranslate = new GroupNode('cameraTranslate', Matrix.translation(new Vector(0, 0, 10, 0)))
     nodes.set(cameraTranslate.name, cameraTranslate)
     const sCameraTranslate = new NodePlacement(cameraTranslate.name)
@@ -264,16 +278,15 @@ export class Settings {
     const westSide = new GroupNode('westSide', Matrix.translation(new Vector(0, 0, 8, 0)))
     nodes.set(westSide.name, westSide)
     const sWestSide = new NodePlacement(westSide.name)
-    sGn0.add(sWestSide)
+    sWestSide.add(sJumper)
+    sJumper.add(sTexturedSphereL)
     sWestSide.add(sColoredCubeL)
     sWestSide.add(sColoredSphereS)
-    sWestSide.add(sTexturedSphereL)
     sWestSide.add(sColoredPyramidL)
 
     const rotateSouth = new GroupNode('rotateSouth', Matrix.rotation(new Vector(0, Math.PI / 2, 0, 0)))
     nodes.set(rotateSouth.name, rotateSouth)
     const sRotateSouth = new NodePlacement(rotateSouth.name)
-    sGn0.add(sRotateSouth)
 
     const southSide = new GroupNode('southSide', Matrix.translation(new Vector(0, 0, 8, 0)))
     nodes.set(southSide.name, southSide)
@@ -287,13 +300,13 @@ export class Settings {
     const rotateEast = new GroupNode('rotateEast', Matrix.rotation(new Vector(0, Math.PI, 0, 0)))
     nodes.set(rotateEast.name, rotateEast)
     const sRotateEast = new NodePlacement(rotateEast.name)
-    sGn0.add(sRotateEast)
 
     const eastSide = new GroupNode('eastSide', Matrix.translation(new Vector(0, 0, 8, 0)))
     nodes.set(eastSide.name, eastSide)
     const sEastSide = new NodePlacement(eastSide.name)
     sRotateEast.add(sEastSide)
-    sEastSide.add(sColoredCubeL)
+    sEastSide.add(sRotator)
+    sRotator.add(sColoredCubeL)
     sEastSide.add(sMappedSphereL)
     sEastSide.add(sTexturedPyramidL)
     sEastSide.add(sTexturedCubeS)
@@ -301,14 +314,14 @@ export class Settings {
     const rotateNorth = new GroupNode('rotateNorth', Matrix.rotation(new Vector(0, -Math.PI / 2, 0, 0)))
     nodes.set(rotateNorth.name, rotateNorth)
     const sRotateNorth = new NodePlacement(rotateNorth.name)
-    sGn0.add(sRotateNorth)
 
     const northSide = new GroupNode('northSide', Matrix.translation(new Vector(0, 0, 8, 0)))
     nodes.set(northSide.name, northSide)
     const sNorthSide = new NodePlacement(northSide.name)
     sRotateNorth.add(sNorthSide)
+    sNorthSide.add(sDriver)
+    sDriver.add(sColoredSphereL)
     sNorthSide.add(sOneColoredCubeL)
-    sNorthSide.add(sColoredSphereL)
     sNorthSide.add(sOneColoredPyramidL)
 
     const gn1 = new GroupNode('gn1', Matrix.translation(new Vector(1, 1, 0, 0.0)))
@@ -321,59 +334,61 @@ export class Settings {
     const sGn3 = new NodePlacement(gn3.name)
     sGn1.add(sGn3)
 
-    const gn2 = new GroupNode('gn2', Matrix.identity())
-    nodes.set(gn2.name, gn2)
-    const sGn2 = new NodePlacement(gn2.name)
-    sGn0.add(sGn2)
+    const desktopCubeNode = new GroupNode('desktopCubeNode', Matrix.identity())
+    nodes.set(desktopCubeNode.name, desktopCubeNode)
+    const sDesktopCubeNode = new NodePlacement(desktopCubeNode.name)
+    sGn0.add(sDesktopCubeNode)
 
     const gn4 = new GroupNode('gn4', Matrix.identity())
     nodes.set(gn4.name, gn4)
     const sGn4 = new NodePlacement(gn4.name)
     sGn0.add(sGn4)
 
-    // sGn3.add(sCube2)
-    sGn2.add(sDesktopCube)
-    /* sGn2.add(sMappedCubeL)
-    sGn2.add(sMappedPyramidL)
-    sGn2.add(sMappedSphereL)
-    sGn2.add(sMappedPyramidS)
-    sGn2.add(sColoredSphereS)
-    sGn2.add(sTexturedCubeS) */
+    sDesktopCubeNode.add(sDesktopCube)
+    sDesktopCubeNode.add(sWestSide)
+    sDesktopCubeNode.add(sRotateSouth)
+    sDesktopCubeNode.add(sRotateEast)
+    sDesktopCubeNode.add(sRotateNorth)
 
-    const light1 = new LightNode('light1', new Vector(20, 0, 0, 1), 0.1)
-    nodes.set(light1.name, light1)
-    const sLight1 = new NodePlacement(light1.name)
-    //sGn1.add(sLight1)
+    const lightSouth = new LightNode('lightSouth', new Vector(20, 0, 0, 1), 0.1)
+    nodes.set(lightSouth.name, lightSouth)
+    const sLightSouth = new NodePlacement(lightSouth.name)
+    //sGn1.add(sLightSouth)
 
-    const light2 = new LightNode('light2', new Vector(-20, 0, 0, 1), 0.1)
-    nodes.set(light2.name, light2)
-    const sLight2 = new NodePlacement(light2.name)
-    //sGn1.add(sLight2)
+    const lightNorth = new LightNode('lightNorth', new Vector(-20, 0, 0, 1), 0.1)
+    nodes.set(lightNorth.name, lightNorth)
+    const sLightNorth = new NodePlacement(lightNorth.name)
+    //sGn1.add(sLightNorth)
 
-    const light3 = new LightNode('light3', new Vector(0, 20, 0, 1), 0.1)
-    nodes.set(light3.name, light3)
-    const sLight3 = new NodePlacement(light3.name)
-    //sGn1.add(sLight3)
+    const lightUp = new LightNode('lightUp', new Vector(0, 20, 0, 1), 0.1)
+    nodes.set(lightUp.name, lightUp)
+    const sLightUp = new NodePlacement(lightUp.name)
+    //sGn1.add(sLightUp)
 
-    const light4 = new LightNode('light4', new Vector(0, -20, 0, 1), 0.1)
-    nodes.set(light4.name, light4)
-    const sLight4 = new NodePlacement(light4.name)
-    //sGn1.add(sLight4)
+    const lightDown = new LightNode('lightDown', new Vector(0, -20, 0, 1), 0.1)
+    nodes.set(lightDown.name, lightDown)
+    const sLightDown = new NodePlacement(lightDown.name)
+    //sGn1.add(sLightDown)
 
-    const light5 = new LightNode('light5', new Vector(0, 0, 20, 1), 0.1)
-    nodes.set(light5.name, light5)
-    const sLight5 = new NodePlacement(light5.name)
-    sGn1.add(sLight5)
+    const lightWest = new LightNode('lightWest', new Vector(0, 0, 20, 1), 0.1)
+    nodes.set(lightWest.name, lightWest)
+    const sLightWest = new NodePlacement(lightWest.name)
+    sGn1.add(sLightWest)
 
-    const light6 = new LightNode('light6', new Vector(0, 0, -20, 1), 0.1)
-    nodes.set(light6.name, light6)
-    const sLight6 = new NodePlacement(light6.name)
-    //sGn1.add(sLight6)
+    const lightEast = new LightNode('lightEast', new Vector(0, 0, -20, 1), 0.1)
+    nodes.set(lightEast.name, lightEast)
+    const sLightEast = new NodePlacement(lightEast.name)
+    //sGn1.add(sLightEast)
+
+    const lightCamera = new LightNode('lightCamera', new Vector(0, 0, 5, 1), 0.1)
+    nodes.set(lightCamera.name, lightCamera)
+    const sLightCamera = new NodePlacement(lightCamera.name)
 
     const cameraNode = new CameraNode('cameraNode', new Vector(0, 0, 15, 1), new Vector(0, 0, -1, 0), new Vector(0, 1, 0, 0), 60, 1, 0.1, 100)
     nodes.set(cameraNode.name, cameraNode)
     const sCameraNode = new NodePlacement(cameraNode.name)
     sCameraRotate.add(sCameraNode)
+    sCameraRotate.add(sLightCamera)
 
     let animationNodes = new Map()
     // Free Flight Forward
@@ -389,10 +404,10 @@ export class Settings {
     let ffRight = new RelativeMovementAnimationNode('Free Flight Right', cameraTranslate, 8.0, false, new Vector(1, 0, 0, 0), Matrix.translation, cameraRotate)
     animationNodes.set(ffRight.name, ffRight)
     // Free Flight Ascend
-    let ffAscend = new RelativeMovementAnimationNode('Free Flight Ascend', cameraTranslate, 2.0, false, new Vector(0, 1, 0, 0), Matrix.translation, cameraRotate)
+    let ffAscend = new RelativeMovementAnimationNode('Free Flight Ascend', cameraTranslate, 8.0, false, new Vector(0, 1, 0, 0), Matrix.translation, cameraRotate)
     animationNodes.set(ffAscend.name, ffAscend)
     // Free Flight Descend
-    let ffDescend = new RelativeMovementAnimationNode('Free Flight Descend', cameraTranslate, 2.0, false, new Vector(0, -1, 0, 0), Matrix.translation, cameraRotate)
+    let ffDescend = new RelativeMovementAnimationNode('Free Flight Descend', cameraTranslate, 8.0, false, new Vector(0, -1, 0, 0), Matrix.translation, cameraRotate)
     animationNodes.set(ffDescend.name, ffDescend)
     // Free Flight Turn Upwards
     let ffTurnUpwards = new AnimationNode('Free Flight Turn Upwards', cameraRotate, 1.0, false, new Vector(-1, 0, 0, 0), Matrix.rotation)
@@ -412,12 +427,26 @@ export class Settings {
     // Free Flight Right Roll?
     let ffRightRoll = new AnimationNode('Free Flight Right Roll', cameraRotate, 2.0, false, new Vector(0, 0, -1, 0), Matrix.rotation)
     animationNodes.set(ffRightRoll.name, ffRightRoll)
-    let aGn2 = new RelativeMovementAnimationNode('gn2', gn2, 1.0, false, new Vector(0, 0.5, 0.5, 0), Matrix.rotation, cameraRotate)
+    let aGn2 = new RelativeMovementAnimationNode('desktopCubeNode', desktopCubeNode, 1.0, false, new Vector(0, 0.5, 0.5, 0), Matrix.rotation, cameraRotate)
     animationNodes.set(aGn2.name, aGn2)
     let aGn3 = new BackAndForthAnimationNode('gn3', gn3, 1.0, true, new Vector(0, 0, 1, 0), Matrix.translation, 3, 1.5)
     animationNodes.set(aGn3.name, aGn3)
     let aGn4 = new AnimationNode('gn4', gn4, 1.0, true, new Vector(1, 0, 0, 0), Matrix.rotation)
     animationNodes.set(aGn4.name, aGn4)
+    let aJumper = new BackAndForthAnimationNode('jumper', jumper, 1.0, true, new Vector(0, 4, 0, 0), Matrix.translation, 1)
+    animationNodes.set(aJumper.name, aJumper)
+    let aDriver = new BackAndForthAnimationNode('driver', driver, 1.0, true, new Vector(0.5, 0, 4, 0), Matrix.translation, 3)
+    animationNodes.set(aDriver.name, aDriver)
+    let aRotator = new AnimationNode('rotator', rotator, 1.0, true, new Vector(0, 0.5, 0.5, 0), Matrix.rotation)
+    animationNodes.set(aRotator.name, aRotator)
+    let cLeft = new AnimationNode('Cube Left', desktopCubeNode, 1.0, false, new Vector(0, 1, 0, 0), Matrix.rotation)
+    animationNodes.set(cLeft.name, cLeft)
+    let cRight = new AnimationNode('Cube Right', desktopCubeNode, 1.0, false, new Vector(0, -1, 0, 0), Matrix.rotation)
+    animationNodes.set(cRight.name, cRight)
+    let cUp = new AnimationNode('Cube Up', desktopCubeNode, 1.0, false, new Vector(-1, 0, 0, 0), Matrix.rotation)
+    animationNodes.set(cUp.name, cUp)
+    let cDown = new AnimationNode('Cube Down', desktopCubeNode, 1.0, false, new Vector(1, 0, 0, 0), Matrix.rotation)
+    animationNodes.set(cDown.name, cDown)
 
     let keybinds = new Map()
     // Free Flight Forward
@@ -457,14 +486,22 @@ export class Settings {
     let KeyE = new PushKeybind(animationNodes.get('Free Flight Right Roll'), 'KeyE')
     keybinds.set(KeyE.name, KeyE)
     // Toggle Animation 1
-    let Digit1 = new ToggleKeybind(animationNodes.get('gn2'), 'Digit1')
+    let Digit1 = new ToggleKeybind(animationNodes.get('jumper'), 'Digit1')
     keybinds.set(Digit1.name, Digit1)
     // Toggle Animation 2
-    let Digit2 = new ToggleKeybind(animationNodes.get('gn3'), 'Digit2')
+    let Digit2 = new ToggleKeybind(animationNodes.get('driver'), 'Digit2')
     keybinds.set(Digit2.name, Digit2)
     // Toggle Animation 3
-    let Digit3 = new ToggleKeybind(animationNodes.get('gn4'), 'Digit3')
+    let Digit3 = new ToggleKeybind(animationNodes.get('rotator'), 'Digit3')
     keybinds.set(Digit3.name, Digit3)
+    let KeyI = new PushKeybind(animationNodes.get('Cube Up'), 'KeyI')
+    keybinds.set(KeyI.name, KeyA)
+    let KeyK = new PushKeybind(animationNodes.get('Cube Down'), 'KeyK')
+    keybinds.set(KeyK.name, KeyK)
+    let KeyJ = new PushKeybind(animationNodes.get('Cube Left'), 'KeyJ')
+    keybinds.set(KeyJ.name, KeyJ)
+    let KeyL = new PushKeybind(animationNodes.get('Cube Right'), 'KeyL')
+    keybinds.set(KeyL.name, KeyL)
 
     this.settingsObj.nodes = nodes
     this.settingsObj.animationNodes = animationNodes
