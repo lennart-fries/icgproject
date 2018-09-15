@@ -32,13 +32,18 @@ function readUploadedFileAsText (inputFile) {
 /**
  * Helper function to download the scene graph as a JSON file
  * @param  scenegraph     - Reference to the scene graph
+ * @param  nodes          - Array of all nodes from the scenegraph
  * @param  animationNodes - Reference to the animation nodes
  */
-export function saveScenegraphToJson (scenegraph, animationNodes) {
-  scenegraph = addID(scenegraph)
-  id = 0
-  let json = JSON.stringify(JsonSerializer.serialize(scenegraph, animationNodes), null, 2)
-  let url = URL.createObjectURL(new Blob([json], {type: 'application/json'}))
+export function saveScenegraphToJson (scenegraph, nodes, animationNodes) {
+  let test = Array.from(nodes.entries())
+  let nodz = []
+  test.forEach(array => nodz.push(array[1]))
+  test.forEach(array => console.log(array))
+  let nodess = '{ "nodes": ' + JSON.stringify(nodz, replacer, 2) + ','
+  let scenegraphh = ' "scenegraph": ' + JSON.stringify(scenegraph, ['name', 'children'], 2) + ','
+  let animationNodess = ' "animationNodes":' + JSON.stringify(animationNodes, null, 2) + '}'
+  let url = URL.createObjectURL(new Blob([nodess + scenegraphh + animationNodess], {type: 'application/json'}))
   let pom = document.createElement('a')
   document.body.appendChild(pom) // required in FF, optional for Chrome
   pom.href = url
@@ -47,22 +52,18 @@ export function saveScenegraphToJson (scenegraph, animationNodes) {
   pom.click()
 }
 
-let id = 0
-
 /**
- * adds an unique id to everyone of the scenegraph
- * @param node      - current node in scenegraph
- * @return {<Node>} - current node in scenegraph
+ * replacer/filter for stringify function
+ * @param key
+ * @param value
+ * @return {*}
  */
-function addID (node) {
-  node.id = id
-  if (Array.isArray(node.children)) {
-    node.children.forEach(child => {
-      id++
-      addID(child)
-    })
+function replacer (key, value) {
+  if (key === 'children') {
+    return undefined
+  } else {
+    return value
   }
-  return node
 }
 
 /**
@@ -199,7 +200,7 @@ function setupFileselectors (fileselectors, settingsObj) {
 
 function setupDownloadButton () {
   $('#saveScenegraph').click(function () {
-    saveScenegraphToJson(settings.settings.scenegraph, settings.settings.animationNodes)
+    saveScenegraphToJson(settings.settings.scenegraph, settings.settings.nodes, settings.settings.animationNodes)
   })
 }
 

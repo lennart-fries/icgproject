@@ -60,7 +60,7 @@ export class AnimationNode {
   toJSON () {
     return {
       type: 'AnimationNode',
-      groupNodeID: this.groupNode.id,
+      groupNodeName: this.groupNode.name,
       speed: this.speed,
       active: this.active,
       axesOrDirections: this.axesOrDirections,
@@ -69,7 +69,7 @@ export class AnimationNode {
   }
 
   static fromJson (node, sg) {
-    let groupNode = getNodeByID(node.groupNodeID, sg)
+    let groupNode = getNodeByName(node.groupNodeName, sg)
     let speed = node.speed
     let active = node.active
     let axesOrDirections = new Vector(node.axesOrDirections.data)
@@ -143,7 +143,7 @@ export class BackAndForthAnimationNode extends AnimationNode {
   toJSON () {
     return {
       type: 'BackAndForthAnimationNode',
-      groupNodeID: this.groupNode.id,
+      groupNodeName: this.groupNode.name,
       speed: this.speed,
       active: this.active,
       axesOrDirections: this.axesOrDirections,
@@ -154,7 +154,7 @@ export class BackAndForthAnimationNode extends AnimationNode {
   }
 
   static fromJson (node, sg) {
-    let groupNode = getNodeByID(node.groupNodeID, sg)
+    let groupNode = getNodeByName(node.groupNodeName, sg)
     let speed = node.speed
     let active = node.active
     let axesOrDirections = new Vector(node.axesOrDirections.data)
@@ -212,17 +212,17 @@ export class RelativeMovementAnimationNode extends AnimationNode {
   toJSON () {
     return {
       type: 'RelativeMovementAnimationNode',
-      groupNodeID: this.groupNode.id,
+      groupNodeName: this.groupNode.name,
       speed: this.speed,
       active: this.active,
       axesOrDirections: this.axesOrDirections,
       applyFunctionName: this.applyFunctionName,
-      referenceNodeID: this.referenceNode.id
+      referenceNodeName: this.referenceNode.name
     }
   }
 
   static fromJson (node, sg) {
-    let groupNode = getNodeByID(node.groupNodeID, sg)
+    let groupNode = getNodeByName(node.groupNodeName, sg)
     let speed = node.speed
     let active = node.active
     let axesOrDirections = new Vector(node.axesOrDirections.data)
@@ -241,18 +241,18 @@ export class RelativeMovementAnimationNode extends AnimationNode {
         applyFunction = Matrix.shear
         break
     }
-    let referenceNode = getNodeByID(node.referenceNodeID,sg)
+    let referenceNode = getNodeByName(node.referenceNodeName, sg)
     return new RelativeMovementAnimationNode(groupNode, speed, active, axesOrDirections, applyFunction, referenceNode)
   }
 }
 
-function getNodeByID (id, node) {
-  if (node.id === id) {
+function getNodeByName (name, node) {
+  if (node.name === name) {
     return node
   } else if (Array.isArray(node.children)) {
     let result = null
     for (let i = 0; result === null && i < node.children.length; i++) {
-      result = getNodeByID(id, node.children[i])
+      result = getNodeByName(name, node.children[i])
     }
     return result
   }

@@ -1,11 +1,11 @@
 /* global performance */
 /* eslint new-cap: ['error', { 'newIsCapExceptions': ['renderer'] }] */
 
-import { settings, saveScenegraphToJson } from './ui/ui.js'
+import { settings } from './ui/ui.js'
 import { PreviewVisitor } from './scenegraph/preview-visitor.js'
 import { PushKeybind, setupKeybinds, ToggleKeybind } from './ui/keybinds.js'
 
-let r, previewVisitor, scenegraph, animationNodes
+let r, previewVisitor, scenegraph, scenegraphStructure, nodes, animationNodes
 
 const canvasID = 'render-surface'
 let canvas = document.getElementById(canvasID)
@@ -21,6 +21,15 @@ function simulate (deltaT) {
 }
 
 let lastTimestamp = performance.now()
+
+/**
+ * Builds the scenegraph from the scenegraph structure and the nodes
+ */
+function buildScenegraph (currentNode) {
+  let node = nodes.get(currentNode.name)
+  currentNode.children.forEach(child => node.add(buildScenegraph(child)))
+  return node
+}
 
 /**
  * Makes sure the current renderer is the selected one
@@ -71,13 +80,16 @@ function updateResolution (camera) {
  */
 function animate (timestamp) {
   // Update scenegraph and animation nodes if changed
-  let scenegraphNew = settings.settings.scenegraph
+  let scenegraphStructureNew = settings.settings.scenegraphStructure
   let animationNodesNew = settings.settings.animationNodes
+  let nodesNew = settings.settings.nodes
   let newSG = false
-  if (!(scenegraphNew === scenegraph) || !(animationNodesNew === animationNodes)) {
-    scenegraph = scenegraphNew
+  if (!(scenegraphStructureNew === scenegraphStructure) || !(animationNodesNew === animationNodes) || !(nodesNew === nodes)) {
+    scenegraphStructure = scenegraphStructureNew
     animationNodes = animationNodesNew
+    nodes = nodesNew
     newSG = true
+    scenegraph = buildScenegraph(scenegraphStructure)
   }
   if (updateRenderer(newSG)) {
     // Changing the renderer already calls requestAnimationFrame, which calls this method, so quit

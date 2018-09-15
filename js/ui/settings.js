@@ -3,10 +3,22 @@
 import { RasterRenderer } from '../rendering/raster-renderer.js'
 import { RayRenderer } from '../rendering/ray-renderer.js'
 import { JsonDeserializer } from '../scenegraph/JsonSerializer.js'
-import { AABoxNode, CameraNode, GroupNode, LightNode, PyramidNode, SphereNode } from '../scenegraph/nodes.js'
+import {
+  NodePlacement,
+  AABoxNode,
+  CameraNode,
+  GroupNode,
+  LightNode,
+  PyramidNode,
+  SphereNode
+} from '../scenegraph/nodes.js'
 import { Matrix } from '../primitives/matrix.js'
 import { Vector } from '../primitives/vector.js'
-import { AnimationNode, BackAndForthAnimationNode, RelativeMovementAnimationNode } from '../animation/animation-nodes.js'
+import {
+  AnimationNode,
+  BackAndForthAnimationNode,
+  RelativeMovementAnimationNode
+} from '../animation/animation-nodes.js'
 
 const renderersToClasses = {'Raster': RasterRenderer, 'Ray': RayRenderer}
 const renderers = Object.keys(renderersToClasses)
@@ -16,36 +28,59 @@ export class Settings {
    * Creates a new settings object with the default settings
    */
   constructor () {
+    let nodes = new Map()
     this.settingsStr = {renderer: 'Raster', renderResolution: '1', backgroundColor: '000000'}
     this.settingsObj = {}
     this.setSettings(this.settingsStr)
 
     // construct scene graph
-    const sg = new GroupNode(Matrix.identity())
-    const cameraTranslate = new GroupNode(Matrix.translation(new Vector(0, 0, 10, 0)))
-    const cameraRotate = new GroupNode(Matrix.identity())
-    sg.add(cameraTranslate)
-    cameraTranslate.add(cameraRotate)
-    const gn1 = new GroupNode(Matrix.translation(new Vector(1, 1, 0, 0.0)))
-    sg.add(gn1)
-    const gn3 = new GroupNode(Matrix.identity())
-    gn1.add(gn3)
-    const sphere = new SphereNode(
-      new Vector(0.5, -0.8, 0, 1),
-      0.4,
-      new Vector(0.8, 0.4, 0.1, 1),
-      new Vector(0.3, 0.6, 1.5, 4),
-      'assets/diamond_ore.png',
-      'assets/diamond_ore_n.png'
-    )
-    gn3.add(sphere)
+    const gn0 = new GroupNode('scenegraphRoot', Matrix.identity())
+    nodes.set(gn0.name, gn0)
+    const sGn0 = new NodePlacement(gn0.name)
 
-    const gn2 = new GroupNode(Matrix.translation(new Vector(-0.7, -0.4, 0.1, 0.0)))
-    sg.add(gn2)
+    const cameraTranslate = new GroupNode('cameraTranslate', Matrix.translation(new Vector(0, 0, 10, 0)))
+    nodes.set(cameraTranslate.name, cameraTranslate)
+    const sCameraTranslate = new NodePlacement(cameraTranslate.name)
+    sGn0.add(sCameraTranslate)
 
-    const gn4 = new GroupNode(Matrix.identity())
+    const cameraRotate = new GroupNode('cameraRotate', Matrix.identity())
+    nodes.set(cameraRotate.name, cameraRotate)
+    const sCameraRotate = new NodePlacement(cameraRotate.name)
+    sCameraTranslate.add(sCameraRotate)
 
-    sg.add(gn4)
+    const gn1 = new GroupNode('gn1', Matrix.translation(new Vector(1, 1, 0, 0.0)))
+    nodes.set(gn1.name, gn1)
+    const sGn1 = new NodePlacement(gn1.name)
+    sGn0.add(sGn1)
+
+    const gn3 = new GroupNode('gn3', Matrix.identity())
+    nodes.set(gn3.name, gn3)
+    const sGn3 = new NodePlacement(gn3.name)
+    sGn1.add(sGn3)
+
+    const sphere = new SphereNode('sphere', new Vector(0.5, -0.8, 0, 1), 0.4,
+      new Vector(0.8, 0.4, 0.1, 1), new Vector(0.3, 0.6, 1.5, 4),
+      'assets/diamond_ore.png', 'assets/diamond_ore_n.png')
+    nodes.set(sphere.name, sphere)
+    const sSphere = new NodePlacement(sphere.name)
+    sGn3.add(sSphere)
+
+    const gn2 = new GroupNode('gn2', Matrix.translation(new Vector(-0.7, -0.4, 0.1, 0.0)))
+    nodes.set(gn2.name, gn2)
+    const sGn2 = new NodePlacement(gn2.name)
+    sGn0.add(sGn2)
+
+    const gn4 = new GroupNode('gn4', Matrix.identity())
+    nodes.set(gn4.name, gn4)
+    const sGn4 = new NodePlacement(gn4.name)
+    sGn0.add(sGn4)
+
+    const cube = new AABoxNode('cube', new Vector(-1, -1, -1, 1),
+      new Vector(1, 1, 1, 1), new Vector(0.0, 1.0, 0.0, 1.0),
+      new Vector(0.3, 0.6, 1.5, 4), 'assets/diamond_ore.png' /*, 'assets/diamond_ore_n.png' */)
+    nodes.set(cube.name, cube)
+    const sCube = new NodePlacement(cube.name)
+    sGn2.add(sCube)
 
     const colorsArray = [
       new Vector(0.0, 1.0, 0.0, 1.0),
@@ -58,36 +93,27 @@ export class Settings {
   new Vector(0.0, 0.0, 1.0, 1.0) */
     ]
 
-    const colorVector = new Vector(0.0, 1.0, 0.0, 1.0)
+    const pyramid = new PyramidNode('pyramid', new Vector(1.1, -1.5, 0.5, 0), 1.5,
+      colorsArray, new Vector(0.3, 0.6, 1.5, 4),
+      'assets/diamond_ore.png', 'assets/diamond_ore_n.png')
+    nodes.set(pyramid.name, pyramid)
+    const sPyramid = new NodePlacement(pyramid.name)
+    sGn1.add(sPyramid)
 
-    const cube = new AABoxNode(
-      new Vector(-1, -1, -1, 1),
-      new Vector(1, 1, 1, 1),
-      colorVector,
-      new Vector(0.3, 0.6, 1.5, 4),
-      'assets/diamond_ore.png' /*,
-      'assets/diamond_ore_n.png' */
-    )
-    gn2.add(cube)
+    const light1 = new LightNode('light1', new Vector(-10, 3, 3, 1), 0.2)
+    nodes.set(light1.name, light1)
+    const sLight1 = new NodePlacement(light1.name)
+    sGn1.add(sLight1)
 
-    const pyramid = new PyramidNode(
-      new Vector(1.1, -1.5, 0.5, 0),
-      1.5,
-      colorsArray,
-      new Vector(0.3, 0.6, 1.5, 4),
-      'assets/diamond_ore.png',
-      'assets/diamond_ore_n.png'
-    )
+    const light2 = new LightNode('light2', new Vector(10, 3, 3, 1), 0.2)
+    nodes.set(light2.name, light2)
+    const sLight2 = new NodePlacement(light2.name)
+    sGn1.add(sLight2)
 
-    gn1.add(pyramid)
-
-    const light1 = new LightNode(new Vector(-10, 3, 3, 1), 0.2)
-    gn1.add(light1)
-    const light2 = new LightNode(new Vector(10, 3, 3, 1), 0.2)
-    gn1.add(light2)
-
-    const cameraNode = new CameraNode(new Vector(0, 0, 0, 1), new Vector(0, 0, -1, 0), new Vector(0, 1, 0, 0), 60, 1, 0.1, 100)
-    cameraRotate.add(cameraNode)
+    const cameraNode = new CameraNode('cameraNode', new Vector(0, 0, 0, 1), new Vector(0, 0, -1, 0), new Vector(0, 1, 0, 0), 60, 1, 0.1, 100)
+    nodes.set(cameraNode.name, cameraNode)
+    const sCameraNode = new NodePlacement(cameraNode.name)
+    sCameraRotate.add(sCameraNode)
 
     let animationNodes = [
       // Free Flight Forward
@@ -119,8 +145,9 @@ export class Settings {
       new AnimationNode(gn4, 1.0, true, new Vector(1, 0, 0, 0), Matrix.rotation)
     ]
 
-    this.settingsObj.scenegraph = sg
+    this.settingsObj.nodes = nodes
     this.settingsObj.animationNodes = animationNodes
+    this.settingsObj.scenegraphStructure = sGn0
   }
 
   /**
@@ -175,8 +202,9 @@ export class Settings {
             break
           case 'scenegraph':
             let newSG = JsonDeserializer.fromJson(JSON.parse(newSettings.scenegraph))
-            this.settingsObj.scenegraph = newSG.scenegraph
+            this.settingsObj.nodes = newSG.nodes
             this.settingsObj.animationNodes = newSG.animationNodes
+            this.settingsObj.scenegraphStructure = newSG.scenegraphStructure
         }
       }
     }
