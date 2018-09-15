@@ -1,7 +1,7 @@
 /* global performance */
 /* eslint new-cap: ['error', { 'newIsCapExceptions': ['renderer'] }] */
 
-import { settings } from './ui/ui.js'
+import { settings, setScenegraphStructure } from './ui/ui.js'
 import { PreviewVisitor } from './scenegraph/preview-visitor.js'
 import { setupKeybinds } from './ui/keybinds.js'
 import { GroupNode } from './scenegraph/nodes.js'
@@ -34,7 +34,9 @@ function buildScenegraph (currentNode) {
     return node
   } else {
     let node = nodes.get(currentNode.name)
-    currentNode.children.forEach(child => node.add(buildScenegraph(child)))
+    if (currentNode.hasOwnProperty('children')) {
+      currentNode.children.forEach(child => node.add(buildScenegraph(child)))
+    }
     return node
   }
 }
@@ -97,6 +99,7 @@ function animate (timestamp) {
     scenegraphStructure = scenegraphStructureNew
     animationNodes = animationNodesNew
     keybinds = keybindsNew
+    setScenegraphStructure()
     nodes = nodesNew
     newSG = true
     setupKeybinds(keybinds, settings)

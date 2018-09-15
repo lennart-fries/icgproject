@@ -468,7 +468,7 @@ export class Settings {
 
     this.settingsObj.nodes = nodes
     this.settingsObj.animationNodes = animationNodes
-    this.settingsObj.scenegraphStructure = sGn0
+    this.settingsObj.scenegraphStructure = [sGn0]
     this.settingsObj.keybinds = keybinds
   }
 

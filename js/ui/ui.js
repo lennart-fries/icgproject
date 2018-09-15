@@ -1,6 +1,14 @@
 /* global $, window, FileReader, Blob */
 
 import { Settings } from './settings.js'
+import {
+  AABoxNode,
+  CameraNode,
+  GroupNode,
+  LightNode,
+  PyramidNode,
+  SphereNode
+} from '../scenegraph/nodes.js'
 
 export let settings = new Settings()
 const radiobuttons = ['renderer', 'renderResolution']
@@ -105,6 +113,58 @@ function setInputElementValues () {
   }
 }
 
+export function changeInputElementValues (val) {
+  if (val === 'raster') {
+    $('#raster').addClass('active')
+    $('#ray').removeClass('active')
+  } else {
+    $('#ray').addClass('active')
+    $('#raster').removeClass('active')
+  }
+}
+
+/**
+ * Sets the scene graph sortable on the site to the current structure of the scene graph
+ */
+export function setScenegraphStructure () {
+  function makeItem (item) {
+    let itemEl = $('<li />', {class: 'list-group-item list-group-item-action'})
+    itemEl.attr('data-name', item.name)
+    itemEl.text(item.name)
+    let icon = $('<i />', {class: 'pr-2'})
+    let node = settings.settingsObj.nodes.get(item.name)
+    let iconClass
+    if (node instanceof GroupNode) {
+      iconClass = 'fas fa-shapes'
+    } else if (node instanceof SphereNode) {
+      iconClass = 'fas fa-circle'
+    } else if (node instanceof AABoxNode) {
+      iconClass = 'fas fa-square'
+    } else if (node instanceof PyramidNode) {
+      iconClass = 'fas fa-triangle'
+    } else if (node instanceof LightNode) {
+      iconClass = 'fas fa-lightbulb'
+    } else if (node instanceof CameraNode) {
+      iconClass = 'fas fa-video'
+    }
+    icon.addClass(iconClass)
+    icon.prependTo(itemEl)
+    if (item.hasOwnProperty('children')) {
+      let children = $('<ul />', {class: 'sortable list-group list-group-compact'})
+      for (let child of item.children) {
+        makeItem(child).appendTo(children)
+      }
+      children.appendTo(itemEl)
+    }
+    return itemEl
+  }
+  let sceneGraphRoot = $('ul.scene-graph-root')
+  sceneGraphRoot.empty()
+  for (let item of settings.settingsObj.scenegraphStructure) {
+    makeItem(item).appendTo(sceneGraphRoot)
+  }
+}
+
 /**
  * Sets up the sidebar toggles to hide and show the sidebars
  */
@@ -114,27 +174,6 @@ function setupSidebars () {
   })
   $('#collapse-right').on('click', function () {
     $('#sidebar-right').toggleClass('active')
-  })
-}
-
-/**
- * Sets up the sortable draggable nestable list that represents the scene graph
- */
-function setupSceneGraphSortable () {
-  let oldContainer
-  let sceneGraphList = $('ul.scene-graph-root').sortable({
-    afterMove: function (placeholder, container) {
-      if (oldContainer !== container) {
-        if (oldContainer) { oldContainer.el.removeClass('active') }
-        container.el.addClass('active')
-        oldContainer = container
-      }
-    },
-    onDrop: function ($item, container, _super) {
-      container.el.removeClass('active')
-      console.log(sceneGraphList.sortable('serialize').get())
-      _super($item, container)
-    }
   })
 }
 
@@ -153,9 +192,44 @@ function setupColorpickers () {
 }
 
 /**
+ * Sets up the sortable draggable nestable list that represents the scene graph
+ * @param {Settings} settingsObj - Settings object, has a child object "settingsObj" which holds the real settings
+ */
+function setupSceneGraphSortable (settingsObj) {
+  let oldContainer
+  let sceneGraphList = $('ul.scene-graph-root').sortable({
+    afterMove: function (placeholder, container) {
+      if (oldContainer !== container) {
+        if (oldContainer) { oldContainer.el.removeClass('active') }
+        container.el.addClass('active')
+        oldContainer = container
+      }
+    },
+    onDrop: function ($item, container, _super) {
+      container.el.removeClass('active')
+      let sgStructure = sceneGraphList.sortable('serialize').get()
+      console.log(sgStructure)
+      settingsObj.settingsObj.scenegraphStructure = sgStructure
+      _super($item, container)
+    },
+    serialize: function ($parent, $children, parentIsContainer) {
+      var result = $.extend({}, $parent.data())
+      if (parentIsContainer) {
+        return $children
+      } else if ($children[0]) {
+        result.children = $children
+      }
+      delete result.subContainers
+      delete result.sortable
+      return result
+    }
+  })
+}
+
+/**
  * Sets up the radio buttons to set the settings object when changed
  * @param {Array.string} radiobuttons - Array of names of radio buttons
- * @param {Object} settingsObj        - Settings object, has a child object "settings" which holds the real settings
+ * @param {Settings} settingsObj      - Settings object, has a child object "settings" which holds the real settings
  */
 function setupRadiobuttons (radiobuttons, settingsObj) {
   for (let radiobutton of radiobuttons) {
@@ -170,7 +244,7 @@ function setupRadiobuttons (radiobuttons, settingsObj) {
 /**
  * Sets up the text fields to set the settings object when changed
  * @param {Array.string} textfields - Array of names of text fields
- * @param {Object} settingsObj      - Settings object, has a child object "settings" which holds the real settings
+ * @param {Settings} settingsObj    - Settings object, has a child object "settings" which holds the real settings
  */
 function setupTextfields (textfields, settingsObj) {
   for (let textfield of textfields) {
@@ -185,7 +259,7 @@ function setupTextfields (textfields, settingsObj) {
 /**
  * Sets up the file selectors to set the settings object when changed
  * @param {Array.string} fileselectors - Array of names of file selectors
- * @param {Object} settingsObj         - Settings object, has a child object "settings" which holds the real settings
+ * @param {Settings} settingsObj       - Settings object, has a child object "settings" which holds the real settings
  */
 function setupFileselectors (fileselectors, settingsObj) {
   for (let fileselector of fileselectors) {
@@ -207,9 +281,10 @@ function setupDownloadButton () {
 $(document).ready(function () {
   setFromURL()
   setInputElementValues()
+  setScenegraphStructure()
   setupSidebars()
-  setupSceneGraphSortable()
   setupColorpickers()
+  setupSceneGraphSortable(settings)
   setupRadiobuttons(radiobuttons, settings)
   setupTextfields(textfields, settings)
   setupFileselectors(fileselectors, settings)

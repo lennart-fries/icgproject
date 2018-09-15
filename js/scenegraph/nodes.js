@@ -46,7 +46,9 @@ export class NodePlacement {
   static fromJson (treeNode) {
     let name = treeNode.name
     let nodePlacement = new NodePlacement(name)
-    treeNode.children.forEach(child => nodePlacement.add(child))
+    if (treeNode.hasOwnProperty('children')) {
+      treeNode.children.forEach(child => nodePlacement.add(child))
+    }
     return nodePlacement
   }
 }
