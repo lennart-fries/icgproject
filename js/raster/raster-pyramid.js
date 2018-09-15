@@ -9,7 +9,7 @@ export class RasterPyramid extends RasterBody {
   /**
    * Creates all WebGL buffers for the pyramid
    * @param  {WebGLRenderingContext} gl          - Canvas' context
-   * @param  {Vector} center                     - Center of the tetrahedron
+   * @param  {Vector} center                     - Center of the bottom triangle
    * @param  {number} height                     - Height of the tetrahedron
    * @param  {Array.<Vector> | Vector} colors    - Color(s) of the sphere
    * @param  {Array.<Vector> | Vector} materials - Material(s) of the sphere

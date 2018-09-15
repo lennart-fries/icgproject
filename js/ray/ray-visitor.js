@@ -7,6 +7,7 @@ import { RaySphere } from './ray-sphere.js'
 import { Intersection } from './intersection.js'
 import { phong } from './phong.js'
 import { MatrixVisitor } from '../scenegraph/visitor.js'
+import { Vector } from '../primitives/vector.js'
 
 export class RayVisitor extends MatrixVisitor {
   /**
@@ -72,7 +73,7 @@ export class RayVisitor extends MatrixVisitor {
    */
   visitAABoxNode (node) {
     let mat = this.currentMatrix
-    let center = node.minPoint.add(node.maxPoint.sub(node.minPoint)).mul(0.5)
+    let center = node.minPoint.add(node.maxPoint.sub(node.minPoint).mul(0.5))
     let radius = (node.maxPoint.x - node.minPoint.x) / 2.0
     this.objects.push(new RaySphere(mat.mul(center), radius, node.colors, node.materials))
   }
@@ -84,7 +85,6 @@ export class RayVisitor extends MatrixVisitor {
   visitPyramidNode (node) {
     let mat = this.currentMatrix
     let center = node.center
-    center.y += node.height / 2
-    this.objects.push(new RaySphere(mat.mul(center), node.height / 2.0, node.colors, node.materials))
+    this.objects.push(new RaySphere(mat.mul(center.add(new Vector(0, 0.5, 0, 1))), node.height / 2, node.colors, node.materials))
   }
 }
