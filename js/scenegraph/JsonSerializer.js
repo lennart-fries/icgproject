@@ -6,9 +6,9 @@ import {
 } from '../animation/animation-nodes.js'
 
 export class JsonSerializer {
-  static serialize (scenegraph, nodes, animationNodes) {
+  static serialize (scenegraphStructure, nodes, animationNodes) {
     let serializer = new JsonSerializer()
-    serializer.scenegraph = scenegraph
+    serializer.scenegraphStructure = scenegraphStructure
     serializer.nodes = nodes
     serializer.animationNodes = animationNodes
     return serializer
@@ -20,21 +20,21 @@ export class JsonDeserializer {
     let deserializer = new JsonDeserializer()
     deserializer.nodes = new Map()
     json.nodes.forEach(node => deserializer.nodes.set(node.name, getNodeType(node)))
-    deserializer.scenegraph = NodePlacement.fromJson(json.scenegraph, deserializer.nodes)
+    deserializer.scenegraphStructure = NodePlacement.fromJson(json.scenegraphStructure, deserializer.nodes)
     deserializer.animationNodes = []
-    json.animationNodes.forEach(node => deserializer.animationNodes.push(getAnimationNodeType(node, deserializer.scenegraph)))
+    json.animationNodes.forEach(node => deserializer.animationNodes.push(getAnimationNodeType(node, deserializer.nodes)))
     return deserializer
   }
 }
 
-function getAnimationNodeType (node, sg) {
-  switch (node.type) {
+function getAnimationNodeType (animationNode, nodes) {
+  switch (animationNode.type) {
     case 'AnimationNode':
-      return AnimationNode.fromJson(node, sg)
+      return AnimationNode.fromJson(animationNode, nodes)
     case 'BackAndForthAnimationNode':
-      return BackAndForthAnimationNode.fromJson(node, sg)
+      return BackAndForthAnimationNode.fromJson(animationNode, nodes)
     case 'RelativeMovementAnimationNode':
-      return RelativeMovementAnimationNode.fromJson(node, sg)
+      return RelativeMovementAnimationNode.fromJson(animationNode, nodes)
   }
 }
 

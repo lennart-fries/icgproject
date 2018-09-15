@@ -31,19 +31,18 @@ function readUploadedFileAsText (inputFile) {
 
 /**
  * Helper function to download the scene graph as a JSON file
- * @param  scenegraph     - Reference to the scene graph
+ * @param  scenegraphStructure     - Reference to the scene graph
  * @param  nodes          - Array of all nodes from the scenegraph
  * @param  animationNodes - Reference to the animation nodes
  */
-export function saveScenegraphToJson (scenegraph, nodes, animationNodes) {
+export function saveScenegraphToJson (scenegraphStructure, nodes, animationNodes) {
   let test = Array.from(nodes.entries())
   let nodz = []
   test.forEach(array => nodz.push(array[1]))
-  test.forEach(array => console.log(array))
-  let nodess = '{ "nodes": ' + JSON.stringify(nodz, replacer, 2) + ','
-  let scenegraphh = ' "scenegraph": ' + JSON.stringify(scenegraph, ['name', 'children'], 2) + ','
-  let animationNodess = ' "animationNodes":' + JSON.stringify(animationNodes, null, 2) + '}'
-  let url = URL.createObjectURL(new Blob([nodess + scenegraphh + animationNodess], {type: 'application/json'}))
+  let nodesString = '{ "nodes": ' + JSON.stringify(nodz, replacer, 2) + ','
+  let scenegraphStructureString = ' "scenegraphStructure": ' + JSON.stringify(scenegraphStructure, ['name', 'children'], 2) + ','
+  let animationNodesString = ' "animationNodes":' + JSON.stringify(animationNodes, null, 2) + '}'
+  let url = URL.createObjectURL(new Blob([nodesString + scenegraphStructureString + animationNodesString], {type: 'application/json'}))
   let pom = document.createElement('a')
   document.body.appendChild(pom) // required in FF, optional for Chrome
   pom.href = url
@@ -200,7 +199,7 @@ function setupFileselectors (fileselectors, settingsObj) {
 
 function setupDownloadButton () {
   $('#saveScenegraph').click(function () {
-    saveScenegraphToJson(settings.settings.scenegraph, settings.settings.nodes, settings.settings.animationNodes)
+    saveScenegraphToJson(settings.settings.scenegraphStructure, settings.settings.nodes, settings.settings.animationNodes)
   })
 }
 

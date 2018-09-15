@@ -68,8 +68,8 @@ export class AnimationNode {
     }
   }
 
-  static fromJson (node, sg) {
-    let groupNode = getNodeByName(node.groupNodeName, sg)
+  static fromJson (node, nodes) {
+    let groupNode = getNodeByName(node.groupNodeName, nodes)
     let speed = node.speed
     let active = node.active
     let axesOrDirections = new Vector(node.axesOrDirections.data)
@@ -153,8 +153,8 @@ export class BackAndForthAnimationNode extends AnimationNode {
     }
   }
 
-  static fromJson (node, sg) {
-    let groupNode = getNodeByName(node.groupNodeName, sg)
+  static fromJson (node, nodes) {
+    let groupNode = getNodeByName(node.groupNodeName, nodes)
     let speed = node.speed
     let active = node.active
     let axesOrDirections = new Vector(node.axesOrDirections.data)
@@ -221,8 +221,8 @@ export class RelativeMovementAnimationNode extends AnimationNode {
     }
   }
 
-  static fromJson (node, sg) {
-    let groupNode = getNodeByName(node.groupNodeName, sg)
+  static fromJson (node, nodes) {
+    let groupNode = getNodeByName(node.groupNodeName, nodes)
     let speed = node.speed
     let active = node.active
     let axesOrDirections = new Vector(node.axesOrDirections.data)
@@ -241,20 +241,11 @@ export class RelativeMovementAnimationNode extends AnimationNode {
         applyFunction = Matrix.shear
         break
     }
-    let referenceNode = getNodeByName(node.referenceNodeName, sg)
+    let referenceNode = getNodeByName(node.referenceNodeName, nodes)
     return new RelativeMovementAnimationNode(groupNode, speed, active, axesOrDirections, applyFunction, referenceNode)
   }
 }
 
-function getNodeByName (name, node) {
-  if (node.name === name) {
-    return node
-  } else if (Array.isArray(node.children)) {
-    let result = null
-    for (let i = 0; result === null && i < node.children.length; i++) {
-      result = getNodeByName(name, node.children[i])
-    }
-    return result
-  }
-  return null
+function getNodeByName (name, nodes) {
+  return nodes.get(name)
 }
