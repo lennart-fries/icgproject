@@ -227,7 +227,7 @@ export class Settings {
 
     const mappedPyramidS = new PyramidNode(
       'mappedPyramidS',
-      new Vector(3, -1, 0, 4),
+      new Vector(3.5, -1, 0, 4),
       1,
       colorsPyramid,
       new Vector(0.2, 0.2, 0.5, 4),
@@ -309,7 +309,7 @@ export class Settings {
     const sBottomLeft = new NodePlacement(bottomLeft.name)
     sSouthSide.add(sBottomLeft)
 
-    const bottomLeftRotation = new GroupNode('bottomLeftRotation', Matrix.translation(new Vector(0, -1, 0, 1)))
+    const bottomLeftRotation = new GroupNode('bottomLeftRotation', Matrix.translation(new Vector(-0.5, -1, 0, 1)))
     nodes.set(bottomLeftRotation.name, bottomLeftRotation)
     const sBottomLeftRotation = new NodePlacement(bottomLeftRotation.name)
     sBottomLeftRotation.add(sMappedPyramidS)
