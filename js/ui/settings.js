@@ -97,8 +97,8 @@ export class Settings {
 
     const mappedCubeL = new AABoxNode(
       'mappedCubeL',
-      new Vector(-1.5, 2, 1, 1),
-      new Vector(1.5, 5, 3.5, 1),
+      new Vector(-1.5, 2, 2, 1),
+      new Vector(1.5, 5, 5, 1),
       colorsCube,
       new Vector(0.3, 0.6, 1.5, 4),
       'assets/diamond_ore.png',
@@ -122,8 +122,8 @@ export class Settings {
 
     const coloredCubeL = new AABoxNode(
       'coloredCubeL',
-      new Vector(-1.5, 2, 1, 1),
-      new Vector(1.5, 5, 4, 1),
+      new Vector(-1.5, 2, 2, 1),
+      new Vector(1.5, 5, 5, 1),
       colorsCube,
       new Vector(0.3, 0.6, 1.5, 4)
     )
@@ -132,8 +132,8 @@ export class Settings {
 
     const oneColoredCubeL = new AABoxNode(
       'oneColoredCubeL',
-      new Vector(-1.5, 2, 1, 1),
-      new Vector(1.5, 5, 4, 1),
+      new Vector(-1.5, 2, 2, 1),
+      new Vector(1.5, 5, 5, 1),
       colorsCubeHalf,
       new Vector(0.3, 0.6, 1.5, 4)
     )
@@ -142,8 +142,8 @@ export class Settings {
 
     const texturedCubeS = new AABoxNode(
       'texturedCubeS',
-      new Vector(2, -1.5, 3.5, 1),
-      new Vector(3, -0.5, 4, 1),
+      new Vector(2, -1.5, 4.5, 1),
+      new Vector(3, -0.5, 5.5, 1),
       new Vector(0.3, 0.6, 1.5, 4),
       colorsCube,
       'assets/diamond_ore.png'
@@ -153,7 +153,7 @@ export class Settings {
 
     const mappedSphereL = new SphereNode(
       'mappedSphereL',
-      new Vector(-4, -3, 2.65, 0),
+      new Vector(-4, -3, 3.65, 0),
       2.0,
       colorsSphere,
       new Vector(0.3, 0.6, 1.5, 4),
@@ -165,7 +165,7 @@ export class Settings {
 
     const texturedSphereL = new SphereNode(
       'texturedSphereL',
-      new Vector(-4, -3, 2.65, 0),
+      new Vector(-4, -3, 3.65, 0),
       2.0,
       colorsSphere,
       new Vector(0.3, 0.6, 1.5, 4),
@@ -176,7 +176,7 @@ export class Settings {
 
     const coloredSphereL = new SphereNode(
       'coloredSphereL',
-      new Vector(-4, -3, 2.65, 0),
+      new Vector(-4, -3, 3.65, 0),
       2.0,
       new Vector(0.6, 0, 0.2, 1),
       new Vector(0.3, 0.6, 1.5, 4)
@@ -186,7 +186,7 @@ export class Settings {
 
     const coloredSphereS = new SphereNode(
       'coloredSphereS',
-      new Vector(2.5, 5.5, 2.25, 0),
+      new Vector(2.5, 5.5, 3.25, 0),
       0.6,
       new Vector(0.2, 0.0, 0.6, 1.0),
       new Vector(0.3, 0.6, 1.5, 4)
@@ -196,7 +196,7 @@ export class Settings {
 
     const mappedPyramidL = new PyramidNode(
       'mappedPyramidL',
-      new Vector(1.5, -1.5, 1.5, 1),
+      new Vector(1.5, -1.5, 2, 1),
       2.5,
       colorsPyramid,
       new Vector(0.3, 0.6, 1.5, 4),
@@ -208,7 +208,7 @@ export class Settings {
 
     const texturedPyramidL = new PyramidNode(
       'texturedPyramidL',
-      new Vector(1.5, -1.5, 1.5, 1),
+      new Vector(1.5, -1.5, 2, 1),
       2.5,
       colorsPyramid,
       new Vector(0.3, 0.6, 1.5, 4),
@@ -219,7 +219,7 @@ export class Settings {
 
     const coloredPyramidL = new PyramidNode(
       'coloredPyramidL',
-      new Vector(1.5, -1.5, 1.5, 1),
+      new Vector(1.5, -1.5, 2, 1),
       2.5,
       colorsPyramid,
       new Vector(0.3, 0.6, 1.5, 4)
@@ -229,7 +229,7 @@ export class Settings {
 
     const oneColoredPyramidL = new PyramidNode(
       'oneColoredPyramidL',
-      new Vector(1.5, -1.5, 1.5, 1),
+      new Vector(1.5, -1.5, 2, 1),
       2.5,
       colorsPyramidHalf,
       new Vector(0.3, 0.6, 1.5, 4)
@@ -239,7 +239,7 @@ export class Settings {
 
     const mappedPyramidS = new PyramidNode(
       'mappedPyramidS',
-      new Vector(-4, -0.5, 2.65, 4),
+      new Vector(-4, -0.5, 3.7, 4),
       1,
       colorsPyramid,
       new Vector(0.3, 0.6, 1.5, 4),
@@ -353,12 +353,12 @@ export class Settings {
     const lightSouth = new LightNode('lightSouth', new Vector(20, 0, 0, 1), 0.05)
     nodes.set(lightSouth.name, lightSouth)
     const sLightSouth = new NodePlacement(lightSouth.name)
-    // sGn1.add(sLightSouth)
+    sGn1.add(sLightSouth)
 
     const lightNorth = new LightNode('lightNorth', new Vector(-20, 0, 0, 1), 0.05)
     nodes.set(lightNorth.name, lightNorth)
     const sLightNorth = new NodePlacement(lightNorth.name)
-    // sGn1.add(sLightNorth)
+    sGn1.add(sLightNorth)
 
     const lightUp = new LightNode('lightUp', new Vector(0, 20, 0, 1), 0.05)
     nodes.set(lightUp.name, lightUp)
