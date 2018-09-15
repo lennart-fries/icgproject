@@ -486,16 +486,16 @@ export class Settings {
     let KeyE = new PushKeybind(animationNodes.get('Free Flight Right Roll'), 'KeyE')
     keybinds.set(KeyE.name, KeyE)
     // Toggle Animation 1
-    let Digit1 = new ToggleKeybind(animationNodes.get('jumper'), 'Digit1')
-    keybinds.set(Digit1.name, Digit1)
+    let KeyB = new ToggleKeybind(animationNodes.get('jumper'), 'KeyB')
+    keybinds.set(KeyB.name, KeyB)
     // Toggle Animation 2
-    let Digit2 = new ToggleKeybind(animationNodes.get('driver'), 'Digit2')
-    keybinds.set(Digit2.name, Digit2)
+    let KeyN = new ToggleKeybind(animationNodes.get('driver'), 'KeyN')
+    keybinds.set(KeyN.name, KeyN)
     // Toggle Animation 3
-    let Digit3 = new ToggleKeybind(animationNodes.get('rotator'), 'Digit3')
-    keybinds.set(Digit3.name, Digit3)
+    let KeyM = new ToggleKeybind(animationNodes.get('rotator'), 'KeyM')
+    keybinds.set(KeyM.name, KeyM)
     let KeyI = new PushKeybind(animationNodes.get('Cube Up'), 'KeyI')
-    keybinds.set(KeyI.name, KeyA)
+    keybinds.set(KeyI.name, KeyI)
     let KeyK = new PushKeybind(animationNodes.get('Cube Down'), 'KeyK')
     keybinds.set(KeyK.name, KeyK)
     let KeyJ = new PushKeybind(animationNodes.get('Cube Left'), 'KeyJ')
