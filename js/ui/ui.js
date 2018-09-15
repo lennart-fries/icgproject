@@ -44,7 +44,7 @@ function readUploadedFileAsText (inputFile) {
  * @param  keybinds       - Array of all keybinds for navigation
  */
 export function saveScenegraphToJson (scenegraphStructure, nodes, animationNodes, keybinds) {
-  let scenegraphStructureString = '{ "scenegraphStructure": ' + JSON.stringify(scenegraphStructure.children, ['name', 'children'], 2)
+  let scenegraphStructureString = '{ "scenegraphStructure": ' + JSON.stringify(scenegraphStructure[0].children, ['name', 'children'], 2)
 
   nodes = Array.from(nodes.entries())
   let nodesArray = []
@@ -125,8 +125,15 @@ export function changeInputElementValues (val) {
 
 export function updateActive (selected) {
   if (selected !== settings.settingsObj.selected) {
+
     settings.settingsObj.selected = selected
     let node = settings.settingsObj.nodes.get(selected)
+    if (!(node instanceof GroupNode) && !(node instanceof CameraNode) && !(node instanceof LightNode)) {
+      $('#ambient').val(node.materials.x)
+      $('#diffuse').val(node.materials.y)
+      $('#specular').val(node.materials.z)
+      $('#shininess').val(node.materials.w)
+    }
     if (node.hasOwnProperty('materials')) {
       $('#ambient').change(function (e) {
         let newVal = parseInt($(e.target).val())
@@ -195,6 +202,7 @@ export function setScenegraphStructure () {
     })
     return itemEl
   }
+
   let sceneGraphRoot = $('ul.scene-graph-root')
   sceneGraphRoot.empty()
   for (let item of settings.settingsObj.scenegraphStructure) {

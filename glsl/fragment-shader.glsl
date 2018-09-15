@@ -51,7 +51,6 @@ void main(void) {
     for(int i = 0; i < maxPos; i++) {
         // diffuse
         vec3 lightDirection = normalize(lightPositionsT[i] - v_position2.xyz);
-        if (mapped == 1) {}
         tangentLightDir = lightDirection * v_tbnMatrix;
         tangentEyeDir = viewDirection * v_tbnMatrix;
         vec3 lightDir = normalize(tangentLightDir);
@@ -61,6 +60,7 @@ void main(void) {
         // specular
         vec3 reflectDirection = reflect(-lightDir,normal);
         float specAngle = max(dot(reflectDirection, eyeDir),0.0);
+        //float specPow = pow(clamp(specAngle,0.0, 1.0), v_shininess);
         float specPow = pow(specAngle, v_shininess);
         specularSum += lj * specPow;
     }
