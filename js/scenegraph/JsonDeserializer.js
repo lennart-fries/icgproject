@@ -4,16 +4,7 @@ import {
   BackAndForthAnimationNode,
   RelativeMovementAnimationNode
 } from '../animation/animation-nodes.js'
-
-export class JsonSerializer {
-  static serialize (scenegraphStructure, nodes, animationNodes) {
-    let serializer = new JsonSerializer()
-    serializer.scenegraphStructure = scenegraphStructure
-    serializer.nodes = nodes
-    serializer.animationNodes = animationNodes
-    return serializer
-  }
-}
+import { PushKeybind, ToggleKeybind } from '../ui/keybinds.js'
 
 export class JsonDeserializer {
   static fromJson (json) {
@@ -21,24 +12,15 @@ export class JsonDeserializer {
     deserializer.nodes = new Map()
     json.nodes.forEach(node => deserializer.nodes.set(node.name, getNodeType(node)))
     deserializer.scenegraphStructure = NodePlacement.fromJson(json.scenegraphStructure, deserializer.nodes)
-    deserializer.animationNodes = []
-    json.animationNodes.forEach(node => deserializer.animationNodes.push(getAnimationNodeType(node, deserializer.nodes)))
+    deserializer.animationNodes = new Map()
+    json.animationNodes.forEach(node => deserializer.animationNodes.set(node.name, getNodeType(node, deserializer.nodes)))
+    deserializer.keybinds = new Map()
+    json.keybinds.forEach(keybind => deserializer.keybinds.set(keybind.name, getNodeType(keybind, deserializer.animationNodes)))
     return deserializer
   }
 }
 
-function getAnimationNodeType (animationNode, nodes) {
-  switch (animationNode.type) {
-    case 'AnimationNode':
-      return AnimationNode.fromJson(animationNode, nodes)
-    case 'BackAndForthAnimationNode':
-      return BackAndForthAnimationNode.fromJson(animationNode, nodes)
-    case 'RelativeMovementAnimationNode':
-      return RelativeMovementAnimationNode.fromJson(animationNode, nodes)
-  }
-}
-
-function getNodeType (node) {
+function getNodeType (node, nodeCollection) {
   switch (node.type) {
     case 'GroupNode':
       return GroupNode.fromJson(node)
@@ -52,5 +34,15 @@ function getNodeType (node) {
       return CameraNode.fromJson(node)
     case 'LightNode':
       return LightNode.fromJson(node)
+    case 'AnimationNode':
+      return AnimationNode.fromJson(node, nodeCollection)
+    case 'BackAndForthAnimationNode':
+      return BackAndForthAnimationNode.fromJson(node, nodeCollection)
+    case 'RelativeMovementAnimationNode':
+      return RelativeMovementAnimationNode.fromJson(node, nodeCollection)
+    case 'ToggleKeybind':
+      return ToggleKeybind.fromJson(node, nodeCollection)
+    case 'PushKeybind':
+      return PushKeybind.fromJson(node, nodeCollection)
   }
 }

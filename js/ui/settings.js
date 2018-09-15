@@ -2,7 +2,7 @@
 
 import { RasterRenderer } from '../rendering/raster-renderer.js'
 import { RayRenderer } from '../rendering/ray-renderer.js'
-import { JsonDeserializer } from '../scenegraph/JsonSerializer.js'
+import { JsonDeserializer } from '../scenegraph/JsonDeserializer.js'
 import {
   NodePlacement,
   AABoxNode,
@@ -19,6 +19,7 @@ import {
   BackAndForthAnimationNode,
   RelativeMovementAnimationNode
 } from '../animation/animation-nodes.js'
+import { PushKeybind, ToggleKeybind } from './keybinds.js'
 
 const renderersToClasses = {'Raster': RasterRenderer, 'Ray': RayRenderer}
 const renderers = Object.keys(renderersToClasses)
@@ -115,39 +116,101 @@ export class Settings {
     const sCameraNode = new NodePlacement(cameraNode.name)
     sCameraRotate.add(sCameraNode)
 
-    let animationNodes = [
-      // Free Flight Forward
-      new RelativeMovementAnimationNode(cameraTranslate, 2.0, false, new Vector(0, 0, -1, 0), Matrix.translation, cameraRotate),
-      // Free Flight Backwards
-      new RelativeMovementAnimationNode(cameraTranslate, 2.0, false, new Vector(0, 0, 1, 0), Matrix.translation, cameraRotate),
-      // Free Flight Left
-      new RelativeMovementAnimationNode(cameraTranslate, 2.0, false, new Vector(-1, 0, 0, 0), Matrix.translation, cameraRotate),
-      // Free Flight Right
-      new RelativeMovementAnimationNode(cameraTranslate, 2.0, false, new Vector(1, 0, 0, 0), Matrix.translation, cameraRotate),
-      // Free Flight Ascend
-      new RelativeMovementAnimationNode(cameraTranslate, 2.0, false, new Vector(0, 1, 0, 0), Matrix.translation, cameraRotate),
-      // Free Flight Descend
-      new RelativeMovementAnimationNode(cameraTranslate, 2.0, false, new Vector(0, -1, 0, 0), Matrix.translation, cameraRotate),
-      // Free Flight Turn Upwards
-      new AnimationNode(cameraRotate, 1.0, false, new Vector(-1, 0, 0, 0), Matrix.rotation),
-      // Free Flight Turn Downwards
-      new AnimationNode(cameraRotate, 1.0, false, new Vector(1, 0, 0, 0), Matrix.rotation),
-      // Free Flight Turn Left
-      new AnimationNode(cameraRotate, 1.0, false, new Vector(0, 1, 0, 0), Matrix.rotation),
-      // Free Flight Turn Right
-      new AnimationNode(cameraRotate, 1.0, false, new Vector(0, -1, 0, 0), Matrix.rotation),
-      // Free Flight Left Roll?
-      new AnimationNode(cameraRotate, 1.0, false, new Vector(0, 0, 1, 0), Matrix.rotation),
-      // Free Flight Right Roll?
-      new AnimationNode(cameraRotate, 2.0, false, new Vector(0, 0, -1, 0), Matrix.rotation),
-      new RelativeMovementAnimationNode(gn2, 1.0, false, new Vector(0, 0.5, 0.5, 0), Matrix.rotation, cameraRotate),
-      new BackAndForthAnimationNode(gn3, 1.0, true, new Vector(0, 0, 1, 0), Matrix.translation, 3, 1.5),
-      new AnimationNode(gn4, 1.0, true, new Vector(1, 0, 0, 0), Matrix.rotation)
-    ]
+    let animationNodes = new Map()
+    // Free Flight Forward
+    let ffForward = new RelativeMovementAnimationNode('Free Flight Forward', cameraTranslate, 2.0, false, new Vector(0, 0, -1, 0), Matrix.translation, cameraRotate)
+    animationNodes.set(ffForward.name, ffForward)
+    // Free Flight Backwards
+    let ffBackwards = new RelativeMovementAnimationNode('Free Flight Backwards', cameraTranslate, 2.0, false, new Vector(0, 0, 1, 0), Matrix.translation, cameraRotate)
+    animationNodes.set(ffBackwards.name, ffBackwards)
+    // Free Flight Left
+    let ffLeft = new RelativeMovementAnimationNode('Free Flight Left', cameraTranslate, 2.0, false, new Vector(-1, 0, 0, 0), Matrix.translation, cameraRotate)
+    animationNodes.set(ffLeft.name, ffLeft)
+    // Free Flight Right
+    let ffRight = new RelativeMovementAnimationNode('Free Flight Right', cameraTranslate, 2.0, false, new Vector(1, 0, 0, 0), Matrix.translation, cameraRotate)
+    animationNodes.set(ffRight.name, ffRight)
+    // Free Flight Ascend
+    let ffAscend = new RelativeMovementAnimationNode('Free Flight Ascend', cameraTranslate, 2.0, false, new Vector(0, 1, 0, 0), Matrix.translation, cameraRotate)
+    animationNodes.set(ffAscend.name, ffAscend)
+    // Free Flight Descend
+    let ffDescend = new RelativeMovementAnimationNode('Free Flight Descend', cameraTranslate, 2.0, false, new Vector(0, -1, 0, 0), Matrix.translation, cameraRotate)
+    animationNodes.set(ffDescend.name, ffDescend)
+    // Free Flight Turn Upwards
+    let ffTurnUpwards = new AnimationNode('Free Flight Turn Upwards', cameraRotate, 1.0, false, new Vector(-1, 0, 0, 0), Matrix.rotation)
+    animationNodes.set(ffTurnUpwards.name, ffTurnUpwards)
+    // Free Flight Turn Downwards
+    let ffTurnDownwards = new AnimationNode('Free Flight Turn Downwards', cameraRotate, 1.0, false, new Vector(1, 0, 0, 0), Matrix.rotation)
+    animationNodes.set(ffTurnDownwards.name, ffTurnDownwards)
+    // Free Flight Turn Left
+    let ffTurnLeft = new AnimationNode('Free Flight Turn Left', cameraRotate, 1.0, false, new Vector(0, 1, 0, 0), Matrix.rotation)
+    animationNodes.set(ffTurnLeft.name, ffTurnLeft)
+    // Free Flight Turn Right
+    let ffTurnRight = new AnimationNode('Free Flight Turn Right', cameraRotate, 1.0, false, new Vector(0, -1, 0, 0), Matrix.rotation)
+    animationNodes.set(ffTurnRight.name, ffTurnRight)
+    // Free Flight Left Roll?
+    let ffLeftRoll = new AnimationNode('Free Flight Left Roll', cameraRotate, 1.0, false, new Vector(0, 0, 1, 0), Matrix.rotation)
+    animationNodes.set(ffLeftRoll.name, ffLeftRoll)
+    // Free Flight Right Roll?
+    let ffRightRoll = new AnimationNode('Free Flight Right Roll', cameraRotate, 2.0, false, new Vector(0, 0, -1, 0), Matrix.rotation)
+    animationNodes.set(ffRightRoll.name, ffRightRoll)
+    let aGn2 = new RelativeMovementAnimationNode('gn2', gn2, 1.0, false, new Vector(0, 0.5, 0.5, 0), Matrix.rotation, cameraRotate)
+    animationNodes.set(aGn2.name, aGn2)
+    let aGn3 = new BackAndForthAnimationNode('gn3', gn3, 1.0, true, new Vector(0, 0, 1, 0), Matrix.translation, 3, 1.5)
+    animationNodes.set(aGn3.name, aGn3)
+    let aGn4 = new AnimationNode('gn4', gn4, 1.0, true, new Vector(1, 0, 0, 0), Matrix.rotation)
+    animationNodes.set(aGn4.name, aGn4)
+
+    let keybinds = new Map()
+    // Free Flight Forward
+    let keyW = new PushKeybind(animationNodes.get('Free Flight Forward'), 'KeyW')
+    keybinds.set(keyW.name, keyW)
+    // Free Flight Backward
+    let KeyS = new PushKeybind(animationNodes.get('Free Flight Backwards'), 'KeyS')
+    keybinds.set(KeyS.name, KeyS)
+    // Free Flight Left
+    let KeyA = new PushKeybind(animationNodes.get('Free Flight Left'), 'KeyA')
+    keybinds.set(KeyA.name, KeyA)
+    // Free Flight Right
+    let KeyD = new PushKeybind(animationNodes.get('Free Flight Right'), 'KeyD')
+    keybinds.set(KeyD.name, KeyD)
+    // Free Flight Ascend
+    let Space = new PushKeybind(animationNodes.get('Free Flight Ascend'), 'Space')
+    keybinds.set(Space.name, Space)
+    // Free Flight Descend
+    let ShiftLeft = new PushKeybind(animationNodes.get('Free Flight Descend'), 'ShiftLeft')
+    keybinds.set(ShiftLeft.name, ShiftLeft)
+    // Free Flight Turn Upwards
+    let ArrowUp = new PushKeybind(animationNodes.get('Free Flight Turn Upwards'), 'ArrowUp')
+    keybinds.set(ArrowUp.name, ArrowUp)
+    // Free Flight Turn Downwards
+    let ArrowDown = new PushKeybind(animationNodes.get('Free Flight Turn Downwards'), 'ArrowDown')
+    keybinds.set(ArrowDown.name, ArrowDown)
+    // Free Flight Turn Left
+    let ArrowLeft = new PushKeybind(animationNodes.get('Free Flight Turn Left'), 'ArrowLeft')
+    keybinds.set(ArrowLeft.name, ArrowLeft)
+    // Free Flight Turn Right
+    let ArrowRight = new PushKeybind(animationNodes.get('Free Flight Turn Right'), 'ArrowRight')
+    keybinds.set(ArrowRight.name, ArrowRight)
+    // Free Flight Left Roll
+    let KeyQ = new PushKeybind(animationNodes.get('Free Flight Left Roll'), 'KeyQ')
+    keybinds.set(KeyQ.name, KeyQ)
+    // Free Flight Right Roll
+    let KeyE = new PushKeybind(animationNodes.get('Free Flight Right Roll'), 'KeyE')
+    keybinds.set(KeyE.name, KeyE)
+    // Toggle Animation 1
+    let Digit1 = new ToggleKeybind(animationNodes.get('gn2'), 'Digit1')
+    keybinds.set(Digit1.name, Digit1)
+    // Toggle Animation 2
+    let Digit2 = new ToggleKeybind(animationNodes.get('gn3'), 'Digit2')
+    keybinds.set(Digit2.name, Digit2)
+    // Toggle Animation 3
+    let Digit3 = new ToggleKeybind(animationNodes.get('gn4'), 'Digit3')
+    keybinds.set(Digit3.name, Digit3)
 
     this.settingsObj.nodes = nodes
     this.settingsObj.animationNodes = animationNodes
     this.settingsObj.scenegraphStructure = sGn0
+    this.settingsObj.keybinds = keybinds
   }
 
   /**
@@ -205,6 +268,7 @@ export class Settings {
             this.settingsObj.nodes = newSG.nodes
             this.settingsObj.animationNodes = newSG.animationNodes
             this.settingsObj.scenegraphStructure = newSG.scenegraphStructure
+            this.settingsObj.keybinds = newSG.keybinds
         }
       }
     }

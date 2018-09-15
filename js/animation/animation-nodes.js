@@ -11,13 +11,15 @@ import { Vector } from '../primitives/vector.js'
 export class AnimationNode {
   /**
    * Creates a new AnimationNode
+   * @param {String} name             - Name of the AnimationNode
    * @param {GroupNode} groupNode     - GroupNode to attach to
    * @param {number} speed            - Speed multiplier for the animation
    * @param {Boolean} active          - Whether the animation is active by default
    * @param {Vector} axesOrDirections - Axes or directions to animate
    * @param {Function} applyFunction  - Function to transform the axis/direction vector into a matrix (e.g. rotation)
    */
-  constructor (groupNode, speed, active, axesOrDirections, applyFunction) {
+  constructor (name, groupNode, speed, active, axesOrDirections, applyFunction) {
+    this.name = name
     this.groupNode = groupNode
     this.speed = speed
     this.active = active
@@ -60,6 +62,7 @@ export class AnimationNode {
   toJSON () {
     return {
       type: 'AnimationNode',
+      name: this.name,
       groupNodeName: this.groupNode.name,
       speed: this.speed,
       active: this.active,
@@ -70,6 +73,7 @@ export class AnimationNode {
 
   static fromJson (node, nodes) {
     let groupNode = getNodeByName(node.groupNodeName, nodes)
+    let name = node.name
     let speed = node.speed
     let active = node.active
     let axesOrDirections = new Vector(node.axesOrDirections.data)
@@ -91,7 +95,7 @@ export class AnimationNode {
         applyFunction = Matrix.shearLower
         break
     }
-    return new AnimationNode(groupNode, speed, active, axesOrDirections, applyFunction)
+    return new AnimationNode(name, groupNode, speed, active, axesOrDirections, applyFunction)
   }
 }
 
@@ -102,6 +106,7 @@ export class AnimationNode {
 export class BackAndForthAnimationNode extends AnimationNode {
   /**
    * Creates a new RotationNode
+   * @param {String} name             - Name of the BackAndForthAnimationNode
    * @param {GroupNode} groupNode     - Group node to attach to
    * @param {number} speed            - Speed multiplier for the animation
    * @param {Boolean} active          - Whether the animation is active by default
@@ -110,8 +115,8 @@ export class BackAndForthAnimationNode extends AnimationNode {
    * @param {number} limit            - How far to move in total
    * @param {number} startPosition    - Where in the movement to start at
    */
-  constructor (groupNode, speed, active, axesOrDirections, applyFunction, limit, startPosition = 0) {
-    super(groupNode, speed, active, axesOrDirections, applyFunction)
+  constructor (name, groupNode, speed, active, axesOrDirections, applyFunction, limit, startPosition = 0) {
+    super(name, groupNode, speed, active, axesOrDirections, applyFunction)
     this.limit = limit
     this.startPosition = startPosition
     this.position = startPosition
@@ -143,6 +148,7 @@ export class BackAndForthAnimationNode extends AnimationNode {
   toJSON () {
     return {
       type: 'BackAndForthAnimationNode',
+      name: this.name,
       groupNodeName: this.groupNode.name,
       speed: this.speed,
       active: this.active,
@@ -155,6 +161,7 @@ export class BackAndForthAnimationNode extends AnimationNode {
 
   static fromJson (node, nodes) {
     let groupNode = getNodeByName(node.groupNodeName, nodes)
+    let name = node.name
     let speed = node.speed
     let active = node.active
     let axesOrDirections = new Vector(node.axesOrDirections.data)
@@ -175,13 +182,14 @@ export class BackAndForthAnimationNode extends AnimationNode {
     }
     let limit = node.limit
     let position = node.position
-    return new BackAndForthAnimationNode(groupNode, speed, active, axesOrDirections, applyFunction, limit, position)
+    return new BackAndForthAnimationNode(name, groupNode, speed, active, axesOrDirections, applyFunction, limit, position)
   }
 }
 
 export class RelativeMovementAnimationNode extends AnimationNode {
   /**
    * Creates a new Relative Movement Node
+   * @param {String} name             - Name of the RelativeMovementAnimationNode
    * @param {GroupNode} groupNode     - Group node to attach to
    * @param {number} speed            - Speed multiplier for the animation
    * @param {Boolean} active          - Whether the animation is active by default
@@ -189,8 +197,8 @@ export class RelativeMovementAnimationNode extends AnimationNode {
    * @param {Function} applyFunction  - Function to transform the axis/direction vector into a matrix (e.g. rotation)
    * @param referenceNode             - The Point of reference for this Node
    */
-  constructor (groupNode, speed, active, axesOrDirections, applyFunction, referenceNode) {
-    super(groupNode, speed, active, axesOrDirections, applyFunction)
+  constructor (name, groupNode, speed, active, axesOrDirections, applyFunction, referenceNode) {
+    super(name, groupNode, speed, active, axesOrDirections, applyFunction)
     this.referenceNode = referenceNode
   }
 
@@ -212,6 +220,7 @@ export class RelativeMovementAnimationNode extends AnimationNode {
   toJSON () {
     return {
       type: 'RelativeMovementAnimationNode',
+      name: this.name,
       groupNodeName: this.groupNode.name,
       speed: this.speed,
       active: this.active,
@@ -223,6 +232,7 @@ export class RelativeMovementAnimationNode extends AnimationNode {
 
   static fromJson (node, nodes) {
     let groupNode = getNodeByName(node.groupNodeName, nodes)
+    let name = node.name
     let speed = node.speed
     let active = node.active
     let axesOrDirections = new Vector(node.axesOrDirections.data)
@@ -242,7 +252,7 @@ export class RelativeMovementAnimationNode extends AnimationNode {
         break
     }
     let referenceNode = getNodeByName(node.referenceNodeName, nodes)
-    return new RelativeMovementAnimationNode(groupNode, speed, active, axesOrDirections, applyFunction, referenceNode)
+    return new RelativeMovementAnimationNode(name, groupNode, speed, active, axesOrDirections, applyFunction, referenceNode)
   }
 }
 

@@ -1,7 +1,8 @@
+/* global $ */
+
 /**
  * Class representing a Keybind to invoke actions on the scenegraph
  */
-import { settings, changeInputElementValues } from './ui.js'
 
 class Keybind {
   /**
@@ -26,6 +27,7 @@ class Keybind {
 export class ToggleKeybind extends Keybind {
   constructor (animationNode, key) {
     super()
+    this.name = animationNode.name
     this.animationNode = animationNode
     this.key = key
   }
@@ -39,6 +41,20 @@ export class ToggleKeybind extends Keybind {
 
   stop () {
   }
+
+  toJSON () {
+    return {
+      name: this.name,
+      type: 'ToggleKeybind',
+      key: this.key
+    }
+  }
+
+  static fromJson (keybind, animationNodes) {
+    let name = keybind.name
+    let key = keybind.key
+    return new ToggleKeybind(getAnimationNodeByName(name, animationNodes), key)
+  }
 }
 
 /**
@@ -48,6 +64,7 @@ export class ToggleKeybind extends Keybind {
 export class PushKeybind extends Keybind {
   constructor (animationNode, key) {
     super()
+    this.name = animationNode.name
     this.animationNode = animationNode
     this.key = key
   }
@@ -65,13 +82,28 @@ export class PushKeybind extends Keybind {
   stop () {
     this.animationNode.active = false
   }
+
+  toJSON () {
+    return {
+      name: this.name,
+      type: 'PushKeybind',
+      key: this.key
+    }
+  }
+
+  static fromJson (keybind, animationNodes) {
+    let name = keybind.name
+    let key = keybind.key
+    return new PushKeybind(getAnimationNodeByName(name, animationNodes), key)
+  }
 }
 
 /**
  * Sets up all keybinds for usage and checks for render changing keybind
  * @param keybinds
+ * @param settings
  */
-export function setupKeybinds (keybinds) {
+export function setupKeybinds (keybinds, settings) {
   window.addEventListener('keydown', function (event) {
     for (let i = 0; i < keybinds.length; i++) {
       if (event.code === keybinds[i].key) {
@@ -79,10 +111,12 @@ export function setupKeybinds (keybinds) {
       } else if (event.code === 'KeyR') {
         if (settings.settingsStr.renderer === 'Ray') {
           settings.settings = {renderer: 'Raster'}
-          changeInputElementValues('raster')
+          $('#raster').addClass('active')
+          $('#ray').removeClass('active')
         } else {
           settings.settings = {renderer: 'Ray'}
-          changeInputElementValues('ray')
+          $('#ray').addClass('active')
+          $('#raster').removeClass('active')
         }
       }
     }
@@ -95,4 +129,8 @@ export function setupKeybinds (keybinds) {
       }
     }
   })
+}
+
+function getAnimationNodeByName (name, nodes) {
+  return nodes.get(name)
 }

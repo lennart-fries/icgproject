@@ -3,9 +3,9 @@
 
 import { settings } from './ui/ui.js'
 import { PreviewVisitor } from './scenegraph/preview-visitor.js'
-import { PushKeybind, setupKeybinds, ToggleKeybind } from './ui/keybinds.js'
+import { setupKeybinds } from './ui/keybinds.js'
 
-let r, previewVisitor, scenegraph, scenegraphStructure, nodes, animationNodes
+let r, previewVisitor, scenegraph, scenegraphStructure, nodes, animationNodes, keybinds
 
 const canvasID = 'render-surface'
 let canvas = document.getElementById(canvasID)
@@ -15,7 +15,7 @@ let canvas = document.getElementById(canvasID)
  * @param deltaT - Time since last invocation
  */
 function simulate (deltaT) {
-  for (let animationNode of animationNodes) {
+  for (let animationNode of animationNodes.values()) {
     animationNode.simulate(deltaT)
   }
 }
@@ -83,12 +83,15 @@ function animate (timestamp) {
   let scenegraphStructureNew = settings.settings.scenegraphStructure
   let animationNodesNew = settings.settings.animationNodes
   let nodesNew = settings.settings.nodes
+  let keybindsNew = settings.settings.keybinds
   let newSG = false
-  if (!(scenegraphStructureNew === scenegraphStructure) || !(animationNodesNew === animationNodes) || !(nodesNew === nodes)) {
+  if (!(scenegraphStructureNew === scenegraphStructure) || !(animationNodesNew === animationNodes) || !(nodesNew === nodes) || !(keybindsNew === keybinds)) {
     scenegraphStructure = scenegraphStructureNew
     animationNodes = animationNodesNew
+    keybinds = keybindsNew
     nodes = nodesNew
     newSG = true
+    setupKeybinds(keybinds.values(), settings)
     scenegraph = buildScenegraph(scenegraphStructure)
   }
   if (updateRenderer(newSG)) {
@@ -108,38 +111,3 @@ function animate (timestamp) {
 }
 
 animate(Date.now())
-
-let keybinds = [
-  // Free Flight Forward
-  new PushKeybind(animationNodes[0], 'KeyW'),
-  // Free Flight Backward
-  new PushKeybind(animationNodes[1], 'KeyS'),
-  // Free Flight Left
-  new PushKeybind(animationNodes[2], 'KeyA'),
-  // Free Flight Right
-  new PushKeybind(animationNodes[3], 'KeyD'),
-  // Free Flight Ascend
-  new PushKeybind(animationNodes[4], 'Space'),
-  // Free Flight Descend
-  new PushKeybind(animationNodes[5], 'ShiftLeft'),
-  // Free Flight Turn Upwards
-  new PushKeybind(animationNodes[6], 'ArrowUp'),
-  // Free Flight Turn Downwards
-  new PushKeybind(animationNodes[7], 'ArrowDown'),
-  // Free Flight Turn Left
-  new PushKeybind(animationNodes[8], 'ArrowLeft'),
-  // Free Flight Turn Right
-  new PushKeybind(animationNodes[9], 'ArrowRight'),
-  // Free Flight Left Roll
-  new PushKeybind(animationNodes[10], 'KeyQ'),
-  // Free Flight Right Roll
-  new PushKeybind(animationNodes[11], 'KeyE'),
-  // Toggle Animation 1
-  new ToggleKeybind(animationNodes[12], 'Digit1'),
-  // Toggle Animation 2
-  new ToggleKeybind(animationNodes[12], 'Digit2'),
-  // Toggle Animation 3
-  new ToggleKeybind(animationNodes[12], 'Digit3')
-]
-
-setupKeybinds(keybinds)
