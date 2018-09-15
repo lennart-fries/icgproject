@@ -26,7 +26,7 @@ export function phong (objColor, intersection, lightPositions, material, cameraP
     // diffuse
     let lightVector = lightPositions[i].sub(intersection.point)
     let lightDirection = lightVector.normalised()
-    let lj = lightVector.length * lightPositions[i].w
+    let lj = lightPositions[i].w / lightVector.length
     diffuseSum += lj * Math.max(lightDirection.dot(intersection.normal), 0)
     // specular
     let negativeLightDir = lightDirection.mul(-1)
