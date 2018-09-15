@@ -52,15 +52,31 @@ export class Settings {
       new Vector(1.0, 0.0, 0.0, 1.0)
     ]
 
-    const colorsPyramid = [
+    const colorsCubeHalf = [
       new Vector(0.0, 1.0, 0.0, 1.0),
       new Vector(0.0, 0.0, 1.0, 1.0),
       new Vector(1.0, 0.0, 0.0, 1.0),
       new Vector(0.0, 0.0, 0.0, 1.0),
       new Vector(0.0, 1.0, 0.0, 1.0),
-      new Vector(1.0, 0.0, 0.0, 1.0),
-      new Vector(0.0, 1.0, 0.0, 1.0),
-      new Vector(0.0, 0.0, 1.0, 1.0)
+      new Vector(1.0, 0.0, 0.0, 1.0)
+    ]
+
+    const colorsPyramid = [
+      new Vector(0.5, 0.5, 0.1, 1.0),
+      new Vector(0.5, 0.1, 0.1, 1.0),
+      new Vector(0.1, 0.1, 0.5, 1.0),
+      new Vector(0.1, 0.5, 0.1, 1.0),
+      new Vector(0.5, 0.5, 0.1, 1.0),
+      new Vector(0.5, 0.1, 0.1, 1.0),
+      new Vector(0.1, 0.1, 0.5, 1.0),
+      new Vector(0.1, 0.5, 0.1, 1.0)
+    ]
+
+    const colorsPyramidHalf = [
+      new Vector(0.5, 0.5, 0.1, 1.0),
+      new Vector(0.5, 0.1, 0.1, 1.0),
+      new Vector(0.1, 0.1, 0.5, 1.0),
+      new Vector(0.1, 0.5, 0.1, 1.0)
     ]
 
     const colorsSphere = [
@@ -73,7 +89,7 @@ export class Settings {
       'desktopCube',
       new Vector(-8, -8, -8, 1),
       new Vector(8, 8, 8, 1),
-      new Vector(0.1, 0.1, 0.1, 1),
+      new Vector(0.3, 0.3, 0.3, 1),
       new Vector(0.3, 0.6, 1.5, 4)
     )
     nodes.set(desktopCube.name, desktopCube)
@@ -111,6 +127,16 @@ export class Settings {
     )
     nodes.set(coloredCubeL.name, coloredCubeL)
     const sColoredCubeL = new NodePlacement(coloredCubeL.name)
+
+    const oneColoredCubeL = new AABoxNode(
+      'oneColoredCubeL',
+      new Vector(-1.5, 2, 0.25, 1),
+      new Vector(1.5, 5, 3.25, 1),
+      colorsCubeHalf,
+      new Vector(0.3, 0.6, 1.5, 4)
+    )
+    nodes.set(oneColoredCubeL.name, oneColoredCubeL)
+    const sOneColoredCubeL = new NodePlacement(oneColoredCubeL.name)
 
     const texturedCubeS = new AABoxNode(
       'texturedCubeS',
@@ -150,7 +176,7 @@ export class Settings {
       'coloredSphereL',
       new Vector(-4, -3, 2.15, 0),
       2.0,
-      colorsSphere,
+      new Vector(0.5, 0, 0.5, 1),
       new Vector(0.3, 0.6, 1.5, 4)
     )
     nodes.set(coloredSphereL.name, coloredSphereL)
@@ -198,6 +224,16 @@ export class Settings {
     )
     nodes.set(coloredPyramidL.name, coloredPyramidL)
     const sColoredPyramidL = new NodePlacement(coloredPyramidL.name)
+
+    const oneColoredPyramidL = new PyramidNode(
+      'oneColoredPyramidL',
+      new Vector(1.5, -1.5, 1, 1),
+      2.5,
+      colorsPyramidHalf,
+      new Vector(0.3, 0.6, 1.5, 4)
+    )
+    nodes.set(oneColoredPyramidL.name, oneColoredPyramidL)
+    const sOneColoredPyramidL = new NodePlacement(oneColoredPyramidL.name)
 
     const mappedPyramidS = new PyramidNode(
       'mappedPyramidS',
@@ -271,9 +307,9 @@ export class Settings {
     nodes.set(northSide.name, northSide)
     const sNorthSide = new NodePlacement(northSide.name)
     sRotateNorth.add(sNorthSide)
-    sNorthSide.add(sColoredCubeL)
+    sNorthSide.add(sOneColoredCubeL)
     sNorthSide.add(sColoredSphereL)
-    sNorthSide.add(sColoredPyramidL)
+    sNorthSide.add(sOneColoredPyramidL)
 
     const gn1 = new GroupNode('gn1', Matrix.translation(new Vector(1, 1, 0, 0.0)))
     nodes.set(gn1.name, gn1)
@@ -285,13 +321,6 @@ export class Settings {
     const sGn3 = new NodePlacement(gn3.name)
     sGn1.add(sGn3)
 
-    const sphere = new SphereNode('sphere', new Vector(0.5, -0.8, 0, 1), 0.4,
-      new Vector(0.8, 0.4, 0.1, 1), new Vector(0.3, 0.6, 1.5, 4)
-    )
-    nodes.set(sphere.name, sphere)
-    const sSphere = new NodePlacement(sphere.name)
-    // sGn3.add(sSphere)
-
     const gn2 = new GroupNode('gn2', Matrix.identity())
     nodes.set(gn2.name, gn2)
     const sGn2 = new NodePlacement(gn2.name)
@@ -302,13 +331,6 @@ export class Settings {
     const sGn4 = new NodePlacement(gn4.name)
     sGn0.add(sGn4)
 
-    const cube = new AABoxNode('cube', new Vector(-1, -1, -1, 1),
-      new Vector(1, 1, 1, 1), new Vector(0.0, 1.0, 0.0, 1.0),
-      new Vector(0.3, 0.6, 1.5, 4), 'assets/diamond_ore.png' /*, 'assets/diamond_ore_n.png' */)
-    nodes.set(cube.name, cube)
-    const sCube = new NodePlacement(cube.name)
-    // sGn2.add(sCube)
-    const sCube2 = new NodePlacement(cube.name)
     // sGn3.add(sCube2)
     sGn2.add(sDesktopCube)
     /* sGn2.add(sMappedCubeL)
@@ -317,15 +339,6 @@ export class Settings {
     sGn2.add(sMappedPyramidS)
     sGn2.add(sColoredSphereS)
     sGn2.add(sTexturedCubeS) */
-
-
-
-    const pyramid = new PyramidNode('pyramid', new Vector(1.1, -1.5, 0.5, 0), 1.5,
-      colorsPyramid, new Vector(0.3, 0.6, 1.5, 4),
-      'assets/diamond_ore.png', 'assets/diamond_ore_n.png')
-    nodes.set(pyramid.name, pyramid)
-    const sPyramid = new NodePlacement(pyramid.name)
-    // sGn1.add(sPyramid)
 
     const light1 = new LightNode('light1', new Vector(20, 0, 0, 1), 0.1)
     nodes.set(light1.name, light1)
