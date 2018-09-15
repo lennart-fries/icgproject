@@ -102,6 +102,11 @@ function animate (timestamp) {
     setScenegraphStructure()
     nodes = nodesNew
     newSG = true
+    nodes.forEach(node => {
+      if (node.hasOwnProperty('children')) {
+        node.children = []
+      }
+    })
     setupKeybinds(keybinds, settings)
     scenegraph = buildScenegraph(scenegraphStructure)
   }

@@ -343,22 +343,22 @@ export class Settings {
     const light1 = new LightNode('light1', new Vector(20, 0, 0, 1), 0.1)
     nodes.set(light1.name, light1)
     const sLight1 = new NodePlacement(light1.name)
-    sGn1.add(sLight1)
+    //sGn1.add(sLight1)
 
     const light2 = new LightNode('light2', new Vector(-20, 0, 0, 1), 0.1)
     nodes.set(light2.name, light2)
     const sLight2 = new NodePlacement(light2.name)
-    sGn1.add(sLight2)
+    //sGn1.add(sLight2)
 
     const light3 = new LightNode('light3', new Vector(0, 20, 0, 1), 0.1)
     nodes.set(light3.name, light3)
     const sLight3 = new NodePlacement(light3.name)
-    sGn1.add(sLight3)
+    //sGn1.add(sLight3)
 
     const light4 = new LightNode('light4', new Vector(0, -20, 0, 1), 0.1)
     nodes.set(light4.name, light4)
     const sLight4 = new NodePlacement(light4.name)
-    sGn1.add(sLight4)
+    //sGn1.add(sLight4)
 
     const light5 = new LightNode('light5', new Vector(0, 0, 20, 1), 0.1)
     nodes.set(light5.name, light5)
@@ -368,7 +368,7 @@ export class Settings {
     const light6 = new LightNode('light6', new Vector(0, 0, -20, 1), 0.1)
     nodes.set(light6.name, light6)
     const sLight6 = new NodePlacement(light6.name)
-    sGn1.add(sLight6)
+    //sGn1.add(sLight6)
 
     const cameraNode = new CameraNode('cameraNode', new Vector(0, 0, 15, 1), new Vector(0, 0, -1, 0), new Vector(0, 1, 0, 0), 60, 1, 0.1, 100)
     nodes.set(cameraNode.name, cameraNode)
